@@ -12,11 +12,11 @@
 	<groupId>com.anasoft.os</groupId>
 	<artifactId>daofusion-test</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.0</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>DAO Fusion integration test support</name>
 	
 	<properties>
-		<daofusion-core.version>1.0.0</daofusion-core.version>
+		<daofusion-core.version>1.0.0-SNAPSHOT</daofusion-core.version>
 		<spring.version>2.5.6</spring.version>
 		<junit-springtestcontext.version>4.4</junit-springtestcontext.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
