@@ -49,7 +49,7 @@ import com.anasoft.os.daofusion.test.example.enums.StockItemCategory;
 @ContextConfiguration(locations = { BaseHibernateCoreIntegrationTest.CONTEXT_LOCATION })
 public abstract class BaseHibernateCoreIntegrationTest extends BaseHibernateIntegrationTest {
 
-    private static final String CONTEXT_LOCATION = "classpath:testContext-hibernate-coreIntegration.xml";
+    protected static final String CONTEXT_LOCATION = "classpath:testContext-hibernate-coreIntegration.xml";
     
     @Autowired
     protected CountryDao countryDao;

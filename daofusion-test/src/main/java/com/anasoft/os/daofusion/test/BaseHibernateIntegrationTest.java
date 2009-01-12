@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * <ol>
  *  <li>Following Spring bean properties need to be set
- *      up via the {@link PropertyOverrideConfigurer}
+ *      up via the {@link org.springframework.beans.factory.config.PropertyOverrideConfigurer}
  *      according to the database instance in use:
  *      <ul>
  *          <li><tt>dataSource.driverClass</tt>
@@ -103,7 +103,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ContextConfiguration(locations = { BaseHibernateIntegrationTest.CONTEXT_LOCATION })
 public abstract class BaseHibernateIntegrationTest {
 
-    private static final String CONTEXT_LOCATION = "classpath:testContext-hibernate-baseIntegration.xml";
+    protected static final String CONTEXT_LOCATION = "classpath:testContext-hibernate-baseIntegration.xml";
     
     public static final String PROFILE_DBTYPE_NAME = "dao.test.dbType";
     public static final String PROFILE_DBTYPE_VALUE_ALL = "all";
