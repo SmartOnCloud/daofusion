@@ -28,8 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
  * in order to make integration tests work properly:
  * 
  * <ol>
- *  <li>The following Spring bean properties need to be
- *      set up via the {@link PropertyOverrideConfigurer}
+ *  <li>Following Spring bean properties need to be set
+ *      up via the {@link PropertyOverrideConfigurer}
  *      according to the database instance in use:
  *      <ul>
  *          <li><tt>dataSource.driverClass</tt>
@@ -45,13 +45,13 @@ import org.springframework.transaction.annotation.Transactional;
  *      Name of this persistence unit must match the
  *      <tt>entityManagerFactory.persistenceUnitName</tt>
  *      bean property value. The <tt>hibernate.dialect</tt>
- *      property needs to be set up as well within the
- *      persistence unit.
- *  <li>Additional integration test persistence unit
- *      configuration (e.g. defining entity mappings
- *      or setting the default schema name) is done best
- *      via the <tt>mapping-file</tt> element within the
- *      <tt>META-INF/persistence.xml</tt> file.
+ *      property needs to be set up as well within
+ *      the persistence unit.
+ *  <li>Additional persistence unit configuration
+ *      (e.g. defining entity mappings or setting
+ *      the default schema name) should be done via
+ *      the <tt>mapping-file</tt> element(s) within
+ *      <tt>META-INF/persistence.xml</tt>.
  * </ol>
  * 
  * In case of in-memory integration tests, it is
