@@ -50,15 +50,15 @@
 
     <distributionManagement>
         <repository>
-            <name>Dao Fusion releases</name>
-            <id>daofusion.releases</id>
-            <url>dav:https://daofusion.googlecode.com/svn/repository/releases</url>
+            <name>Anasoft OS releases</name>
+            <id>anasoft.releases</id>
+            <url>dav:https://anasoft-os-repo.googlecode.com/svn/repository/releases/</url>
             <layout>default</layout>
         </repository>
         <snapshotRepository>
-            <name>Dao Fusion Snaphosts</name>
-            <id>daofusion.snapshots</id>
-            <url>dav:https://daofusion.googlecode.com/svn/repository/snapshots</url>
+            <name>Anasoft OS Snaphosts</name>
+            <id>anasoft.snapshots</id>
+            <url>dav:https://anasoft-os-repo.googlecode.com/svn/repository/snapshots</url>
             <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
