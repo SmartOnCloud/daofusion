@@ -26,7 +26,7 @@
 		<mysql-connector-java.version>5.1.7</mysql-connector-java.version> <!-- MySQL 5.1.30 -->
 		<postgresql.version>8.3-603.jdbc3</postgresql.version> <!-- PostgreSQL 8.3.5 -->
 		<ojdbc14.version>10.2.0.3.0</ojdbc14.version> <!-- Oracle 10g 10.2.0.3.0 -->
-		<db2jcc.version>3.1.57</db2jcc.version> <!-- DB2 9.5 -->
+		<db2-expressc-jcc.version>3.5</db2-expressc-jcc.version> <!-- DB2 9.5 -->
 		<jtds.version>1.2.2</jtds.version> <!-- Microsoft SQL Server 2000 8.00.760 -->
 	</properties>
 	
@@ -112,14 +112,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.db2</groupId>
-			<artifactId>db2jcc</artifactId>
-			<version>${db2jcc.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.ibm.db2</groupId>
-			<artifactId>db2jcc_license_cu</artifactId>
-			<version>${db2jcc.version}</version>
+			<artifactId>db2-expressc-jcc</artifactId>
+			<version>${db2-expressc-jcc.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
