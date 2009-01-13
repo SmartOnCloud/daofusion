@@ -1,9 +1,11 @@
 package com.anasoft.os.daofusion.criteria;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.Map.Entry;
 
 import org.hibernate.Criteria;
@@ -127,21 +129,19 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 	 * 
 	 * <p>
 	 * 
-	 * More information on this issue can be found at
-	 * http://opensource.atlassian.com/projects/hibernate/browse/HHH-879.
+	 * More information on this issue can be found at the following
+	 * location: {@linkplain http://opensource.atlassian.com/projects/hibernate/browse/HHH-879}
 	 * 
 	 * @param targetCriteria {@link Criteria} instance to preprocess.
 	 * @return Map of association paths with corresponding subcriteria
 	 * instances created from the <tt>targetCriteria</tt>.
 	 */
-	@SuppressWarnings("unchecked")
 	protected Map<String, Criteria> preprocessSubCriteria(Criteria targetCriteria) {
-		final Map<String, Criteria> subCriteriaMap = new LinkedHashMap<String, Criteria>();
-		
+		final Map<String, Criteria> subCriteriaMap = new HashMap<String, Criteria>();
 		final Map<String, Integer> associationPathMap = new LinkedHashMap<String, Integer>();
-		final List<NestedPropertyCriterion> propertyCriterionList = getObjectList();
 		
 		// extract association paths and corresponding join types to associationPathMap
+		final List<NestedPropertyCriterion> propertyCriterionList = getObjectList();
 		for (NestedPropertyCriterion propertyCriterion : propertyCriterionList) {
 			final String associationPath = propertyCriterion.getAssociationPath();
 			
@@ -150,35 +150,66 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 			}
 		}
 		
-		// populate subCriteriaMap according to the associationPathMap
+		// populate subCriteriaMap according to associationPathMap
 		final Iterator<Entry<String, Integer>> associationPathEntryIterator = associationPathMap.entrySet().iterator();
 		while (associationPathEntryIterator.hasNext()) {
 			final Entry<String, Integer> associationPathEntry = associationPathEntryIterator.next();
 			final String associationPath = associationPathEntry.getKey();
 			
-			// check the presence of subcriteria (associationPath) within the targetCriteria
-			Criteria subCriteria = null;
-			final Iterator<Subcriteria> subCriteriaIterator = ((CriteriaImpl) targetCriteria).iterateSubcriteria();
-			while (subCriteriaIterator.hasNext()) {
-				final Subcriteria subCriteriaImpl = subCriteriaIterator.next();
-				
-				if (associationPath.equals(subCriteriaImpl.getPath())) {
-					LOG.info("Found existing subcriteria with requested associationPath '{}' within the targetCriteria - reusing this subcriteria", associationPath);
-					subCriteria = subCriteriaImpl;
-					break;
-				}
-			}
-			
-			// create nested subcriteria instance if not found within the targetCriteria
-			if (subCriteria == null) {
-				LOG.info("Creating new subcriteria with requested associationPath '{}' within the targetCriteria", associationPath);
-				subCriteria = targetCriteria.createCriteria(associationPath, associationPathEntry.getValue());
-			}
-			
+			final Criteria subCriteria = findSubCriteria(associationPath, targetCriteria, associationPathEntry.getValue());
 			subCriteriaMap.put(associationPath, subCriteria);
 		}
 		
 		return subCriteriaMap;
+	}
+	
+	/**
+	 * Attempts to find a subcriteria with the given
+	 * <tt>associationPath</tt> within the <tt>targetCriteria</tt>.
+	 * 
+	 * <p>
+	 * 
+	 * If not found, the method creates a new subcriteria
+	 * rooted under the <tt>targetCriteria</tt> and returns
+	 * that subcriteria instance.
+	 * 
+	 * @param associationPath Association path of the subcriteria.
+	 * @param targetCriteria Root {@link Criteria} instance.
+	 * @param hibernateJoinType Hibernate join type to use
+	 * for nested subcriteria instances.
+	 * @return Subcriteria instance with the given
+	 * <tt>associationPath</tt> rooted under the <tt>targetCriteria</tt>.
+	 */
+	@SuppressWarnings("unchecked")
+	private Criteria findSubCriteria(String associationPath, Criteria targetCriteria, int hibernateJoinType) {
+		final StringTokenizer associationPathTokenizer = new StringTokenizer(associationPath, ".");
+		Criteria currentCriteria = targetCriteria;
+		
+		while (associationPathTokenizer.hasMoreTokens()) {
+			final String associationPathElement = associationPathTokenizer.nextToken();
+			boolean subCriteriaFound = false;
+			
+			// check if there is a subcriteria for associationPathElement within the targetCriteria
+			final Iterator<Subcriteria> subCriteriaIterator = ((CriteriaImpl) targetCriteria).iterateSubcriteria();
+			while (subCriteriaIterator.hasNext()) {
+				final Subcriteria subCriteriaImpl = subCriteriaIterator.next();
+				
+				if (associationPathElement.equals(subCriteriaImpl.getPath())) {
+					LOG.info("Found existing subcriteria with associationPath element '{}' within the targetCriteria - reusing this subcriteria", associationPathElement);
+					currentCriteria = subCriteriaImpl;
+					subCriteriaFound = true;
+					break;
+				}
+			}
+			
+			// if not found, create a new subcriteria rooted under the currentCriteria
+			if (!subCriteriaFound) {
+				LOG.info("Creating new subcriteria with associationPath element '{}' within the targetCriteria", associationPathElement);
+				currentCriteria = currentCriteria.createCriteria(associationPathElement, hibernateJoinType);
+			}
+		}
+		
+		return currentCriteria;
 	}
 	
 	/**
