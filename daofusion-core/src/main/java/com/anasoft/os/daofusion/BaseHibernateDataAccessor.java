@@ -7,8 +7,10 @@ import javax.persistence.PersistenceContext;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 import org.hibernate.ejb.HibernateEntityManager;
 
+import com.anasoft.os.daofusion.criteria.PersistentEntityCriteria;
 import com.anasoft.os.daofusion.entity.Persistable;
 
 /**
@@ -49,16 +51,50 @@ public abstract class BaseHibernateDataAccessor {
 	}
 	
 	/**
-	 * Convenience method for retrieving a new {@link Criteria}
-	 * instance bound to the current {@link Session}.
-	 * 
-	 * @param entityClass Persistent entity class for which
-	 * to create the {@link Criteria} instance.
-	 * @return New {@link Criteria} instance obtained from
-	 * the session.
-	 */
-	protected final Criteria getNewCriteria(Class<? extends Persistable<? extends Serializable>> entityClass) {
-		return getSession().createCriteria(entityClass);
-	}
+     * Convenience method for retrieving a new {@link Criteria}
+     * instance bound to the current {@link Session}.
+     * 
+     * @param entityClass Persistent entity class for which
+     * to create the {@link Criteria} instance.
+     * @return New {@link Criteria} instance obtained from
+     * the session.
+     */
+    protected final Criteria getHibernateCriteria(Class<? extends Persistable<? extends Serializable>> entityClass) {
+        return getSession().createCriteria(entityClass);
+    }
+    
+    /**
+     * Convenience method for counting the number of rows
+     * returned by the given <tt>criteria</tt>, based on
+     * Hibernate {@link Projections#rowCount rowCount}
+     * projection.
+     * 
+     * @param criteria {@link Criteria} instance for which
+     * to perform the row count.
+     * @return Number of rows returned by the given
+     * <tt>criteria</tt>.
+     */
+    protected final int rowCount(Criteria criteria) {
+        criteria.setProjection(Projections.rowCount());
+        return ((Integer) criteria.list().get(0)).intValue();
+    }
+    
+    /**
+     * Returns the {@link Criteria} instance corresponding to query
+     * constraints defined within the <tt>entityCriteria</tt>.
+     * 
+     * @param entityCriteria {@link PersistentEntityCriteria}
+     * instance defining persistent entity query constraints.
+     * @param entityClass Persistent entity class for which
+     * to create the {@link Criteria} instance.
+     * @return {@link Criteria} instance corresponding to query
+     * constraints.
+     */
+    protected Criteria getCriteria(PersistentEntityCriteria entityCriteria, Class<? extends Persistable<? extends Serializable>> entityClass) {
+        final Criteria criteria = getHibernateCriteria(entityClass);
+        entityCriteria.apply(criteria);
+        
+        return criteria;
+    }
 	
 }

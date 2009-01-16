@@ -150,10 +150,8 @@ public abstract class AbstractHibernateEntityDao<T extends Persistable<ID>, ID e
 	 * @see com.anasoft.os.daofusion.PersistentEntityDao#count(com.anasoft.os.daofusion.criteria.PersistentEntityCriteria, java.lang.Class)
 	 */
 	public <S extends T> int count(PersistentEntityCriteria entityCriteria, Class<S> targetEntityClass) {
-	    final Criteria criteria = getCriteria(entityCriteria, targetEntityClass);
-		criteria.setProjection(Projections.rowCount());
-		
-		return ((Integer) criteria.list().get(0)).intValue();
+        final Criteria criteria = getCriteria(entityCriteria, targetEntityClass);
+        return rowCount(criteria);
 	}
 	
 	/**
@@ -162,22 +160,5 @@ public abstract class AbstractHibernateEntityDao<T extends Persistable<ID>, ID e
 	public int count(PersistentEntityCriteria entityCriteria) {
         return count(entityCriteria, getEntityClass());
     }
-	
-    /**
-	 * Returns the {@link Criteria} instance corresponding to query
-	 * constraints defined within the <tt>entityCriteria</tt>.
-	 * 
-	 * @param entityCriteria {@link PersistentEntityCriteria}
-     * instance defining persistent entity query constraints.
-     * @param targetEntityClass Target persistent entity class.
-	 * @return {@link Criteria} instance corresponding to query
-     * constraints.
-	 */
-	protected <S extends T> Criteria getCriteria(PersistentEntityCriteria entityCriteria, Class<S> targetEntityClass) {
-	    final Criteria criteria = getNewCriteria(targetEntityClass);
-	    entityCriteria.apply(criteria);
-	    
-		return criteria;
-	}
 	
 }
