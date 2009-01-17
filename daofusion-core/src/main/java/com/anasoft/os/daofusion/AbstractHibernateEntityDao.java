@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.criterion.Projections;
 
 import com.anasoft.os.daofusion.criteria.NestedPropertyCriteria;
 import com.anasoft.os.daofusion.criteria.PersistentEntityCriteria;
