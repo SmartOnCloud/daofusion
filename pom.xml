@@ -1,27 +1,38 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.anasoft.os</groupId>
     <artifactId>daofusion-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
     <name>DAO Fusion</name>
-
+	
     <url>#</url>
     <inceptionYear>2008</inceptionYear>
     <organization>
         <name>ANASOFT</name>
         <url>http://www.anasoft.com/</url>
     </organization>
-
+	
+	<scm>
+		<connection>http://daofusion.googlecode.com/svn/</connection>
+		<developerConnection>https://daofusion.googlecode.com/svn/</developerConnection>
+		<url>http://code.google.com/p/daofusion/source/browse/</url>
+	</scm>
+	
+	<issueManagement>
+		<system>GoogleCode</system>
+		<url>http://code.google.com/p/daofusion/issues/list</url>
+	</issueManagement>
+	
     <licenses>
         <license>
             <name>GNU LESSER GENERAL PUBLIC LICENSE</name>
             <url>http://www.gnu.org/licenses/lgpl.txt</url>
         </license>
     </licenses>
-
+	
     <developers>
         <developer>
             <id>vojtech.szocs</id>
@@ -36,33 +47,41 @@
             <organization>ANASOFT</organization>
         </developer>
     </developers>
-
+	
     <modules>
         <module>../daofusion-core</module>
         <module>../daofusion-test</module>
     </modules>
-
+	
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.generatedOutputEncoding>UTF-8</project.build.generatedOutputEncoding>
         <junit.version>4.5</junit.version>
     </properties>
-
+	
     <distributionManagement>
         <repository>
-            <name>ANASOFT Open Source releases</name>
+            <name>ANASOFT OpenSource releases</name>
             <id>anasoft.releases</id>
             <url>dav:https://anasoft-os-repo.googlecode.com/svn/repository/releases</url>
             <layout>default</layout>
         </repository>
         <snapshotRepository>
-            <name>ANASOFT Open Source snapshots</name>
+            <name>ANASOFT OpenSource snapshots</name>
             <id>anasoft.snapshots</id>
             <url>dav:https://anasoft-os-repo.googlecode.com/svn/repository/snapshots</url>
             <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
-
+	
+	<repositories>
+        <repository>
+            <id>com.springsource.repository.bundles.release</id>
+            <name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
+            <url>http://repository.springsource.com/maven/bundles/release</url>
+        </repository>
+    </repositories>
+	
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -71,7 +90,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
+	
     <build>
         <plugins>
             <plugin>
@@ -83,7 +102,7 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
-
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
@@ -94,15 +113,7 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>com.springsource.repository.bundles.release</id>
-            <name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
-            <url>http://repository.springsource.com/maven/bundles/release</url>
-        </repository>
-    </repositories>
-
+	
     <profiles>
         <profile>
             <id>release</id>
@@ -120,7 +131,7 @@
                             </execution>
                         </executions>
                     </plugin>
-
+                    
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
@@ -140,5 +151,5 @@
             </build>
         </profile>
     </profiles>
-
+	
 </project>
