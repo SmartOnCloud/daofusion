@@ -9,10 +9,11 @@
 	
 	<!-- bean property value resolution -->
 	<context:property-placeholder location="classpath:test-base.properties" />
-	<context:property-override location="classpath:test-base-beanSetup.properties" />
 	
 	<!-- pooled data source providing DB access via JDBC -->
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close" />
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="numHelperThreads" value="${jdbc.c3p0.numHelperThreads}" />
+	</bean>
 	
 	<!-- JPA entity manager factory wrapper bean -->
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">

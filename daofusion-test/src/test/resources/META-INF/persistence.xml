@@ -7,28 +7,28 @@
 	<persistence-unit name="dao-test-h2" transaction-type="RESOURCE_LOCAL">
 		<mapping-file>test-core-orm.xml</mapping-file>
 		<properties>
-			<property name="hibernate.dialect" value="com.anasoft.os.daofusion.test.h2.H2Dialect"/>
+			<property name="hibernate.dialect" value="com.anasoft.os.daofusion.test.h2.H2Dialect" />
 		</properties>
 	</persistence-unit>
 	
 	<persistence-unit name="dao-test-hsql" transaction-type="RESOURCE_LOCAL">
 		<mapping-file>test-core-orm.xml</mapping-file>
 		<properties>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
 		</properties>
 	</persistence-unit>
 	
 	<persistence-unit name="dao-test-mysql" transaction-type="RESOURCE_LOCAL">
 		<mapping-file>test-core-orm.xml</mapping-file>
 		<properties>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 		</properties>
 	</persistence-unit>
 	
 	<persistence-unit name="dao-test-postgresql" transaction-type="RESOURCE_LOCAL">
 		<mapping-file>test-core-orm.xml</mapping-file>
 		<properties>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 		</properties>
 	</persistence-unit>
 	
@@ -36,7 +36,7 @@
 		<mapping-file>test-core-orm.xml</mapping-file>
 		<mapping-file>oracle/test-oracle-orm.xml</mapping-file>
 		<properties>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
 		</properties>
 	</persistence-unit>
 	
@@ -44,7 +44,7 @@
 		<mapping-file>test-core-orm.xml</mapping-file>
 		<mapping-file>db2/test-db2-orm.xml</mapping-file>
 		<properties>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.DB2Dialect"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.DB2Dialect" />
 		</properties>
 	</persistence-unit>
 	
@@ -52,7 +52,7 @@
 		<mapping-file>test-core-orm.xml</mapping-file>
 		<mapping-file>mssql/test-mssql-orm.xml</mapping-file>
 		<properties>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect"/>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />
 		</properties>
 	</persistence-unit>
 	
