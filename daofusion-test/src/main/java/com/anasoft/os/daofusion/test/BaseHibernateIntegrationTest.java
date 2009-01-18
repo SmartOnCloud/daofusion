@@ -54,11 +54,12 @@ import org.springframework.transaction.annotation.Transactional;
  *      <tt>META-INF/persistence.xml</tt>.
  * </ol>
  * 
- * In case of in-memory integration tests, it is
- * recommended that the database instance setup is
- * done within the child Spring test context (test
- * contexts are automatically cached for all test
- * cases unless explicitly marked as dirty).
+ * In case of in-memory integration tests (integration
+ * tests interacting with an in-memory database instance),
+ * it is recommended that the database instance setup is
+ * done within the child Spring test context (test contexts
+ * are automatically cached for all test cases unless
+ * explicitly marked as dirty).
  * 
  * <p>
  * 
@@ -80,8 +81,8 @@ import org.springframework.transaction.annotation.Transactional;
  * For example:
  * 
  * <pre>
- * <tt>@</tt>ContextConfiguration(locations = { ... })
- * <tt>@</tt>IfProfileValue(name = BaseHibernateIntegrationTest.PROFILE_DBTYPE_NAME,
+ * &#064;ContextConfiguration(locations = { ... })
+ * &#064;IfProfileValue(name = BaseHibernateIntegrationTest.PROFILE_DBTYPE_NAME,
  *      values = { BaseHibernateIntegrationTest.PROFILE_DBTYPE_VALUE_ALL, BaseHibernateIntegrationTest.PROFILE_DBTYPE_VALUE_REMOTE })
  * public class CustomRemoteIntegrationTest extends BaseHibernateIntegrationTest {
  *      ...
