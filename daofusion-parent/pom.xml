@@ -14,18 +14,18 @@
         <name>ANASOFT</name>
         <url>http://www.anasoft.com/</url>
     </organization>
-	
-	<scm>
-		<connection>http://daofusion.googlecode.com/svn/</connection>
-		<developerConnection>https://daofusion.googlecode.com/svn/</developerConnection>
-		<url>http://code.google.com/p/daofusion/source/browse/</url>
-	</scm>
-	
-	<issueManagement>
-		<system>GoogleCode</system>
-		<url>http://code.google.com/p/daofusion/issues/list</url>
-	</issueManagement>
-	
+    
+    <scm>
+        <connection>http://daofusion.googlecode.com/svn/</connection>
+        <developerConnection>https://daofusion.googlecode.com/svn/</developerConnection>
+        <url>http://code.google.com/p/daofusion/source/browse/</url>
+    </scm>
+    
+    <issueManagement>
+        <system>GoogleCode</system>
+        <url>http://code.google.com/p/daofusion/issues/list</url>
+    </issueManagement>
+    
     <licenses>
         <license>
             <name>GNU LESSER GENERAL PUBLIC LICENSE</name>
