@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="${project.parent.name}">
+	
+	<skin>
+		<groupId>org.apache.maven.skins</groupId>
+		<artifactId>maven-stylus-skin</artifactId>
+		<version>1.0.1</version>
+	</skin>
+	
+	<bannerLeft>
+		<src>images/banner-logo.gif</src>
+		<href>${project.parent.url}</href>
+	</bannerLeft>
+	<bannerRight>
+		<src>images/banner-right.gif</src>
+	</bannerRight>
+	
+	<body>
+		<links>
+			<!-- TODO external links -->
+		</links>
+		
+		<menu name="Overview">
+			<item name="Welcome" href="index.html" />
+		</menu>
+		
+		<menu ref="reports" />
+	</body>
+	
+</project>

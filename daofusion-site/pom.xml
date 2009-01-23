@@ -1,0 +1,84 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<parent>
+		<groupId>com.anasoft.os</groupId>
+		<artifactId>daofusion-parent</artifactId>
+		<version>1.0</version>
+		<relativePath>../daofusion-parent/pom.xml</relativePath>
+	</parent>
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.anasoft.os</groupId>
+	<artifactId>daofusion-site</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0</version>
+	<name>DAO Fusion project site</name>
+	
+	<properties>
+		<df-shortName>daofusion</df-shortName>
+		<df-fullName>DAO Fusion</df-fullName>
+		
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<doxia-module-highlight.version>1.0-alpha-11</doxia-module-highlight.version>
+		<maven-project-info-reports-plugin.version>2.1</maven-project-info-reports-plugin.version>
+	</properties>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<configuration>
+					<outputEncoding>${project.reporting.outputEncoding}</outputEncoding>
+				</configuration>
+				<executions>
+					<execution>
+						<id>jar</id>
+						<phase>site</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<jarOutputDirectory>${project.reporting.outputDirectory}</jarOutputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>sk.dvsk.maven</groupId>
+						<artifactId>doxia-module-highlight</artifactId>
+						<version>${doxia-module-highlight.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>${maven-project-info-reports-plugin.version}</version>
+				<configuration>
+					<webAccessUrl>${project.parent.scm.url}</webAccessUrl>
+					<anonymousConnection>${project.parent.scm.connection}</anonymousConnection>
+					<developerConnection>${project.parent.scm.developerConnection}</developerConnection>
+					<checkoutDirectoryName>${df-shortName}</checkoutDirectoryName>
+				</configuration>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>license</report>
+							<report>project-team</report>
+							<report>issue-tracking</report>
+							<report>scm</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
+	
+</project>
