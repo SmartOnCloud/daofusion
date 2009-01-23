@@ -16,16 +16,16 @@
 		<url>http://www.anasoft.com/</url>
 	</organization>
 	
-	<scm>
-		<connection>http://daofusion.googlecode.com/svn/</connection>
-		<developerConnection>https://daofusion.googlecode.com/svn/</developerConnection>
-		<url>http://code.google.com/p/daofusion/source/browse/</url>
-	</scm>
-	
 	<issueManagement>
 		<system>GoogleCode</system>
 		<url>http://code.google.com/p/daofusion/issues/list</url>
 	</issueManagement>
+	
+	<scm>
+		<url>http://code.google.com/p/daofusion/source/browse/</url>
+		<connection>scm:svn:http://daofusion.googlecode.com/svn/</connection>
+		<developerConnection>scm:svn:https://daofusion.googlecode.com/svn/</developerConnection>
+	</scm>
 	
 	<licenses>
 		<license>
@@ -56,7 +56,6 @@
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.build.generatedOutputEncoding>UTF-8</project.build.generatedOutputEncoding>
 		<junit.version>4.5</junit.version>
 	</properties>
 	
