@@ -4,12 +4,13 @@
 	<skin>
 		<groupId>org.apache.maven.skins</groupId>
 		<artifactId>maven-stylus-skin</artifactId>
-		<version>1.0.1</version>
+		<version>${maven-stylus-skin.version}</version>
 	</skin>
 	
 	<bannerLeft>
 		<src>images/banner-logo.gif</src>
 		<href>${project.parent.url}</href>
+		<alt>${project.parent.name} logo</alt>
 	</bannerLeft>
 	<bannerRight>
 		<src>images/banner-right.gif</src>
@@ -17,7 +18,11 @@
 	
 	<body>
 		<links>
-			<!-- TODO external links -->
+			<item name="JPA home page" href="http://java.sun.com/javaee/technologies/persistence.jsp" />
+			<item name="JPA Java EE 5 tutorial" href="http://java.sun.com/javaee/5/docs/tutorial/doc/bnbpz.html" />
+			<item name="Hibernate" href="http://www.hibernate.org/" />
+			<item name="JUnit" href="http://www.junit.org/" />
+			<item name="Spring" href="http://static.springframework.org/spring/docs/2.5.x/reference/index.html" />
 		</links>
 		
 		<menu name="Overview">
