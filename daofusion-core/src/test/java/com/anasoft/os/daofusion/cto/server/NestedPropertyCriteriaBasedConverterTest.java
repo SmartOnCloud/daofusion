@@ -51,12 +51,15 @@ public class NestedPropertyCriteriaBasedConverterTest {
      * used by this comparator:
      * 
      * <br><br>
+     * 
      * <ul>
      *  <li><tt>null</tt> values are always less
      *      than not-<tt>null</tt> values
      *  <li>{@link FilterCriterion} instances
      *      are always less than {@link SortCriterion}
      *      instances
+     *  <li>shorter arrays are always less than
+     *      longer arrays
      * </ul>
      * 
      * It is assumed that any objects contained
