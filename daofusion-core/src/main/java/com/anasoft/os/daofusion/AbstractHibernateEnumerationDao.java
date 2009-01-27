@@ -24,7 +24,7 @@ public abstract class AbstractHibernateEnumerationDao<T extends PersistentEnumer
 	@SuppressWarnings("unchecked")
 	public <S extends T> S get(String name, Class<S> targetEntityClass) {
 		final Criteria criteria = getHibernateCriteria(targetEntityClass);
-		criteria.add(Restrictions.eq(PersistentEnumeration.NAME_COLUMN_NAME, name));
+		criteria.add(Restrictions.eq(PersistentEnumeration.NAME, name));
 		
 		return (S) criteria.uniqueResult();
 	}
