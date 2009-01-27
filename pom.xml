@@ -61,13 +61,13 @@
 	
 	<distributionManagement>
 		<repository>
-			<id>anasoft.releases</id>
+			<id>com.anasoft.os.repository.releases</id>
 			<name>ANASOFT OpenSource releases</name>
 			<url>dav:https://anasoft-os-repo.googlecode.com/svn/repository/releases</url>
 			<layout>default</layout>
 		</repository>
 		<snapshotRepository>
-			<id>anasoft.snapshots</id>
+			<id>com.anasoft.os.repository.snapshots</id>
 			<name>ANASOFT OpenSource snapshots</name>
 			<url>dav:https://anasoft-os-repo.googlecode.com/svn/repository/snapshots</url>
 			<uniqueVersion>false</uniqueVersion>
