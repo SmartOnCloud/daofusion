@@ -31,14 +31,12 @@ import org.hibernate.annotations.NaturalId;
 @MappedSuperclass
 public abstract class PersistentEnumeration extends PersistentEntity<Long> {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -5336677804672833628L;
     
-    public static final int NAME_COLUMN_LENGTH = 36;
-    public static final String NAME_COLUMN_NAME = "name";
+    public static final String NAME = "name";
     
     @NaturalId
-    @Column(length = NAME_COLUMN_LENGTH, name = NAME_COLUMN_NAME,
-    		unique = true, updatable = false, nullable = false)
+    @Column(length = 36, unique = true, updatable = false, nullable = false)
     private String name;
     
 	public String getName() {
