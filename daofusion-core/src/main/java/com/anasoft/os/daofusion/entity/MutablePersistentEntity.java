@@ -28,9 +28,9 @@ import org.hibernate.annotations.OptimisticLockType;
 @Entity(optimisticLock = OptimisticLockType.VERSION)
 public abstract class MutablePersistentEntity extends PersistentEntity<Long> {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Version
+    private static final long serialVersionUID = 1553060579124060569L;
+    
+    @Version
 	private Integer version;
 	
 	public Integer getVersion() {

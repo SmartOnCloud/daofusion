@@ -40,9 +40,9 @@ import java.util.List;
  */
 public class FilterAndSortCriteria implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	private final String propertyId;
+    private static final long serialVersionUID = -5452300586719753459L;
+    
+    private final String propertyId;
 	
 	private final List<String> filterValues = new ArrayList<String>();
 	

@@ -42,9 +42,9 @@ import javax.persistence.PrimaryKeyJoinColumns;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class PersistentEntity<ID extends Serializable> implements Persistable<ID> {
 
-	private static final long serialVersionUID = 1L;
-	
-	@Id
+    private static final long serialVersionUID = 2783083324474645285L;
+    
+    @Id
 	@GeneratedValue
 	private ID id;
 	

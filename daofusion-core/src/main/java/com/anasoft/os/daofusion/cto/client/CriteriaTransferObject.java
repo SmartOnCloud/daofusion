@@ -39,9 +39,9 @@ import com.anasoft.os.daofusion.cto.server.CriteriaTransferObjectConverter;
  */
 public class CriteriaTransferObject implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-	
-	private Integer firstResult;
+    private static final long serialVersionUID = 8442027307110021159L;
+    
+    private Integer firstResult;
     private Integer maxResults;
 	
     private final Map<String, FilterAndSortCriteria> criteriaMap = new HashMap<String, FilterAndSortCriteria>();
