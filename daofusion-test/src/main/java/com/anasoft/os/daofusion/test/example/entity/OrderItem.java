@@ -14,7 +14,7 @@ import org.hibernate.annotations.CascadeType;
 @Table(name = "order_items")
 public class OrderItem extends OidBasedMutablePersistentEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -4404462759771270182L;
     
     @OneToOne(optional = false)
     @Cascade(value = {CascadeType.SAVE_UPDATE})

@@ -12,7 +12,7 @@ import com.anasoft.os.daofusion.test.example.enums.Country;
 @Embeddable
 public class Address implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -6035357460543927366L;
     
     @Column(nullable = false, length = 32)
     private String street;

@@ -8,7 +8,7 @@ import javax.persistence.Table;
 @Table(name = "promoted_stock_items")
 public class PromotedStockItem extends StockItem {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 8609176925977498187L;
     
     @Column(nullable = false)
     private Integer promotionPrice;

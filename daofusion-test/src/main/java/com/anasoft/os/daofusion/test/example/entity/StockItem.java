@@ -12,7 +12,7 @@ import com.anasoft.os.daofusion.test.example.enums.StockItemCategory;
 @Table(name = "stock_items")
 public class StockItem extends OidBasedMutablePersistentEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 5069562477223244609L;
     
     @Column(nullable = false, unique = true, length = 64)
     private String name;

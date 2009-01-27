@@ -28,7 +28,7 @@ import com.anasoft.os.daofusion.test.example.embed.Address;
 @Table(name = "orders")
 public class Order extends OidBasedMutablePersistentEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 6587315771391217449L;
     
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

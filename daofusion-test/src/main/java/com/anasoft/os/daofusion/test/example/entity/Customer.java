@@ -17,7 +17,7 @@ import org.hibernate.annotations.CascadeType;
 @Table(name = "customers", uniqueConstraints = {@UniqueConstraint(columnNames = {"firstName", "lastName"})})
 public class Customer extends OidBasedMutablePersistentEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -509237572262823489L;
     
     @Column(nullable = false, length = 16)
     private String firstName;
