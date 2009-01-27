@@ -12,14 +12,10 @@ import com.anasoft.os.daofusion.entity.MutablePersistentEntity;
 @MappedSuperclass
 public class OidBasedMutablePersistentEntity extends MutablePersistentEntity {
 
-	private static final long serialVersionUID = 1L;
-	
-	public static final int OID_COLUMN_LENGTH = 36;
-	public static final String OID_COLUMN_NAME = "object_id";
-	
+    private static final long serialVersionUID = 8066348165196551565L;
+    
 	@NaturalId
-	@Column(length = OID_COLUMN_LENGTH, name = OID_COLUMN_NAME,
-			unique = true, updatable = false, nullable = false)
+	@Column(length = 36, name = "object_id", unique = true, updatable = false, nullable = false)
 	private String oid;
 	
 	public OidBasedMutablePersistentEntity() {
