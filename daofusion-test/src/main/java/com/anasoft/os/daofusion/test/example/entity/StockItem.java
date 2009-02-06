@@ -2,6 +2,8 @@ package com.anasoft.os.daofusion.test.example.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -10,6 +12,7 @@ import com.anasoft.os.daofusion.test.example.enums.StockItemCategory;
 
 @Entity
 @Table(name = "stock_items")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class StockItem extends OidBasedMutablePersistentEntity {
 
     private static final long serialVersionUID = 5069562477223244609L;
