@@ -27,10 +27,6 @@ import com.anasoft.os.daofusion.entity.Persistable;
  * 	<li>handle method-level transactions manually
  * </ul>
  * 
- * In either case, it is recommended that the transaction
- * support is applied at the <em>service</em> level (service
- * methods are executed within a transactional context).
- * 
  * <p>
  * 
  * Note that it is possible to query for subclasses of the implicit
