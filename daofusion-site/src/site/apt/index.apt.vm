@@ -1,17 +1,17 @@
  ----
- Welcome to ${df-fullName}
+ Welcome to ${df}
  ----
  Vojtech Szocs
  ----
  24 January 2009
  ----
 
-Welcome to ${df-fullName}
+Welcome to ${df}
 
-  <${df-fullName}> is a lightweight yet comprehensive and extensible Java based {{{http://java.sun.com/blueprints/corej2eepatterns/Patterns/DataAccessObject.html} Data Access Object}}
+  <${df}> is a lightweight yet comprehensive and extensible Java based {{{http://java.sun.com/blueprints/corej2eepatterns/Patterns/DataAccessObject.html} Data Access Object}}
   (DAO) pattern implementation built on top of {{{http://java.sun.com/javaee/technologies/persistence.jsp} Java Persistence API}} (JPA) and {{{http://www.hibernate.org/} Hibernate}}.
   
-  You could think of ${df-fullName} as a solid foundation for your own DAO layers, doing most of the usual heavy lifting for you and providing support for common DAO-related tasks,
+  You could think of ${df} as a solid foundation for your own DAO layers, doing most of the usual heavy lifting for you and providing support for common DAO-related tasks,
   such as:
   
   * {{{./reference/entity-model.html} Persistent entity model}}
@@ -33,11 +33,11 @@ Welcome to ${df-fullName}
   
   []
   
-  In addition to all of that, ${df-fullName} provides an out-of-the-box {{{./reference/integration-tests.html} integration test support}} based on {{{http://www.junit.org/} JUnit}}
+  In addition to all of that, ${df} provides an out-of-the-box {{{./reference/integration-tests.html} integration test support}} based on {{{http://www.junit.org/} JUnit}}
   and {{{http://static.springframework.org/spring/docs/2.5.x/reference/index.html} Spring}}'s {{{http://static.springframework.org/spring/docs/2.5.x/reference/testing.html#testcontext-framework} TestContext framework}}.
   Integration tests interact with the chosen database instance and make sure that all standard DAO implementations are properly and thoroughly tested using a non-trivial sample domain model.
   
-  ${df-fullName} is currently integration-tested against the following databases:
+  ${df} is currently integration-tested against the following databases:
   
   * In-memory databases
   
