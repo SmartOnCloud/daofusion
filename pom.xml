@@ -22,9 +22,9 @@
 	</issueManagement>
 	
 	<scm>
-		<url>http://code.google.com/p/daofusion/source/browse/</url>
-		<connection>scm:svn:http://daofusion.googlecode.com/svn/</connection>
-		<developerConnection>scm:svn:https://daofusion.googlecode.com/svn/</developerConnection>
+		<url>http://code.google.com/p/daofusion/source/browse/trunk</url>
+		<connection>scm:svn:http://daofusion.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://daofusion.googlecode.com/svn/trunk</developerConnection>
 	</scm>
 	
 	<licenses>
@@ -52,6 +52,7 @@
 	<modules>
 		<module>../daofusion-core</module>
 		<module>../daofusion-test</module>
+		<module>../daofusion-site</module>
 	</modules>
 	
 	<properties>
