@@ -49,15 +49,17 @@
 		</property>
 	</bean>
 	
-	<!-- Spring annotation support -->
+	<!-- general Spring / AOP annotation support -->
 	<context:annotation-config />
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
 	
-	<!-- JPA / AOP transaction annotation support -->
-	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+	<!-- JPA resource injection support -->
 	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+	
+	<!-- AOP transaction support -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 	<bean class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
 		<property name="transactionInterceptor" ref="transactionInterceptor" />
 	</bean>
-	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
 	
 </beans>
