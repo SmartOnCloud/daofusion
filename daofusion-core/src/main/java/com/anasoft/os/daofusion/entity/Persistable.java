@@ -7,6 +7,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Version;
 
 import com.anasoft.os.daofusion.PersistentEntityDao;
@@ -18,7 +20,7 @@ import com.anasoft.os.daofusion.PersistentEntityDao;
  * <p>
  * 
  * Implementations of this interface must follow some
- * general rules regarding object-relational mapping
+ * general rules regarding JPA object-relational mapping
  * concepts:
  * 
  * <ul>
@@ -60,6 +62,8 @@ import com.anasoft.os.daofusion.PersistentEntityDao;
  * {@link #hashCode()} and {@link #equals(Object)}
  * methods:
  * 
+ * <br><br>
+ * 
  * <ul>
  * 	<li><em>business key</em> approach - set of "semi"-unique
  * 		attributes that uniquely describe the persistent
@@ -84,6 +88,13 @@ import com.anasoft.os.daofusion.PersistentEntityDao;
  * 		from each other (unlike the <em>business key</em>
  * 		approach which combines them together).
  * </ul>
+ * 
+ * As for the <em>inheritance mapping strategy</em>, it is up
+ * to the user to mark specific root nodes within the persistent
+ * entity hierarchy via the {@link Inheritance} annotation
+ * as appropriate. Keep in mind that the default JPA inheritance
+ * strategy is set to {@link InheritanceType#SINGLE_TABLE} along
+ * with its implications on the underlying database schema.
  * 
  * @param <ID> Java type of the primary key column.
  * 

@@ -14,7 +14,7 @@ import javax.persistence.MappedSuperclass;
  * 
  * Note that this class does NOT provide any special
  * {@link #hashCode()} and {@link #equals(Object)}
- * implementation - this is a task left to be done
+ * implementation - this is a task left to be done,
  * depending on the chosen method implementation
  * pattern.
  * 
