@@ -1,0 +1,330 @@
+ ----
+ Persistent entity criteria API
+ ----
+ Vojtech Szocs
+ ----
+ 10 February 2009
+ ----
+
+Persistent entity criteria API
+  
+  Construct persistent entity criteria with advanced filtering, sorting and paging capabilities and pass them to DAO methods to query for desired results.
+  
+Sections
+  
+  * {{{./entity-criteria-api.html#Overview} Overview}}
+  
+  * {{{./entity-criteria-api.html#Introduction} Introduction}}
+  
+  * {{{./entity-criteria-api.html#Persistent_entity_criteria_API_overview} Persistent entity criteria API overview}}
+  
+  * {{{./entity-criteria-api.html#Property_criterion_classes} Property criterion classes}}
+  
+  * {{{./entity-criteria-api.html#Sample_DAO_using_both_filter_value_strategies} Sample DAO using both filter value strategies}}
+  
+  * {{{./entity-criteria-api.html#FAQ} FAQ}}
+  
+  []
+  
+External resources
+  
+  * {{{http://www.hibernate.org/hib_docs/v3/api/org/hibernate/Criteria.html} Hibernate Criteria API}}
+  
+  * {{{http://en.wikipedia.org/wiki/Visitor_pattern} Visitor pattern}}
+  
+  []
+  
+* {Overview}
+  
+  * Project: <${df-core}>
+  
+  * Package reference: <<<com.anasoft.os.daofusion.criteria>>>
+  
+* {Introduction}
+  
+  Having your {{{./entity-model.html} domain model}} along with associated {{{./core-dao-classes.html} DAO classes}} implemented brings you to a question that might have arisen
+  during the brief <<<PersistentEntityDao>>> method listing: what is actually the <<<PersistentEntityCriteria>>> interface? This section explains the persistent entity criteri
+  concept in detail so that you can bring the standard DAO functionality to a whole new level.
+  
+* {Persistent entity criteria API overview}
+  
+  If you look at the generic <<<AbstractHibernateEntityDao>>> implementation you will notice that it merely delegates the basic DAO operations to the underlying Hibernate <<<Session>>>. Things
+  should be easy, right? One of the main benefits of having a standard DAO interface though is the ability to define a custom criteria API that should cover 90% of the most typical
+  use cases out there. This is exactly the purpose of the <<<PersistentEntityCriteria>>> interface and associated classes - to shield an average user from any Hibernate-specific implementation
+  details while not restricting advanced users from using the underlying {{{http://www.hibernate.org/hib_docs/v3/api/org/hibernate/Criteria.html} Hibernate Criteria API}} directly if needed at the same time.
+  
+  <<<PersistentEntityCriteria>>> interface defines the general contract for persistent entity query constraints bound to the underlying Hibernate <<<Criteria>>> instance. ${df} enforces the use of
+  <Hibernate Criteria API> under the hood to ensure database portability, making it generic across multiple databases (no dynamic HQL / SQL generation involved).
+  
+  Let's take a brief look at this interface to get a basic understanding of the criteria API concept:
+  
++-----+
+public interface PersistentEntityCriteria {
+
+    /**
+     * Applies query constraints defined by the persistent entity
+     * criteria implementation to the targetCriteria.
+     */
+    public void apply(Criteria targetCriteria);
+    
+}
++-----+
+  
+  As you can see, there is no rocket science going on here - implementations of the <<<PersistentEntityCriteria>>> interface are merely responsible for updating the Hibernate <<<Criteria>>>
+  instance according to any query constraints they define.
+  
+  <<<AbstractHibernateEntityDao>>> uses this interface when constructing the Hibernate <<<Criteria>>> instance via <<<BaseHibernateDataAccessor>>>'s <getCriteria> method before setting any projections
+  and requesting results via the <Hibernate Criteria API>.
+  
+  <<<NestedPropertyCriteria>>> is the default general purpose <<<PersistentEntityCriteria>>> implementation acting as a list-based container for <<<NestedPropertyCriterion>>> instances.
+  <<<NestedPropertyCriteria>>> implements the <apply> method regarding associated criterion subclasses using the {{{http://en.wikipedia.org/wiki/Visitor_pattern} visitor pattern}}, providing
+  a default <<<NestedPropertyCriterionVisitor>>> implementation that visits all <<<NestedPropertyCriterion>>> instances (the target Hibernate <<<Criteria>>> instance is updated for each visited
+  criterion in the process). The reason for using the <visitor pattern> representing a centralized criterion hierarchy processor is that many criterion instances share some common aspects, such as:
+  
+  * map of association paths with corresponding subcriteria (Hibernate <<<Criteria>>>) instances created from the <targetCriteria> (<subCriteriaMap>) - shared by all <<<NestedPropertyCriterion>>> instances
+  
+  * filter object as an optional source of filter values - shared by all <<<FilterCriterion>>> instances
+  
+  []
+  
+  Since the <<<NestedPropertyCriterion>>> supports a nested property of the target persistent entity (starting at the target persistent entity as the root object and navigating through
+  associated objects as necessary), it is vital for the <<<NestedPropertyCriteria>>> to handle this kind of functionality via the <subCriteriaMap> as a result of <targetCriteria> "preprocessing"
+  (Hibernate uses the concept of nested <<<Criteria>>> instances for this purpose). From the end-user's perspective, <<<NestedPropertyCriteria>>> also provides methods that support the paging
+  functionality as well as the filter object concept.
+  
+  So, what's the <<<NestedPropertyCriterion>>> all about? <<<NestedPropertyCriterion>>> represents an abstract persistent entity criterion that supports a nested property of the target persistent
+  entity. The target property is specified via the <propertyPath> - a dot-separated logical path to the target property to which the criterion applies, starting at the target persistent
+  entity as the root object and navigating through associated objects as necessary. For example:
+  
+  * <<<firstName>>> points to a direct (simple) entity property
+  
+  * <<<projectManager.contactInfo.phone>>> points to a nested entity property
+  
+  []
+  
+  Note that a nested (non-direct) persistent entity property needs to be joined with the root persistent entity by specifying an appropriate <<<NestedPropertyJoinType>>>.
+  
+* {Property criterion classes}
+  
+  Let's take a look at two <<<NestedPropertyCriterion>>> subclasses that are intended for direct use in conjunction with <<<NestedPropertyCriteria>>>: <<<FilterCriterion>>> and <<<SortCriterion>>>.
+  
+  <<<FilterCriterion>>> defines filter constraints for the given entity property via the <<<PropertyFilterCriterionProvider>>> interface. A custom <<<PropertyFilterCriterionProvider>>> implementation
+  is used to construct a Hibernate <<<Criterion>>> instance regarding the filter criterion as well as deciding whether to actually use the provided <<<Criterion>>> instance:
+  
++-----+
+public interface PropertyFilterCriterionProvider {
+
+	/**
+	 * Returns a Criterion instance corresponding to the given property of the target persistent entity.
+	 */
+	public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues);
+	
+	/**
+	 * Returns a flag indicating whether to use this provider during the FilterCriterion instance processing.
+	 */
+	public boolean enabled(Object[] filterObjectValues, Object[] directValues);
+}
++-----+
+  
+  There are basically two ways to pass data to the custom <<<PropertyFilterCriterionProvider>>> implementation from within the <<<FilterCriterion>>>:
+  
+  * by specifying <filterObjectValuePaths> - array of dot-separated logical paths pointing to values reachable from the root filter object (same concept as the <propertyPath> mentioned above)
+  
+  * by providing filter values directly via the <directValues> object array
+  
+  []
+  
+  Note that the <filterObjectValuePaths> will be translated into <filterObjectValues> during the criterion instance processing within the default <<<NestedPropertyCriterionVisitor>>>
+  implementation. The <enabled> method (called before each <getCriterion> method invocation) can be used for disabling the <<<PropertyFilterCriterionProvider>>> implementation from actually
+  being used at all - this can be helpful in certain situations, such as:
+  
+  * filter value inconsistency (the <<<PropertyFilterCriterionProvider>>> is unable to build the corresponding <<<Criterion>>> instance due to missing or null data)
+  
+  * manual filter switch (the user wants to have control over when this provider should be active)
+  
+  []
+  
+  By having full control over the Hibernate <<<Criterion>>> instance creation via the <<<PropertyFilterCriterionProvider>>> interface, the user is able to define even the most complex property
+  criteria with ease without having to worry about any nested subcriteria details. For example:
+  
++-----+
+    public static final PropertyFilterCriterionProvider LIKE_USING_FILTER_OBJECT = new PropertyFilterCriterionProvider() {
+	    
+        public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+            return Restrictions.like(targetPropertyName, filterObjectValues[0]);
+        }
+        
+        public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+            return (filterObjectValues.length == 1) && (filterObjectValues[0] != null);
+        }
+        
+    };
+    
+    public static final PropertyFilterCriterionProvider BETWEEN_USING_DIRECT_VALUES = new PropertyFilterCriterionProvider() {
+    
+        public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+            return Restrictions.between(targetPropertyName, directValues[0], directValues[1]);
+        }
+        
+        public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+            return (directValues.length == 2) && (directValues[0] != null) && (directValues[1] != null);
+        }
+        
+    };
++-----+
+  
+  The combination of <filterObjectValuePaths> and <directValues> enables you to define your own filter value strategy - a single filter object as the source of filter values, direct
+  value approach or even a combination of the two.
+  
+  <<<SortCriterion>>>, on the other hand, defines sort constraints for the given entity property using two boolean parameters: <sortAscending> and <ignoreCase> (the latter works only for
+  string-based properties). Note that the <<<SortCriterion>>> is always "enabled" when present within the <<<NestedPropertyCriteria>>>.
+  
+* {Sample DAO using both filter value strategies}
+  
+  The following code shows an extended version of the sample DAO from the {{{./core-dao-classes.html} previous section}}, using filter object together with the direct value approach
+  to employ custom constraints on the <<<Order>>> entity:
+  
++-----+
+public class PagingAndSortDefinition {
+
+    private Integer firstResult;
+    private Integer maxResults;
+    
+    private boolean sortEnabled;
+    private String sortPropertyPath;
+    private boolean sortAscending;
+    
+    // getters and setters go here
+    
+}
+
+public abstract class UnaryDirectValueProvider implements PropertyFilterCriterionProvider {
+
+    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+        return (directValues.length == 1) && (directValues[0] != null);
+    }
+    
+}
+
+public abstract class UnaryFilterObjectValueProvider implements PropertyFilterCriterionProvider {
+
+    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+        return (filterObjectValues.length == 1) && (filterObjectValues[0] != null);
+    }
+    
+}
+
+public interface OrderDao extends PersistentEntityDao<Order, Long> {
+
+    public Order getFilterObject();
+    
+    public void setFilterEnabled(boolean filterEnabled);
+    
+    public List<Order> getOrders(PagingAndSortDefinition pagingAndSort, Integer minOrderItemCount, final String customerNameFilter);
+    
+}
+
+public class OrderDaoImpl extends EntityManagerAwareEntityDao<Order, Long> implements OrderDao {
+
+    private final Order filterObject;
+    private boolean filterEnabled = false;
+    
+    // the user is responsible for initializing the filterObject as well as its associated objects properly according to filter constraints
+    public OrderDaoImpl(Order filterObject) {
+        super();
+        this.filterObject = filterObject;
+    }
+    
+    public Class<Order> getEntityClass() {
+        return Order.class;
+    }
+    
+    // modify the state of filterObject to change the actual filter criteria bound to it
+    public Order getFilterObject() {
+        return filterObject;
+    }
+    
+    public void setFilterEnabled(boolean filterEnabled) {
+        this.filterEnabled = filterEnabled;
+    }
+    
+    public List<Order> getOrders(PagingAndSortDefinition pagingAndSort, Integer minOrderItemCount, final String customerNameFilter) {
+        final NestedPropertyCriteria criteria = new NestedPropertyCriteria();
+        
+        criteria.setFirstResult(pagingAndSort.getFirstResult());
+        criteria.setMaxResults(pagingAndSort.getMaxResults());
+        
+        criteria.setFilterObject(filterObject);
+        
+        // direct property filter criterion (using the filterObject)
+        criteria.add(new FilterCriterion("creationDate", "creationDate", true, new UnaryFilterObjectValueProvider() {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
+                    }
+                    
+                    @Override
+                    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                        return super.enabled(filterObjectValues, directValues) && filterEnabled;
+                    }
+                }));
+        
+        // nested property filter criterion (using the filterObject)
+        criteria.add(new FilterCriterion("customer.email", "customer.email", true, new UnaryFilterObjectValueProvider() {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.like(targetPropertyName, filterObjectValues[0]);
+                    }
+                    
+                    @Override
+                    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                        return super.enabled(filterObjectValues, directValues) && filterEnabled;
+                    }
+        }));
+        
+        // direct property filter criterion (using a direct value)
+        criteria.add(new FilterCriterion("orderItems", minOrderItemCount, false, new UnaryDirectValueProvider() {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.sizeGe(targetPropertyName, (Integer) directValues[0]);
+                    }
+                    
+                    @Override
+                    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                        return super.enabled(filterObjectValues, directValues) && filterEnabled;
+                    }
+        }));
+        
+        // nested property filter criterion (bypassing the direct value mechanism via the final keyword)
+        criteria.add(new FilterCriterion("customer.name", null, false, new PropertyFilterCriterionProvider() {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.like(targetPropertyName, customerNameFilter);
+                    }
+                    
+                    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                        return (customerNameFilter != null) && filterEnabled;
+                    }
+        }));
+        
+        if (pagingAndSort.isSortEnabled()) {
+            criteria.add(new SortCriterion(pagingAndSort.getSortPropertyPath(), pagingAndSort.isSortAscending()));
+        }
+        
+        return query(criteria);
+    }
+    
+}
++-----+
+  
+  By modifying the state of the <filterObject> via the <getFilterObject> method, the user is able to change the actual filter criteria that use filter object values without touching
+  the underlying <<<NestedPropertyCriteria>>> in any way. This is essentially the main purpose of the filter object approach - to separate the criteria definition from the actual filter
+  values accessible from a single object. In general, the filter object approach is especially useful in applications where GUI changes can be seamlessly propagated to the server,
+  modifying the filter object instance of the given server-side component (for example, a {{{http://java.sun.com/javaee/javaserverfaces/} Java Server Faces}} managed bean bound to
+  web page using server-side AJAX callback handlers). Note that the abstract <<<PropertyFilterCriterionProvider>>> implementations in this example ensure that corresponding <<<FilterCriterion>>>
+  instances won't be processed unless the filter data is consistent (the filter criteria won't be applied unless the filter object or <minOrderItemCount> contain proper values).
+  
+  In certain scenarios where the client side and server side connect more loosely to each other using a custom communication mechanism (e.g. <GWT RPC> for {{{http://code.google.com/webtoolkit/} Google Web Toolkit}}
+  or {{{http://en.wikipedia.org/wiki/Action_Message_Format} AMF}} for {{{http://www.adobe.com/products/flex/} Flex}}), direct filter object changes are not possible since the client side typically uses some local data model bound to the GUI and calls remote services when necessary.
+  Although it is possible to change the filter object accordingly using some server-side request processor, it is much more convenient to use the {{{./cto-pattern.html} criteria transfer object pattern}}
+  in this situation.
+  
+* {FAQ}
+  
+  We recommend browsing through the {{{./reference-faq.html} Reference Documentation FAQ}} for detailed information on related issues.

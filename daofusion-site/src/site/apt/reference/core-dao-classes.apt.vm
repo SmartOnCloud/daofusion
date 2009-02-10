@@ -1,0 +1,284 @@
+ ----
+ Core DAO classes
+ ----
+ Vojtech Szocs
+ ----
+ 10 February 2009
+ ----
+
+Core DAO classes
+  
+  Build your DAO layer by extending standard persistent entity DAO interfaces / abstract implementations which already provide most of the usual DAO functionality.
+  
+Sections
+  
+  * {{{./core-dao-classes.html#Overview} Overview}}
+  
+  * {{{./core-dao-classes.html#Introduction} Introduction}}
+  
+  * {{{./core-dao-classes.html#DAO_class_overview} DAO class overview}}
+  
+  * {{{./core-dao-classes.html#Transaction_handling} Transaction handling}}
+  
+  * {{{./core-dao-classes.html#Sample_persistent_entity_DAO} Sample persistent entity DAO}}
+  
+  * {{{./core-dao-classes.html#FAQ} FAQ}}
+  
+  []
+  
+External resources
+  
+  * {{{http://www.ibm.com/developerworks/java/library/j-ts1.html?ca=dgr-jw22SafeJavaTrans&S_TACT=105AGX59&S_CMP=grsitejw22} Transaction strategies: Understanding transaction pitfalls}}
+  
+  []
+  
+* {Overview}
+  
+  * Project: <${df-core}>
+  
+  * Package reference: <<<com.anasoft.os.daofusion>>>
+  
+* {Introduction}
+  
+  So, you have your domain model implemented using the {{{./entity-model.html} persistent entity model}}. The next step is to write the actual DAO classes operating on your
+  domain model. These classes essentially form your DAO layer - now this is the part when the real fun begins!
+  
+* {DAO class overview}
+  
+  ${df} provides standard DAO interfaces and abstract implementations based on {{{http://java.sun.com/javaee/technologies/persistence.jsp} JPA}} / {{{http://www.hibernate.org/} Hibernate}}
+  persistence APIs for you to extend. This way, generic DAO operations and actual business-related DAO operations are cleanly separated from each other, having a significant impact
+  on overall code maintainability.
+  
+  <<<PersistentEntityDao>>> interface represents a generic persistent entity DAO contract defining the standard set of DAO operations for the given entity type (specified as a class
+  parameter). <<<PersistentEntityDao>>> works with <<<Persistable>>> instances which use a single primary key column type. Each <<<PersistentEntityDao>>> implementation must define the associated
+  implicit persistent entity class via the <getEntityClass> method - this is the entity the given DAO works with. However, this doesn't mean that each single persistent entity has
+  to have its own DAO implementation - standard DAO methods work with subclasses of the implicit persistent entity class so that you can have a generic entity DAO for multiple
+  entities which share a common base class (this feature is particularly useful in case of persistent enumerations).
+  
+  Here is a brief <<<PersistentEntityDao>>> method listing for you to get a basic idea of the standard DAO functionality:
+  
++-----+
+public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Serializable> {
+
+    /**
+     * Returns the implicit persistent entity class the DAO works with.
+     */
+    public Class<T> getEntityClass();
+    
+	/**
+	 * Retrieves a persistent instance.
+	 */
+	public <S extends T> S get(ID id, Class<S> targetEntityClass);
+	
+	/**
+	 * Retrieves all persistent instances.
+	 */
+	public <S extends T> List<S> getAll(Class<S> targetEntityClass);
+	
+	/**
+	 * Persists a transient instance or updates a detached instance.
+	 */
+	public <S extends T> S saveOrUpdate(S entity);
+	
+	/**
+	 * Deletes a persistent instance.
+	 */
+	public void delete(T entity);
+	
+	/**
+	 * Deletes a persistent instance.
+	 */
+	public <S extends T> void delete(ID id, Class<S> targetEntityClass);
+	
+	/**
+	 * Deletes all persistent instances.
+	 */
+	public <S extends T> int deleteAll(Class<S> targetEntityClass);
+	
+	/**
+	 * Refreshes a persistent or a detached instance by synchronizing its state with the database.
+	 */
+	public void refresh(T entity);
+	
+	/**
+	 * Retrieves a list of persistent instances.
+	 */
+	public <S extends T> List<S> query(PersistentEntityCriteria entityCriteria, Class<S> targetEntityClass);
+	
+	/**
+	 * Returns a single persistent instance (if available).
+	 */
+	public <S extends T> S uniqueResult(PersistentEntityCriteria entityCriteria, boolean returnNullOnMultipleResults, Class<S> targetEntityClass);
+	
+	/**
+	 * Returns the total number of instances persisted within the database.
+	 */
+	public <S extends T> int count(PersistentEntityCriteria entityCriteria, Class<S> targetEntityClass);
+	
+}
++-----+
+  
+  As you can see, there are several kinds of operations defined by this interface for the given entity class:
+  
+  * basic {{{http://en.wikipedia.org/wiki/Create,_read,_update_and_delete} CRUD}} (create, read, update and delete) operations
+  
+  * advanced query operations based on the <<<PersistentEntityCriteria>>> interface (see {{{./entity-criteria-api.html} persistent entity criteria API}} for more information on this topic)
+  
+  * miscellaneous operations related to the persistence context (e.g. <refresh> method)
+  
+  []
+  
+  Note that each method accepting the <Class\<S\> targetEntityClass> parameter has a "direct" version without this parameter, replacing it by the implicit persistent entity class for
+  convenience. Even with this simple set of DAO operations, you are able to cover most of the DAO functionality for your entity classes without having to worry about any Hibernate-specific
+  implementation details.
+  
+  <<<PersistentEnumerationDao>>> as an extension of the <<<PersistentEntityDao>>> interface works with <<<PersistentEnumeration>>> instances. The goal of this interface is to define useful lookup
+  operations using the name field declared by <<<PersistentEnumeration>>>:
+  
++-----+
+public interface PersistentEnumerationDao<T extends PersistentEnumeration> extends PersistentEntityDao<T, Long> {
+
+	/**
+	 * Retrieves a persistent enumeration.
+	 */
+	public <S extends T> S get(String name, Class<S> targetEntityClass);
+	
+}
++-----+
+  
+  <<<BaseHibernateDataAccessor>>> is the base class for all standard DAO implementations, providing data access through JPA / Hibernate persistence APIs:
+  
++-----+
+public abstract class BaseHibernateDataAccessor {
+
+	/**
+	 * Returns an open HibernateEntityManager instance
+	 * providing access to the Hibernate Session.
+	 */
+	protected abstract HibernateEntityManager getHibernateEntityManager();
+	
+	/**
+	 * Convenience method for retrieving the current Session
+	 * from the entity manager.
+	 */
+	protected final Session getSession() {
+	    return getHibernateEntityManager().getSession();
+	}
+	
+	/**
+	 * Convenience method for retrieving a new Criteria
+	 * instance bound to the current Session.
+	 */
+    protected final Criteria getHibernateCriteria(Class<? extends Persistable<? extends Serializable>> entityClass) {
+        return getSession().createCriteria(entityClass);
+    }
+    
+    /**
+     * Convenience method for counting the number of rows
+     * returned by the given criteria, based on
+     * Hibernate rowCount projection.
+     */
+    protected final int rowCount(Criteria criteria) {
+        criteria.setProjection(Projections.rowCount());
+        return ((Integer) criteria.list().get(0)).intValue();
+    }
+    
+    /**
+     * Returns the Criteria instance corresponding to query
+     * constraints defined within the entityCriteria.
+     */
+    protected Criteria getCriteria(PersistentEntityCriteria entityCriteria, Class<? extends Persistable<? extends Serializable>> entityClass) {
+        final Criteria criteria = getHibernateCriteria(entityClass);
+        entityCriteria.apply(criteria);
+        
+        return criteria;
+    }
+	
+}
++-----+
+  
+  There is no rocket science going on in there though - the user is actually responsible for providing an open <<<HibernateEntityManager>>> instance as the entry point for a Hibernate
+  <<<Session>>>. The reason for declaring an abstract <getHibernateEntityManager> method is to give users free hands when it comes to entity manager instance lookup. The most convenient
+  method implementation pattern is to rely on entity manager instance injection via the <<<PersistenceContext>>> annotation (within the JPA persistence context) and simply returning the
+  injected instance. Alternatively, the entity manager instance can be created directly via the <<<EntityManagerFactory>>>. ${df} doesn't restrict you when defining the entity manager lookup
+  strategy - it just tells you to implement it the way you prefer. Note that all data access happens solely through the {{{http://www.hibernate.org/hib_docs/v3/api/org/hibernate/Criteria.html} Hibernate Criteria API}}
+  to ensure database portability and therefore makes ${df} generic across multiple databases.
+  
+  There are two abstract DAO implementations for the two DAO interfaces mentioned above: <<<AbstractHibernateEntityDao>>> and <<<AbstractHibernateEnumerationDao>>> (the latter one simply extends
+  the basic <<<AbstractHibernateEntityDao>>> implementation).
+  
+  ${df} tries to do its best when it comes to defining persistent entity query constraints via the <<<PersistentEntityCriteria>>> interface. You are, however, free to use the underlying
+  <Hibernate Criteria API> on your own using the <getHibernateCriteria>, <getSession> and <rowCount> methods. ${df} doesn't try to hide the <Hibernate Criteria API> away from you, it just defines
+  its own flexible {{{./entity-criteria-api.html} persistent entity criteria API}} that should cover 90% of the most typical use cases out there.
+  
+* {Transaction handling}
+  
+  Standard persistent entity DAO implementations don't care about transactions - but should they? What if someone wants to handle transactions manually or use AOP-based declarative
+  transaction management support to create method-level transactional proxies? To maintain the generic nature of the DAO concept, ${df} lets its users handle transactions within the
+  context of DAO method calls completely on their own.
+  
+* {Sample persistent entity DAO}
+  
+  Let's build a sample persistent entity DAO on top of <<<PersistentEntityDao>>> / <<<AbstractHibernateEntityDao>>> classes. There are basically two ways to do this:
+  
+  * have a separate business-related DAO interface apart from its implementation (this is the way you should go in all but the most simple cases)
+  
+  * have them both together in a single DAO class
+  
+  []
+  
+  As a solid Java developer having things like code maintainability always in mind (not mentioning those hot chicks in the marketing department), you would write your DAO classes like this:
+  
++-----+
+@Component
+public class EntityManagerHolder {
+
+    @PersistenceContext
+    private HibernateEntityManager entityManager;
+    
+    public HibernateEntityManager getEntityManager() {
+        return entityManager;
+    }
+    
+    public void setEntityManager(HibernateEntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+    
+}
+
+public abstract class EntityManagerAwareEntityDao<T extends Persistable<ID>, ID extends Serializable> extends AbstractHibernateEntityDao<T, ID> {
+
+    @Autowired
+    private EntityManagerHolder entityManagerHolder;
+	
+    @Override
+    protected HibernateEntityManager getHibernateEntityManager() {
+        return entityManagerHolder.getEntityManager();
+    }
+	
+}
+
+public interface OrderDao extends PersistentEntityDao<Order, Long> {
+    
+    // add some business-related methods here
+    
+}
+
+@Component
+public class OrderDaoImpl extends EntityManagerAwareEntityDao<Order, Long> implements OrderDao {
+
+    public Class<Order> getEntityClass() {
+        return Order.class;
+    }
+
+    // add business-related method implementations here
+
+}
++-----+
+  
+  Note that this example uses Spring's JPA support (<<<PersistenceAnnotationBeanPostProcessor>>>) to inject open entity manager instance into the <<<EntityManagerHolder>>>.
+  <<<EntityManagerAwareEntityDao>>> acts as a base class for domain-specific DAO implementations, providing the <getHibernateEntityManager> method implementation via the <<<EntityManagerHolder>>>.
+  
+* {FAQ}
+  
+  We recommend browsing through the {{{./reference-faq.html} Reference Documentation FAQ}} for detailed information on related issues.
