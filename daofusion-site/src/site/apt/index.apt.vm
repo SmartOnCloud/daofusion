@@ -3,11 +3,11 @@
  ----
  Vojtech Szocs
  ----
- 24 January 2009
+ 9 February 2009
  ----
 
 Welcome to ${df}
-
+  
   <${df}> is a lightweight yet comprehensive and extensible Java based {{{http://java.sun.com/blueprints/corej2eepatterns/Patterns/DataAccessObject.html} Data Access Object}}
   (DAO) pattern implementation built on top of {{{http://java.sun.com/javaee/technologies/persistence.jsp} Java Persistence API}} (JPA) and {{{http://www.hibernate.org/} Hibernate}}.
   
@@ -33,36 +33,8 @@ Welcome to ${df}
   
   []
   
-  In addition to all of that, ${df} provides an out-of-the-box {{{./reference/integration-tests.html} integration test support}} based on {{{http://www.junit.org/} JUnit}}
-  and {{{http://static.springframework.org/spring/docs/2.5.x/reference/index.html} Spring}}'s {{{http://static.springframework.org/spring/docs/2.5.x/reference/testing.html#testcontext-framework} TestContext framework}}.
-  Integration tests interact with the chosen database instance and make sure that all standard DAO implementations are properly and thoroughly tested using a non-trivial sample domain model.
-  
-  ${df} is currently integration-tested against the following databases:
-  
-  * In-memory databases
-  
-    * {{{http://www.h2database.com/} H2}}
-    
-    * {{{http://hsqldb.org/} HSQL}}
-  
-  []
-  
-  * Mid-scale databases
-  
-    * {{{http://www.mysql.com/} MySQL}}
-    
-    * {{{http://www.postgresql.org/} PostgreSQL}}
-  
-  []
-  
-  * Enterprise databases
-  
-    * {{{http://www.ibm.com/db2} DB2}}
-    
-    * {{{http://www.oracle.com/technology/products/database/oracle10g/index.html} Oracle 10g}}
-    
-    * {{{http://en.wikipedia.org/wiki/Microsoft_SQL_Server} MS SQL Server 2000}}
-  
-  []
-  
-  And if that weren't enough, you are always free to write your own custom integration tests for the database of your choice using the standard integration test infrastructure.
+  In addition to all of that, ${df} provides an out-of-the-box {{{./reference/integration-tests.html} integration test support}} based on {{{http://www.junit.org/} JUnit}} and
+  {{{http://static.springframework.org/spring/docs/2.5.x/reference/index.html} Spring}}'s {{{http://static.springframework.org/spring/docs/2.5.x/reference/testing.html#testcontext-framework} TestContext framework}}.
+  Integration tests interact with the chosen database instance and make sure that all standard DAO implementations are properly and thoroughly tested using a non-trivial sample
+  domain model. Note that ${df} is integration-tested against most popular databases, including {{{http://www.mysql.com/} MySQL}}, {{{http://www.postgresql.org/} PostgreSQL}},
+  {{{http://www.ibm.com/db2} DB2}}, {{{http://www.oracle.com/technology/products/database/oracle10g/index.html} Oracle 10g}} and {{{http://en.wikipedia.org/wiki/Microsoft_SQL_Server} MS SQL Server 2000}}.
