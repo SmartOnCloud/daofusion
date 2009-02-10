@@ -18,6 +18,8 @@
 	<properties>
 		<df>DAO Fusion</df>
 		<df-short>daofusion</df-short>
+		<df-core>daofusion-core</df-core>
+		<df-test>daofusion-test</df-test>
 		
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<doxia-module-highlight.version>1.0-alpha-11</doxia-module-highlight.version>
@@ -45,13 +47,13 @@
 						</configuration>
 					</execution>
 				</executions>
-				<dependencies>
+				<!--<dependencies>
 					<dependency>
 						<groupId>sk.dvsk.maven</groupId>
 						<artifactId>doxia-module-highlight</artifactId>
 						<version>${doxia-module-highlight.version}</version>
 					</dependency>
-				</dependencies>
+				</dependencies>-->
 			</plugin>
 		</plugins>
 	</build>
