@@ -95,7 +95,7 @@ External resources
   
 +-----+
 @MappedSuperclass
-public class OidBasedMutablePersistentEntity extends MutablePersistentEntity {
+public abstract class OidBasedMutablePersistentEntity extends MutablePersistentEntity {
 
     private static final long serialVersionUID = 8066348165196551565L;
     

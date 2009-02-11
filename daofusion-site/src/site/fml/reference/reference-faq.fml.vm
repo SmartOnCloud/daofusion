@@ -8,7 +8,7 @@
 			<question><tt>Persistable</tt> interface forces me to specify a single primary key column type as the class parameter. Why?</question>
 			<answer>
 				<p>This parameter is used by the <tt>PersistentEntityDao</tt> when querying for entities by their id's. You can think of it as the
-				"main" primary key of a persistent entity.</p>
+				"main" key of a persistent entity.</p>
 				<p>In case of a composite primary key, it is recommended that you use the <tt>Embeddable</tt> annotation to mark the primary key
 				class and join it with the persistent entity using <tt>IdClass</tt> / <tt>Id</tt> or <tt>EmbeddedId</tt> annotations (you have
 				to write your own <tt>Persistable</tt> implementation in this case though since composite keys can get quite complex in terms
