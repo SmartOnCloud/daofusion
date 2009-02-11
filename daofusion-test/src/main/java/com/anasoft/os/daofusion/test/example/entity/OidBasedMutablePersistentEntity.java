@@ -10,7 +10,7 @@ import org.hibernate.annotations.NaturalId;
 import com.anasoft.os.daofusion.entity.MutablePersistentEntity;
 
 @MappedSuperclass
-public class OidBasedMutablePersistentEntity extends MutablePersistentEntity {
+public abstract class OidBasedMutablePersistentEntity extends MutablePersistentEntity {
 
     private static final long serialVersionUID = 8066348165196551565L;
     
