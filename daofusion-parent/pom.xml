@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.anasoft.os</groupId>
@@ -22,9 +21,9 @@
 	</issueManagement>
 	
 	<scm>
-		<url>http://code.google.com/p/daofusion/source/browse/trunk</url>
-		<connection>scm:svn:http://daofusion.googlecode.com/svn/trunk</connection>
-		<developerConnection>scm:svn:https://daofusion.googlecode.com/svn/trunk</developerConnection>
+		<url>http://code.google.com/p/daofusion/source/browse/tags/daofusion-1.0.0</url>
+		<connection>scm:svn:http://daofusion.googlecode.com/svn/tags/daofusion-1.0.0</connection>
+		<developerConnection>scm:svn:https://daofusion.googlecode.com/svn/tags/daofusion-1.0.0</developerConnection>
 	</scm>
 	
 	<licenses>
