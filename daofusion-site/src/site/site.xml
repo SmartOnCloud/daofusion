@@ -23,6 +23,7 @@
 			<item name="Hibernate" href="http://www.hibernate.org/" />
 			<item name="JUnit" href="http://www.junit.org/" />
 			<item name="Spring" href="http://static.springframework.org/spring/docs/2.5.x/reference/index.html" />
+			<item name="Maven" href="http://maven.apache.org/" />
 		</links>
 		
 		<menu name="Overview">
@@ -31,7 +32,9 @@
 		</menu>
 		
 		<menu name="Getting Started">
+			<item name="Download" href="download.html" />
 			<item name="Tutorials" href="tutorial/tutorial-index.html" />
+			<item name="Dependencies" href="dependencies.html" />
 			<item name="Maven Integration" href="maven-integration.html" />
 		</menu>
 		
@@ -45,7 +48,7 @@
 		</menu>
 		
 		<menu name="Community">
-			<item name="How to Contribute" href="community/how-to-contribute.html" />
+			<item name="How to Contribute" href="how-to-contribute.html" />
 			<item name="Issue Tracking" href="issue-tracking.html" />
 			<item name="Source Repository" href="source-repository.html" />
 			<item name="${df} Team" href="team-list.html" />
