@@ -20,6 +20,8 @@
 		<df-short>daofusion</df-short>
 		<df-core>daofusion-core</df-core>
 		<df-test>daofusion-test</df-test>
+		<df-core-latestStableVersion>1.0.0</df-core-latestStableVersion>
+		<df-test-latestStableVersion>1.0.0</df-test-latestStableVersion>
 		
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
