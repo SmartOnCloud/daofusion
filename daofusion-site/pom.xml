@@ -22,9 +22,9 @@
 		<df-test>daofusion-test</df-test>
 		
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		
 		<doxia-module-highlight.version>1.0-alpha-11</doxia-module-highlight.version>
-		<maven-project-info-reports-plugin.version>2.1</maven-project-info-reports-plugin.version>
-		<maven-stylus-skin.version>1.0.1</maven-stylus-skin.version>
+		<maven-stylus-skin.version>1.1</maven-stylus-skin.version>
 	</properties>
 	
 	<build>
@@ -63,7 +63,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
-				<version>${maven-project-info-reports-plugin.version}</version>
 				<configuration>
 					<webAccessUrl>${project.parent.scm.url}</webAccessUrl>
 					<anonymousConnection>${project.parent.scm.connection}</anonymousConnection>
