@@ -116,6 +116,16 @@
 					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
 			</plugin>
+
+      <plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-release-plugin</artifactId>
+						<configuration>
+							<tagBase>https://daofusion.googlecode.com/svn/tags</tagBase>
+							<releaseProfiles>release</releaseProfiles>
+							<preparationGoals>clean</preparationGoals>
+						</configuration>
+					</plugin>
 		</plugins>
 	</build>
 	
@@ -135,15 +145,6 @@
 								</goals>
 							</execution>
 						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-release-plugin</artifactId>
-						<configuration>
-							<tagBase>https://daofusion.googlecode.com/svn/tags</tagBase>
-							<releaseProfiles>release</releaseProfiles>
-							<preparationGoals>clean</preparationGoals>
-						</configuration>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
