@@ -435,7 +435,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
     
     /**
      * Test for {@link PersistentEntityDao#query(PersistentEntityCriteria, Class)}:
-     * retrieving persistent entities using empty {@link CompositeCriteria}.
+     * retrieving persistent entities using empty {@link NestedPropertyCriteria}.
      */
     @Test
     public void testQuery_emptyCompositeCriteria() {
@@ -749,10 +749,6 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      * Test for {@link PersistentEntityDao#query(PersistentEntityCriteria, Class)}:
      * retrieving persistent entities using a composition of {@link FilterCriterion}
      * and {@link SortCriterion} instances along with the implicit paging functionality.
-     * 
-     * <p>
-     * 
-     * Combining {@link FilterCriteria}, {@link SortCriteria} and {@link PagingCriteria}.
      */
     @Test
     public void testQuery_compositeCriteria_filterSortPaging() {

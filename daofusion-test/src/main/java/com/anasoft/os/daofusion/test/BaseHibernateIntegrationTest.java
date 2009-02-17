@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * <ol>
  *  <li>Following Spring bean properties need to be set
- *      up via the {@link org.springframework.beans.factory.config.PropertyOverrideConfigurer}
+ *      up via the <tt>PropertyOverrideConfigurer</tt>
  *      according to the database instance in use:
  *      <ul>
  *          <li><tt>dataSource.driverClass</tt>
