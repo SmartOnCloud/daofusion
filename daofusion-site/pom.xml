@@ -22,6 +22,7 @@
 		<df-test>daofusion-test</df-test>
 		<df-core-latestStableVersion>1.0.0</df-core-latestStableVersion>
 		<df-test-latestStableVersion>1.0.0</df-test-latestStableVersion>
+		<df-groupIdPath>com/anasoft/os</df-groupIdPath>
 		
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
