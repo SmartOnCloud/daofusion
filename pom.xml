@@ -49,9 +49,9 @@
 	</developers>
 	
 	<modules>
-		<module>../daofusion-core</module>
-		<module>../daofusion-test</module>
-		<module>../daofusion-site</module>
+		<module>daofusion-core</module>
+		<module>daofusion-test</module>
+		<module>daofusion-site</module>
 	</modules>
 	
 	<properties>
