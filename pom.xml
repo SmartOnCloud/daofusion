@@ -4,7 +4,7 @@
 	<groupId>com.anasoft.os</groupId>
 	<artifactId>daofusion-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<name>DAO Fusion</name>
 	
 	<url>http://opensource.anasoft.sk/daofusion</url>
@@ -116,16 +116,15 @@
 					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
 			</plugin>
-
-      <plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-release-plugin</artifactId>
-						<configuration>
-							<tagBase>https://daofusion.googlecode.com/svn/tags</tagBase>
-							<releaseProfiles>release</releaseProfiles>
-							<preparationGoals>clean</preparationGoals>
-						</configuration>
-					</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<tagBase>https://daofusion.googlecode.com/svn/tags</tagBase>
+					<releaseProfiles>release</releaseProfiles>
+					<preparationGoals>clean</preparationGoals>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	
