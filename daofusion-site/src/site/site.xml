@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="${project.parent.name}">
+	
+	<skin>
+		<groupId>org.apache.maven.skins</groupId>
+		<artifactId>maven-stylus-skin</artifactId>
+		<version>${maven-stylus-skin.version}</version>
+	</skin>
+	
+	<bannerLeft>
+		<src>images/banner-logo.gif</src>
+		<href>${project.parent.url}</href>
+		<alt>${project.parent.name} logo</alt>
+	</bannerLeft>
+	<bannerRight>
+		<src>images/banner-right.gif</src>
+	</bannerRight>
+	
+	<body>
+		<links>
+			<item name="JPA Home Page" href="http://java.sun.com/javaee/technologies/persistence.jsp" />
+			<item name="JPA Java EE 5 tutorial" href="http://java.sun.com/javaee/5/docs/tutorial/doc/bnbpz.html" />
+			<item name="Hibernate" href="http://www.hibernate.org/" />
+			<item name="JUnit" href="http://www.junit.org/" />
+			<item name="Spring" href="http://static.springframework.org/spring/docs/2.5.x/reference/index.html" />
+			<item name="Maven" href="http://maven.apache.org/" />
+		</links>
+		
+		<menu name="Overview">
+			<item name="Welcome" href="index.html" />
+			<item name="License" href="license.html" />
+		</menu>
+		
+		<menu name="Getting Started">
+			<item name="Download" href="download.html" />
+			<item name="Tutorials" href="tutorial/tutorial-index.html" />
+			<item name="Dependencies" href="dependencies.html" />
+			<item name="Maven Integration" href="maven-integration.html" />
+		</menu>
+		
+		<menu name="Reference Documentation">
+			<item name="Persistent entity model" href="reference/entity-model.html" />
+			<item name="Core DAO classes" href="reference/core-dao-classes.html" />
+			<item name="Persistent entity criteria API" href="reference/entity-criteria-api.html" />
+			<item name="Criteria transfer object pattern" href="reference/cto-pattern.html" />
+			<item name="Integration test support" href="reference/integration-tests.html" />
+			<item name="Frequently Asked Questions" href="reference/reference-faq.html" />
+		</menu>
+		
+		<menu name="Community">
+			<item name="How to Contribute" href="how-to-contribute.html" />
+			<item name="Issue Tracking" href="issue-tracking.html" />
+			<item name="Source Repository" href="source-repository.html" />
+			<item name="${df} Team" href="team-list.html" />
+		</menu>
+	</body>
+	
+</project>

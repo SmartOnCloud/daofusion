@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+	
+	<!-- mandatory integration test Spring bean properties -->
+	<util:properties id="beanSetupProperties" location="classpath:h2/test-h2-beanSetup.properties" />
+	
+	<!-- bean property value resolution -->
+	<bean class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
+		<property name="properties" ref="beanSetupProperties" />
+	</bean>
+	
+	<!-- in-memory database instance manager -->
+	<bean class="com.anasoft.os.daofusion.test.util.InMemoryDatabaseManager" init-method="init" destroy-method="destroy">
+		<property name="beanSetupProperties" ref="beanSetupProperties" />
+	</bean>
+	
+</beans>

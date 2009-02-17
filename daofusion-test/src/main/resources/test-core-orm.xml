@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+	version="1.0">
+	
+	<description>Sample eShop domain model entities</description>
+	
+	<entity class="com.anasoft.os.daofusion.test.example.entity.Customer" />
+	<entity class="com.anasoft.os.daofusion.test.example.entity.Order" />
+	<entity class="com.anasoft.os.daofusion.test.example.entity.OrderItem" />
+	<entity class="com.anasoft.os.daofusion.test.example.entity.PromotedStockItem" />
+	<entity class="com.anasoft.os.daofusion.test.example.entity.StockItem" />
+	<entity class="com.anasoft.os.daofusion.test.example.enums.Country" />
+	<entity class="com.anasoft.os.daofusion.test.example.enums.PaymentType" />
+	<entity class="com.anasoft.os.daofusion.test.example.enums.StockItemCategory" />
+	<embeddable class="com.anasoft.os.daofusion.test.example.embed.Address" />
+	
+</entity-mappings>

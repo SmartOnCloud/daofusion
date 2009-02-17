@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="Frequently Asked Questions (Reference Documentation)" toplink="false">
+	
+	<part id="entity-model">
+		<title>Persistent entity model</title>
+		
+		<faq id="entity-model-1">
+			<question><tt>Persistable</tt> interface forces me to specify a single primary key column type as the class parameter. Why?</question>
+			<answer>
+				<p>This parameter is used by the <tt>PersistentEntityDao</tt> when querying for entities by their id's. You can think of it as the
+				"main" key of a persistent entity.</p>
+				<p>In case of a composite primary key, it is recommended that you use the <tt>Embeddable</tt> annotation to mark the primary key
+				class and join it with the persistent entity using <tt>IdClass</tt> / <tt>Id</tt> or <tt>EmbeddedId</tt> annotations (you have
+				to write your own <tt>Persistable</tt> implementation in this case though since composite keys can get quite complex in terms
+				of their configuration).</p>
+			</answer>
+		</faq>
+		
+		<faq id="entity-model-2">
+			<question>What are the most common pitfalls regarding the business key approach?</question>
+			<answer>
+				<p>Business key approach essentially combines the object identity and object value concepts together which results in certain
+				limitations:
+					<ul>
+						<li>uniqueness of the business key might be broken if any of the "semi"-unique attributes change</li>
+						<li>persistent entity instance has to have all "semi"-unique attributes set in advance for <em>hashCode</em> / <em>equals</em>
+						methods to work properly</li>
+					</ul>
+				</p>
+				<p>On the other hand, using the synthetic generated value approach results in adding the object identity column to the target
+				database table which is sometimes not what your DBA (database administrator) wants to see there. This is especially true in case
+				the database schema is designed and optimized prior to writing (or generating) any persistent entity classes.</p>
+			</answer>
+		</faq>
+		
+		<faq id="entity-model-3">
+			<question>Does it actually make sense to write persistent entity classes just after defining the business domain? What about
+			the "ERD &gt; generated schema &gt; optimized schema &gt; Java class generation" approach?</question>
+			<answer>
+				<p>This is mostly a matter of preference (or individual tastes) within software companies. Both approaches have their pros
+				and cons and the choice usually depends on the proportion between Java developers and DBAs involved.</p>
+				<p>Starting out with persistence entity model promotes rapid prototyping and iterative Java-centric application development
+				- any changes within the business domain can be applied directly into the code without touching the underlying database schema.
+				In case of the schema-driven approach, the additional step of updating (or regenerating) persistent entity classes due to schema
+				updates can often lead to broken code since the optimized and denormalized database schema usually doesn't reflect the original
+				domain model (things usually get worse with more frequent schema updates in late project phases). On the other hand, having an
+				optimized schema that uses various database features such as views, triggers, stored procedures and table spaces ensures better
+				performance regarding complex queries and higher data volumes.</p>
+				<p>A combination of both approaches (writing persistent entity classes first and optimizing database schema after things get
+				stable or during performance testing) is undoubtedly reasonable for small to mid-sized projects.</p>
+			</answer>
+		</faq>
+		
+		<faq id="entity-model-4">
+			<question>Which <em>hashCode</em> / <em>equals</em> method implementation pattern should I use?</question>
+			<answer>
+				<p>Does your DBA require high degree of control over the database schema? Will your DBA tear your head off if you add additional
+				object identity column to every single table for all mutable persistent entities? If you answered "no" in both cases, the synthetic
+				generated value approach should be OK for you then.</p>
+			</answer>
+		</faq>
+		
+		<faq id="entity-model-5">
+			<question>Which inheritance strategy regarding the entity hierarchy is the best for me?</question>
+			<answer>
+				<p>There is no "best" inheritance strategy - each one has its pros and cons compared to the rest. Here is a brief comparison
+				reflecting our experience with the three basic inheritance strategies used in conjunction with Hibernate:
+					<ul>
+						<li>Single table per class hierarchy (<tt>InheritanceType.SINGLE_TABLE</tt>)
+							<ul>
+								<li><em>Pros</em>: just one table required (very short SQL queries), promotes denormalized database schemas
+								for improved performance within persistent entity subtrees (no need for SQL joins)</li>
+								<li><em>Cons</em>: columns cannot have <tt>NOT NULL</tt> constrains (this needs to be handled either at the
+								database or application level)</li>
+							</ul>
+						</li>
+						<li>Table per concrete class (<tt>InheritanceType.TABLE_PER_CLASS</tt>)
+							<ul>
+								<li><em>Pros</em>: tables just for concrete classes (shorter SQL queries)</li>
+								<li><em>Cons</em>: cannot query for abstract superclasses (entities marked as <tt>MappedSuperclass</tt>) since
+								all such information is merged for each concrete entity, <tt>OneToMany</tt> associations must be bi-directional,
+								missing support for the <tt>IDENTITY</tt> generator strategy (the id has to be shared across several tables)</li>
+							</ul>
+						</li>
+						<li>Joined subclasses (<tt>InheritanceType.JOINED</tt>)
+							<ul>
+								<li><em>Pros</em>: no major limitations</li>
+								<li><em>Cons</em>: a lot of tables which need to be joined together (longer SQL queries), worst performance because
+								of numerous SQL joins</li>
+							</ul>
+						</li>
+					</ul>
+				</p>
+			</answer>
+		</faq>
+		
+		<faq id="entity-model-6">
+			<question>Why do I have to write the <em>hashCode</em> / <em>equals</em> methods myself when using <tt>PersistentEntity</tt> as a base
+			entity class?</question>
+			<answer>
+				<p>The real question is - how can ${df} make assumptions about the way you want to implement <em>hashCode</em> / <em>equals</em> methods?
+				It cannot - you have to choose the implementation pattern for yourself. See the <tt>Persistable</tt> Javadoc for more information about
+				the two basic implementation patterns and their comparison (business key versus synthetic generated value approach).</p>
+			</answer>
+		</faq>
+		
+		<faq id="entity-model-7">
+			<question>I want to customize a certain column mapping inherited from an abstract entity class.</question>
+			<answer>
+				<p>Suppose you want to change the <em>length</em> attribute of the name field column mapping within an entity that extends
+				<tt>PersistentEnumeration</tt>:</p>
+				<source><![CDATA[
+@MappedSuperclass
+@AttributeOverride(name = "name", column = @Column(length = 255, name = PersistentEnumeration.NAME, unique = true, updatable = false, nullable = false))
+public abstract class CustomPersistentEnumeration extends PersistentEnumeration {
+
+    private static final long serialVersionUID = -8831234427547038088L;
+
+}]]></source>
+			</answer>
+		</faq>
+		
+		<faq id="entity-model-8">
+			<question>I get a strange behavior when using <tt>PersistentEnumeration</tt> subclasses.</question>
+			<answer>
+				<p>Did you set the name field value properly after constructing the entity? If not, the whole <em>hashCode</em> / <em>equals</em> method
+				contract relying on the name field is broken.</p>
+			</answer>
+		</faq>
+	</part>
+	
+	<part id="core-dao-classes">
+		<title>Core DAO classes</title>
+		
+		<faq id="core-dao-classes-1">
+			<question>Why is the <tt>PersistentEntityDao</tt> interface bound to a specific entity class?</question>
+			<answer>
+				<p>In order to make things simple and type-safe, an association between a <tt>PersistentEntityDao</tt> and managed <tt>Persistable</tt>
+				class needs to be declared. Furthermore, coupling a DAO interface to the managed entity class allows you to define a custom (domain-specific)
+				DAO interface with methods applicable only to the given persistent entity.</p>
+			</answer>
+		</faq>
+		
+		<faq id="core-dao-classes-2">
+			<question>Why do I have to handle transactions myself?</question>
+			<answer>
+				<p>The real question is - why should ${df} enforce a specific transaction handling mechanism at all? What if someone wants to handle transactions
+				manually or use AOP-based declarative transaction management support to create method-level transactional proxies? This would essentially
+				compromise the generic nature of the DAO concept - you have to choose the transaction support implementation for yourself that best suits
+				your needs.</p>
+				<p>A good source of information about transaction strategies and their pitfalls can be found 
+				<a href="http://www.ibm.com/developerworks/java/library/j-ts1.html?ca=dgr-jw22SafeJavaTrans&amp;S_TACT=105AGX59&amp;S_CMP=grsitejw22">here</a>.</p>
+			</answer>
+		</faq>
+		
+		<faq id="core-dao-classes-3">
+			<question>Why does the <tt>PersistentEntityDao</tt> interface declare an abstract <em>getEntityClass</em> method? It could retrieve this information
+			from the class type parameter using reflection as well.</question>
+			<answer>
+				<p>You're right, but what if someone declares his DAO / entity hierarchy like this:</p>
+				<source><![CDATA[OrderDao<T extends Order> extends PersistentEntityDao<T, Long> => SpecialOrderDao extends OrderDao<SpecialOrder>]]></source>
+				<p>where</p>
+				<source><![CDATA[Persistable => ... => Order => SpecialOrder]]></source>
+				<p>You can still use something like this if you want (works for direct subclasses of parametrized types):</p>
+				<source><![CDATA[
+public Class<T> getEntityClass() {
+    return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+}]]></source>
+				<p>More information on this topic can be found 
+				<a href="http://www.artima.com/weblogs/viewpost.jsp?thread=208860">here</a>.</p>
+			</answer>
+		</faq>
+		
+		<faq id="core-dao-classes-4">
+			<question>How do I know which cascade types are triggered by specific DAO operations?</question>
+			<answer>See the <tt>PersistentEntityDao</tt> Javadoc for more information about cascade types for specific DAO operations.</answer>
+		</faq>
+		
+		<faq id="core-dao-classes-5">
+			<question>I am fighting with a "session is closed" Hibernate exception.</question>
+			<answer>
+				<p>See <a href="http://www.hibernate.org/42.html">this</a> and <a href="http://www.hibernate.org/43.html">this</a> for a general overview
+				of Hibernate session and transaction management.
+				</p>
+			</answer>
+		</faq>
+	</part>
+	
+	<part id="entity-criteria-api">
+		<title>Persistent entity criteria API</title>
+		
+		<faq id="entity-criteria-api-1">
+			<question>Where is the <tt>PagingCriterion</tt> class?</question>
+			<answer>
+				<p>Paging is a functionality common to all <tt>NestedPropertyCriterion</tt> instances - it simply doesn't make sense to have such class
+				as a separate property criterion.</p>
+			</answer>
+		</faq>
+		
+		<faq id="entity-criteria-api-2">
+			<question>Why do I have to write my own <tt>PropertyFilterCriterionProvider</tt> implementations?</question>
+			<answer>
+				<p>Instead of defining rigid filter operators which would need to be mapped into the <em>Hibernate Criteria API</em> anyway, <tt>PropertyFilterCriterionProvider</tt>
+				allows full control over the Hibernate <tt>Criterion</tt> instance creation using the chosen filter value approach. You are free to use the Hibernate
+				<tt>Restrictions</tt> helper class to define the property criteria you need without having to worry about any nested subcriteria details. And if that
+				weren't enough, <tt>PropertyFilterCriterionProvider</tt> contains the <em>enabled</em> method useful for disabling it in certain situations. So the answer
+				to the question is - to give you full power over the property filtering process.</p>
+			</answer>
+		</faq>
+		
+		<faq id="entity-criteria-api-3">
+			<question>Why is <tt>PersistentEntityCriteria</tt> bound strictly to the Hibernate <tt>Criteria</tt> interface?</question>
+			<answer>
+				<p>${df} went a long way from its initial state being just a simple DAO layer above Hibernate. <tt>PersistentEntityCriteria</tt> interface (and in fact
+				the whole ${df} criteria API) is actually the point where ${df} breaks the general JPA / <tt>EntityManager</tt> contract by introducing a direct Hibernate
+				dependency. This makes sense, since ${df} uses Hibernate as its single persistence provider implementation. However, things might change in
+				future due to compatibility reasons with other persistence providers, depending on community feedback.</p>
+			</answer>
+		</faq>
+		
+		<faq id="entity-criteria-api-4">
+			<question>What does "preprocessing a Hibernate <tt>Criteria</tt> instance regarding possible nested subcriteria" actually mean?</question>
+			<answer>
+				<p>Hibernate uses the concept of nested <tt>Criteria</tt> instances when defining nested property subcriteria. Root <tt>Criteria</tt> preprocessing is necessary
+				in order to avoid the "duplicate association path" <em>Hibernate Criteria API</em> issue which leads to an exception in case of multiple subcriteria with same
+				association paths. ${df} handles this kind of preprocessing for you automatically within the <tt>NestedPropertyCriteria</tt>.</p>
+			</answer>
+		</faq>
+		
+		<faq id="entity-criteria-api-5">
+			<question>I want to plug my own custom <tt>NestedPropertyCriterion</tt> subclass into the criteria processing in conjunction with <tt>NestedPropertyCriteria</tt>.
+			What should I do?</question>
+			<answer>
+				<p>You have to extend the default <tt>NestedPropertyCriterionVisitor</tt> implementation provided by <tt>NestedPropertyCriteria</tt> like this:</p>
+				<source><![CDATA[
+public interface CustomCriterionVisitor extends NestedPropertyCriterionVisitor {
+    
+    public void visit(CustomCriterion criterion);
+    
+}
+
+public class CustomCriterion extends NestedPropertyCriterion {
+
+    public CustomCriterion(String propertyPath, NestedPropertyJoinType associationJoinType) {
+        super(propertyPath, associationJoinType);
+    }
+    
+    @Override
+    public void accept(NestedPropertyCriterionVisitor visitor) {
+        if (visitor instanceof CustomCriterionVisitor) {
+            ((CustomCriterionVisitor) visitor).visit(this);
+        }
+    }
+    
+}
+
+public class CustomCriteria extends NestedPropertyCriteria {
+
+    @Override
+    protected NestedPropertyCriterionVisitor getCriterionVisitor(Criteria targetCriteria, Map<String, Criteria> subCriteriaMap, Object filterObject) {
+        return new DefaultCustomCriterionVisitor(targetCriteria, subCriteriaMap, filterObject);
+    }
+    
+    public static class DefaultCustomCriterionVisitor extends DefaultNestedPropertyCriterionVisitor implements CustomCriterionVisitor {
+        
+        public DefaultCustomCriterionVisitor(Criteria targetCriteria, Map<String, Criteria> subCriteriaMap, Object filterObject) {
+            super(targetCriteria, subCriteriaMap, filterObject);
+        }
+        
+        public void visit(CustomCriterion criterion) {
+            // visit the criterion instance and update targetCriteria OR subCriteriaMap entry
+            // (this depends on criterion's associationPath being null or not)
+        }
+        
+    }
+    
+}]]></source>
+				<p>Now you can use <tt>CustomCriteria</tt> as a replacement of <tt>NestedPropertyCriteria</tt> for processing <tt>CustomCriterion</tt> instances
+				(notice we didn't touch the <em>apply</em> method in any way).</p>
+			</answer>
+		</faq>
+		
+		<faq id="entity-criteria-api-6">
+			<question>Is the use of a filter object within the <tt>NestedPropertyCriteria</tt> mandatory for the filtering functionality to work?</question>
+			<answer>
+				<p>Absolutely no - the filter object represents an optional source of filter values shared by all <tt>FilterCriterion</tt> instances. You are free to use
+				the direct value approach exclusively or even bypass it via the <em>final</em> keyword if necessary.</p>
+			</answer>
+		</faq>
+		
+		<faq id="entity-criteria-api-7">
+			<question>Persistent entity criteria API based on the <tt>PersistentEntityCriteria</tt> interface doesn't cover very complex queries using aliases, nested
+			criterion junctions (<tt>AND</tt> / <tt>OR</tt>), etc.</question>
+			<answer>
+				<p>You're right, but what would be the reason of duplicating the <em>Hibernate Criteria API</em> for this purpose? ${df} aims to cover 90% of the most typical
+				use cases out there (typical <em>CRUD</em> and query operations) and leaves the rest to developers via <tt>BaseHibernateDataAccessor</tt>'s <em>getHibernateCriteria</em>,
+				<em>getSession</em> and <em>rowCount</em> methods.</p>
+			</answer>
+		</faq>
+	</part>
+	
+	<part id="cto-pattern">
+		<title>Criteria transfer object pattern</title>
+		
+		<faq id="cto-pattern-1">
+			<question>Why are the filtering and sorting capabilities put together in a single class (<tt>FilterAndSortCriteria</tt> / <tt>FilterAndSortMapping</tt>) within
+			the CTO package?</question>
+			<answer>
+				<p>These capabilities are merged together since the client usually wants them both. Having them in one place also helps to keep things simple (don't forget that the filtering / sorting functionality applies to each single property of a persistent entity).</p>
+			</answer>
+		</faq>
+		
+		<faq id="cto-pattern-2">
+			<question>Why doesn't the <tt>FilterAndSortCriteria</tt> use <em>propertyPath</em> directly instead of the <em>propertyId</em>?</question>
+			<answer>
+				<p>There are many benefits with having the actual <em>propertyPath</em> and its symbolic identifier separated:
+					<ul>
+						<li><em>propertyId</em> hides the underlying persistent entity structure away from the client (the client shouldn't be aware of the entity structure at all)</li>
+						<li>it is possible to reuse <em>propertyId</em>'s and thus <tt>NestedPropertyMapping</tt> instances within distinct property mapping groups - for example, one group for displaying customer contact information and another group for displaying customer projects (both of them operate on the same entity, sharing some common mappings)</li>
+					</ul>
+				</p>
+			</answer>
+		</faq>
+		
+		<faq id="cto-pattern-3">
+			<question>I am using a client-side technology that doesn't support Java language directly - what should I do?</question>
+			<answer>
+				<p>This is actually quite possible scenario when using some non-Java <em>RIA</em> technology. The general task is to map the CTO instance (in whichever client language
+				it might be) into the corresponding <tt>CriteriaTransferObject</tt> / <tt>FilterAndSortCriteria</tt> classes somewhere before they can be passed to the CTO converter.</p>
+			</answer>
+		</faq>
+		
+		<faq id="cto-pattern-4">
+			<question>I want to plug my own custom <tt>NestedPropertyCriterion</tt> subclass into the server-side criteria processing in conjunction with <tt>NestedPropertyCriteriaBasedConverter</tt>.
+			What should I do?</question>
+			<answer>
+				<p>Since the <em>apply</em> method within a <tt>NestedPropertyMapping</tt> defines the way how the server-side <tt>NestedPropertyCriteria</tt> instance is updated
+				for the given property mapping, the process is quite simple - you have to extend the default <tt>FilterAndSortMapping</tt> implementation and override the <em>apply</em>
+				method accordingly.</p>
+			</answer>
+		</faq>
+	</part>
+	
+	<part id="integration-tests">
+		<title>Integration test support</title>
+		
+		<faq id="integration-tests-1">
+			<question>What's the correct usage pattern regarding the <em>${df-test}</em> project?</question>
+			<answer>
+				<p><em>${df-test}</em> project is intended for use as a <em>test-scoped</em> library dependency providing an integration test infrastructure for custom
+				core / generic integration tests.</p>
+			</answer>
+		</faq>
+		
+		<faq id="integration-tests-2">
+			<question>What are the basic tasks required to implement a custom generic integration test (the one that's aimed at testing business-related DAO functionality)?</question>
+			<answer>
+				<p>A rough task list regarding custom generic integration tests would look like this:
+					<ul>
+						<li>create an abstract subclass of <tt>BaseHibernateIntegrationTest</tt> pointing to a Spring context that scans for related DAO components (e.g. via the
+						<tt>context:component-scan</tt> element):
+							<ul>
+								<li>the Spring context can optionally declare a <tt>PropertyOverrideConfigurer</tt> for setting up the <em>dataSource</em> / <em>entityManagerFactory</em>
+								beans in case of a single database instance (e.g. via the <tt>context:property-override</tt> element)</li>
+								<li>in case of multiple database instances, the <tt>PropertyOverrideConfigurer</tt> needs to be placed in a Spring context for each database-specific
+								integration test</li>
+							</ul>
+						</li>
+						<li>setup of initial test data or DAO components to be shared by all test cases should be done within this subclass in a same way like it's done within
+						the <tt>BaseHibernateCoreIntegrationTest</tt></li>
+						<li>A <tt>META-INF/persistence.xml</tt> file needs to be provided for specific database instance(s):
+							<ul>
+								<li>custom business-related entity mappings for each persistence unit should be declared via the <tt>mapping-file</tt> element</li>
+							</ul>
+						</li>
+					</ul>
+				</p>
+			</answer>
+		</faq>
+		
+		<faq id="integration-tests-3">
+			<question>Do I really need custom generic integration tests?</question>
+			<answer>
+				<p>The real question is - do you need special DAO operations apart from the standard ones provided by <tt>PersistentEntityDao</tt> / <tt>PersistentEnumerationDao</tt>?
+				If yes, you should test your custom DAO operations as well by writing appropriate integration tests.</p>
+				<p>For example, one could have a custom <tt>PersistentEnumeration</tt> subclass declaring an <em>ordinal</em> field with semantics similar to Java's <tt>Enum</tt> type.
+				Corresponding enumeration DAO could then contain methods working with the <em>ordinal</em> field, making them candidates suitable for generic integration tests.</p>
+			</answer>
+		</faq>
+		
+		<faq id="integration-tests-4">
+			<question>I am unable to build the <em>${df-test}</em> project manually because of missing library dependencies.</question>
+			<answer>
+				<p>This is most probably the case of certain test-scoped JDBC driver dependencies which are not commonly available via Maven remote repositories. These
+				artifacts need to be manually downloaded and installed into a Maven repository.</p>
+				<p>Here are the official download links for such JDBC drivers (note that some links may require account registration):
+					<ul>
+						<li><em>DB2</em> - <a href="http://www.ibm.com/software/data/db2/express/additional-downloads.html?S_TACT=none&amp;S_CMP=none"><tt>com/ibm/db2/db2-expressc-jcc/3.5/db2-expressc-jcc-3.5.jar</tt></a>
+						(select "IBM Data Server Driver for JDBC and SQLJ")</li>
+						<li><em>Oracle 10g</em> - <a href="http://www.oracle.com/technology/software/tech/java/sqlj_jdbc/index.html"><tt>com/oracle/ojdbc14/10.2.0.3.0/ojdbc14-10.2.0.3.0.jar</tt></a></li>
+						<li><em>MySQL</em> - <a href="http://dev.mysql.com/downloads/connector/j/5.1.html"><tt>mysql/mysql-connector-java/5.1.7/mysql-connector-java-5.1.7.jar</tt></a></li>
+					</ul>
+				</p>
+			</answer>
+		</faq>
+		
+		<faq id="integration-tests-5">
+			<question>I want to turn off the SQL console output when running integration tests.</question>
+			<answer>
+				<p>Use the <tt>PropertyOverrideConfigurer</tt> to override any default Spring bean values like this:</p>
+				<source><![CDATA[
+# turn off SQL console output
+entityManagerFactory.jpaVendorAdapter.showSql=false
+]]></source>
+			</answer>
+		</faq>
+		
+		<faq id="integration-tests-6">
+			<question>Why is the <em>JUnit</em> dependency overriden within the <tt>pom.xml</tt>?</question>
+			<answer>
+				<p><em>${df-test}</em> project differs from regular libraries in a way that it uses <em>JUnit</em> as a <em>compile-time</em> dependency
+				(<tt>BaseHibernateIntegrationTest</tt> and its subclasses directly depend on <em>JUnit</em>). Furthermore, <em>JUnit</em> version is changed
+				to <tt>4.4</tt> to ensure compatibility with <em>Spring TestContext framework</em> - see <a href="http://jira.springframework.org/browse/SPR-5145">this</a>
+				for more information.</p>
+			</answer>
+		</faq>
+	</part>
+	
+</faqs>
