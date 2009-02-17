@@ -4,7 +4,7 @@
 	<groupId>com.anasoft.os</groupId>
 	<artifactId>daofusion-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0.0</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>DAO Fusion</name>
 	
 	<url>http://opensource.anasoft.sk/daofusion</url>
@@ -21,9 +21,9 @@
 	</issueManagement>
 	
 	<scm>
-		<url>http://code.google.com/p/daofusion/source/browse/tags/daofusion-parent-1.0.0</url>
-		<connection>scm:svn:http://daofusion.googlecode.com/svn/tags/daofusion-parent-1.0.0</connection>
-		<developerConnection>scm:svn:https://daofusion.googlecode.com/svn/tags/daofusion-parent-1.0.0</developerConnection>
+		<url>http://code.google.com/p/daofusion/source/browse/tags/daofusion-1.0.0</url>
+		<connection>scm:svn:http://daofusion.googlecode.com/svn/tags/daofusion-1.0.0</connection>
+		<developerConnection>scm:svn:https://daofusion.googlecode.com/svn/tags/daofusion-1.0.0</developerConnection>
 	</scm>
 	
 	<licenses>
