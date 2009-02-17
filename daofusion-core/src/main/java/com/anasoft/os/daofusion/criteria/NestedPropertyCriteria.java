@@ -130,7 +130,8 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 	 * <p>
 	 * 
 	 * More information on this issue can be found at the following
-	 * location: {@linkplain http://opensource.atlassian.com/projects/hibernate/browse/HHH-879}
+	 * location:
+	 * http://opensource.atlassian.com/projects/hibernate/browse/HHH-879
 	 * 
 	 * @param targetCriteria {@link Criteria} instance to preprocess.
 	 * @return Map of association paths with corresponding subcriteria

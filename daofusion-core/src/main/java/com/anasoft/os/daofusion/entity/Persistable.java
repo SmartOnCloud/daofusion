@@ -54,12 +54,12 @@ import com.anasoft.os.daofusion.PersistentEntityDao;
  * 		persistence provider is able to enforce optimistic
  * 		locking strategy on the persistent entity.
  * 	<li>Each persistent entity must provide a <b><u>reliable</u></b>
- * 		{@link #hashCode()} and {@link #equals(Object)}
+ * 		{@link Object#hashCode()} and {@link Object#equals(Object)}
  * 		implementation which covers all possible entity states.
  * </ul>
  * 
  * There are basically two approaches to implementing
- * {@link #hashCode()} and {@link #equals(Object)}
+ * {@link Object#hashCode()} and {@link Object#equals(Object)}
  * methods:
  * 
  * <br><br>
@@ -71,12 +71,12 @@ import com.anasoft.os.daofusion.PersistentEntityDao;
  * 		unique for each persistent entity instance). However,
  * 		this imposes certain limitations on attributes within
  * 		the set which could potentionally compromise the
- * 		{@link #hashCode()} and {@link #equals(Object)}
+ * 		{@link Object#hashCode()} and {@link Object#equals(Object)}
  * 		method contract (for example, uniqueness might be
  * 		broken if any of the "semi"-unique attributes change,
  * 		persistent entity instance has to have all "semi"-unique
- * 		attributes set in advance for {@link #hashCode()} and
- * 		{@link #equals(Object)} to work properly, etc.).
+ * 		attributes set in advance for {@link Object#hashCode()} and
+ * 		{@link Object#equals(Object)} to work properly, etc.).
  * 	<li><em>synthetic generated value</em> approach - generate
  * 		a globally-unique identifier value and assign it to
  * 		the <tt>oid</tt> field upon the persistent entity
