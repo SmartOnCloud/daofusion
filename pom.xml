@@ -73,6 +73,11 @@
 			<url>dav:https://anasoft-os-repo.googlecode.com/svn/repository/snapshots</url>
 			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
+		<site>
+			<id>com.anasoft.os.site</id>
+			<name>ANASOFT OpenSource site</name>
+			<url>scp://shadow.ana.sk/daofusion/</url>
+		</site>
 	</distributionManagement>
 	
 	<repositories>
@@ -133,9 +138,12 @@
 						</executions>
 					</plugin>
 					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-release-plugin</artifactId>
 						<configuration>
 							<tagBase>https://daofusion.googlecode.com/svn/tags</tagBase>
+							<releaseProfiles>release</releaseProfiles>
+							<preparationGoals>clean</preparationGoals>
 						</configuration>
 					</plugin>
 					<plugin>
