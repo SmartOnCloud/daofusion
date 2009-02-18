@@ -97,24 +97,22 @@ External resources
 @MappedSuperclass
 public abstract class OidBasedMutablePersistentEntity extends MutablePersistentEntity {
 
-    private static final long serialVersionUID = 8066348165196551565L;
-    
     @NaturalId
     @Column(length = 36, name = "object_id", unique = true, updatable = false, nullable = false)
     private String oid;
-	
+
     public OidBasedMutablePersistentEntity() {
         oid = UUID.randomUUID().toString();
     }
-	
+
     public String getOid() {
         return oid;
     }
-	
+
     protected void setOid(String oid) {
         this.oid = oid;
     }
-	
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -122,7 +120,7 @@ public abstract class OidBasedMutablePersistentEntity extends MutablePersistentE
         result = prime * result + ((oid == null) ? 0 : oid.hashCode());
         return result;
     }
-	
+
     @Override
     public final boolean equals(Object obj) {
         if (this == obj) {
@@ -134,12 +132,12 @@ public abstract class OidBasedMutablePersistentEntity extends MutablePersistentE
         if (!(obj instanceof OidBasedMutablePersistentEntity)) {
             return false;
         }
-		
+
         final OidBasedMutablePersistentEntity other = (OidBasedMutablePersistentEntity) obj;
-		
+
         return oid.equals(other.oid);
     }
-	
+
 }
 +-----+
   
@@ -154,60 +152,58 @@ public abstract class OidBasedMutablePersistentEntity extends MutablePersistentE
 @Table(name = "orders")
 public class Order extends OidBasedMutablePersistentEntity {
 
-    private static final long serialVersionUID = 6587315771391217449L;
-    
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-    
+
     @Embedded
     private Address shippingAddress;
-    
+
     @OneToMany(mappedBy = "order")
     @Cascade(value = {CascadeType.SAVE_UPDATE})
     private List<OrderItem> orderItems = new ArrayList<OrderItem>();
-    
+
     @Column(nullable = false)
     private Boolean complete;
-    
+
     @ManyToOne
     @JoinColumn(nullable = false, updatable = false)
     private Customer customer;
-    
+
     protected List<OrderItem> getOrderItems() {
         return orderItems;
     }
-    
+
     protected void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
-    
+
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
-    
+
     public void removeOrderItem(OrderItem orderItem) {
         orderItems.remove(orderItem);
         orderItem.setOrder(null);
     }
-    
+
     public List<OrderItem> getUnmodifiableOrderItemList() {
         return Collections.unmodifiableList(orderItems);
     }
-    
+
     // rest of the getters and setters go here
-    
+
     public int getTotalPrice() {
         int result = 0;
-        
+
         for (OrderItem orderItem : orderItems) {
             result += orderItem.getTotalPrice();
         }
-        
+
         return result;
     }
-    
+
 }
 +-----+
   
@@ -231,8 +227,8 @@ public class Order extends OidBasedMutablePersistentEntity {
 @Table(name = "payment_types")
 public class PaymentType extends PersistentEnumeration {
 
-    private static final long serialVersionUID = -2456472110859924455L;
-    
+    // place some custom code here
+
 }
 +-----+
   

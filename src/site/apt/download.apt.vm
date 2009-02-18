@@ -3,21 +3,25 @@
  ----
  Vojtech Szocs
  ----
- 17 February 2009
+ 18 February 2009
  ----
 
 Download ${df}
   
-  Below are the links to ${df} downloads regarding the <<latest stable>> releases.
+  Latest stable release: <<${df-latestStableVersion}>>
   
-*------------+---------+--------+---------+---------*
-|            | Version | Binary | Sources | Javadoc |
-*------------+---------+--------+---------+---------*
-| <<${df-core}>> | ${df-core-latestStableVersion} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-core}/${df-core-latestStableVersion}/${df-core}-${df-core-latestStableVersion}.jar} ${df-core}-${df-core-latestStableVersion}.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-core}/${df-core-latestStableVersion}/${df-core}-${df-core-latestStableVersion}-sources.jar} ${df-core}-${df-core-latestStableVersion}-sources.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-core}/${df-core-latestStableVersion}/${df-core}-${df-core-latestStableVersion}-javadoc.jar} ${df-core}-${df-core-latestStableVersion}-javadoc.jar}} |
-*------------+---------+--------+---------+---------*
-| <<${df-test}>> | ${df-test-latestStableVersion} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-test}/${df-test-latestStableVersion}/${df-test}-${df-test-latestStableVersion}.jar} ${df-test}-${df-test-latestStableVersion}.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-test}/${df-test-latestStableVersion}/${df-test}-${df-test-latestStableVersion}-sources.jar} ${df-test}-${df-test-latestStableVersion}-sources.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-test}/${df-test-latestStableVersion}/${df-test}-${df-test-latestStableVersion}-javadoc.jar} ${df-test}-${df-test-latestStableVersion}-javadoc.jar}} |
-*------------+---------+--------+---------+---------*
+*------------+--------+---------+---------*
+|            | Binary | Sources | Javadoc |
+*------------+--------+---------+---------*
+| <<${df-core}>> | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-core}/${df-latestStableVersion}/${df-core}-${df-latestStableVersion}.jar} ${df-core}-${df-latestStableVersion}.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-core}/${df-latestStableVersion}/${df-core}-${df-latestStableVersion}-sources.jar} ${df-core}-${df-latestStableVersion}-sources.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-core}/${df-latestStableVersion}/${df-core}-${df-latestStableVersion}-javadoc.jar} ${df-core}-${df-latestStableVersion}-javadoc.jar}} |
+*------------+--------+---------+---------*
+| <<${df-test}>> | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-test}/${df-latestStableVersion}/${df-test}-${df-latestStableVersion}.jar} ${df-test}-${df-latestStableVersion}.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-test}/${df-latestStableVersion}/${df-test}-${df-latestStableVersion}-sources.jar} ${df-test}-${df-latestStableVersion}-sources.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-test}/${df-latestStableVersion}/${df-test}-${df-latestStableVersion}-javadoc.jar} ${df-test}-${df-latestStableVersion}-javadoc.jar}} |
+*------------+--------+---------+---------*
+  
+Project dependencies
   
   Specific ${df} projects depend on certain libraries and APIs - see the {{{./dependencies.html} dependencies}} page for more information.
+  
+Maven integration
   
   If you're a {{{http://maven.apache.org/} Maven}} user, visit the {{{./maven-integration.html} Maven integration}} page for details about using ${df} within your projects.

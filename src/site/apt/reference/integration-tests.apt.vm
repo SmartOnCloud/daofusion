@@ -112,15 +112,15 @@ External resources
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
-	
+
 	<!-- bean property value resolution -->
 	<context:property-placeholder location="classpath:test-base.properties" />
-	
+
 	<!-- pooled data source providing DB access via JDBC -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 		<property name="numHelperThreads" value="${jdbc.c3p0.numHelperThreads}" />
 	</bean>
-	
+
 	<!-- JPA entity manager factory wrapper bean -->
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
@@ -140,13 +140,13 @@ External resources
 			</props>
 		</property>
 	</bean>
-	
+
 	<!-- transaction manager for JPA entity manager factory -->
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
+
 	<!-- AOP transaction interceptor for declarative transaction management -->
 	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
 		<property name="transactionManager" ref="transactionManager" />
@@ -154,10 +154,10 @@ External resources
 			<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
 		</property>
 	</bean>
-	
+
 	<!-- Spring annotation support -->
 	<context:annotation-config />
-	
+
 	<!-- JPA / AOP transaction annotation support -->
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
@@ -165,7 +165,7 @@ External resources
 		<property name="transactionInterceptor" ref="transactionInterceptor" />
 	</bean>
 	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
-	
+
 </beans>
 +-----+
   
@@ -236,7 +236,10 @@ External resources
   
 +-----+
 @ContextConfiguration(locations = { DatabaseContextLocations.POSTGRESQL })
-@IfProfileValue(name = BaseHibernateIntegrationTest.PROFILE_DBTYPE_NAME, values = { BaseHibernateIntegrationTest.PROFILE_DBTYPE_VALUE_ALL, BaseHibernateIntegrationTest.PROFILE_DBTYPE_VALUE_LOCAL })
+@IfProfileValue(name = BaseHibernateIntegrationTest.PROFILE_DBTYPE_NAME, values = {
+    BaseHibernateIntegrationTest.PROFILE_DBTYPE_VALUE_ALL,
+    BaseHibernateIntegrationTest.PROFILE_DBTYPE_VALUE_LOCAL
+})
 public class PostgreSQLHibernateEntityDaoTest extends AbstractHibernateEntityDaoTest {
 
 }
@@ -251,10 +254,10 @@ public class PostgreSQLHibernateEntityDaoTest extends AbstractHibernateEntityDao
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
-	
+
 	<!-- bean property value resolution -->
 	<context:property-override location="classpath:postgresql/test-postgresql-beanSetup.properties" />
-	
+
 </beans>
 +-----+
   
@@ -279,14 +282,14 @@ entityManagerFactory.persistenceUnitName=dao-test-postgresql
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
 	version="1.0">
-	
+
 	<persistence-unit name="dao-test-postgresql" transaction-type="RESOURCE_LOCAL">
 		<mapping-file>test-core-orm.xml</mapping-file>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
 		</properties>
 	</persistence-unit>
-	
+
 </persistence>
 +-----+
   

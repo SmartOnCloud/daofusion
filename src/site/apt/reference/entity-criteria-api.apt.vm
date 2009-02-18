@@ -66,7 +66,7 @@ public interface PersistentEntityCriteria {
      * criteria implementation to the targetCriteria.
      */
     public void apply(Criteria targetCriteria);
-    
+
 }
 +-----+
   
@@ -114,15 +114,19 @@ public interface PersistentEntityCriteria {
 +-----+
 public interface PropertyFilterCriterionProvider {
 
-	/**
-	 * Returns a Criterion instance corresponding to the given property of the target persistent entity.
-	 */
-	public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues);
-	
-	/**
-	 * Returns a flag indicating whether to use this provider during the FilterCriterion instance processing.
-	 */
-	public boolean enabled(Object[] filterObjectValues, Object[] directValues);
+    /**
+     * Returns a Criterion instance corresponding to the given property
+     * of the target persistent entity.
+     */
+    public Criterion getCriterion(String targetPropertyName,
+        Object[] filterObjectValues, Object[] directValues);
+
+    /**
+     * Returns a flag indicating whether to use this provider during
+     * the FilterCriterion instance processing.
+     */
+    public boolean enabled(Object[] filterObjectValues, Object[] directValues);
+
 }
 +-----+
   
@@ -148,29 +152,36 @@ public interface PropertyFilterCriterionProvider {
   criteria with ease without having to worry about any nested subcriteria details. For example:
   
 +-----+
-    public static final PropertyFilterCriterionProvider LIKE_USING_FILTER_OBJECT = new PropertyFilterCriterionProvider() {
-	    
-        public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-            return Restrictions.like(targetPropertyName, filterObjectValues[0]);
-        }
-        
-        public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-            return (filterObjectValues.length == 1) && (filterObjectValues[0] != null);
-        }
-        
-    };
-    
-    public static final PropertyFilterCriterionProvider BETWEEN_USING_DIRECT_VALUES = new PropertyFilterCriterionProvider() {
-    
-        public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-            return Restrictions.between(targetPropertyName, directValues[0], directValues[1]);
-        }
-        
-        public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-            return (directValues.length == 2) && (directValues[0] != null) && (directValues[1] != null);
-        }
-        
-    };
+public static final PropertyFilterCriterionProvider LIKE_USING_FILTER_OBJECT
+    = new PropertyFilterCriterionProvider() {
+
+    public Criterion getCriterion(String targetPropertyName,
+        Object[] filterObjectValues, Object[] directValues) {
+
+        return Restrictions.like(targetPropertyName, filterObjectValues[0]);
+    }
+
+    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+        return (filterObjectValues.length == 1) && (filterObjectValues[0] != null);
+    }
+
+};
+
+public static final PropertyFilterCriterionProvider BETWEEN_USING_DIRECT_VALUES
+    = new PropertyFilterCriterionProvider() {
+
+    public Criterion getCriterion(String targetPropertyName,
+        Object[] filterObjectValues, Object[] directValues) {
+
+        return Restrictions.between(targetPropertyName, directValues[0], directValues[1]);
+    }
+
+    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+        return (directValues.length == 2)
+            && (directValues[0] != null) && (directValues[1] != null);
+    }
+
+};
 +-----+
   
   The combination of <filterObjectValuePaths> and <directValues> enables you to define your own filter value strategy - a single filter object as the source of filter values, direct
@@ -189,13 +200,13 @@ public class PagingAndSortDefinition {
 
     private Integer firstResult;
     private Integer maxResults;
-    
+
     private boolean sortEnabled;
     private String sortPropertyPath;
     private boolean sortAscending;
-    
+
     // getters and setters go here
-    
+
 }
 
 public abstract class UnaryDirectValueProvider implements PropertyFilterCriterionProvider {
@@ -203,7 +214,7 @@ public abstract class UnaryDirectValueProvider implements PropertyFilterCriterio
     public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
         return (directValues.length == 1) && (directValues[0] != null);
     }
-    
+
 }
 
 public abstract class UnaryFilterObjectValueProvider implements PropertyFilterCriterionProvider {
@@ -211,105 +222,129 @@ public abstract class UnaryFilterObjectValueProvider implements PropertyFilterCr
     public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
         return (filterObjectValues.length == 1) && (filterObjectValues[0] != null);
     }
-    
+
 }
 
 public interface OrderDao extends PersistentEntityDao<Order, Long> {
 
     public Order getFilterObject();
-    
+
     public void setFilterEnabled(boolean filterEnabled);
-    
-    public List<Order> getOrders(PagingAndSortDefinition pagingAndSort, Integer minOrderItemCount, final String customerNameFilter);
-    
+
+    public List<Order> getOrders(PagingAndSortDefinition pagingAndSort,
+        Integer minOrderItemCount, final String customerNameFilter);
+
 }
 
-public class OrderDaoImpl extends EntityManagerAwareEntityDao<Order, Long> implements OrderDao {
+public class OrderDaoImpl extends EntityManagerAwareEntityDao<Order, Long>
+    implements OrderDao {
 
     private final Order filterObject;
     private boolean filterEnabled = false;
     
-    // the user is responsible for initializing the filterObject as well as its associated objects properly according to filter constraints
+    // the user is responsible for initializing the filterObject as well
+    // as its associated objects properly according to filter constraints
     public OrderDaoImpl(Order filterObject) {
         super();
         this.filterObject = filterObject;
     }
-    
+
     public Class<Order> getEntityClass() {
         return Order.class;
     }
-    
-    // modify the state of filterObject to change the actual filter criteria bound to it
+
+    // modify the state of filterObject to change the actual
+    // filter criteria bound to it
     public Order getFilterObject() {
         return filterObject;
     }
-    
+
     public void setFilterEnabled(boolean filterEnabled) {
         this.filterEnabled = filterEnabled;
     }
-    
-    public List<Order> getOrders(PagingAndSortDefinition pagingAndSort, Integer minOrderItemCount, final String customerNameFilter) {
+
+    public List<Order> getOrders(PagingAndSortDefinition pagingAndSort,
+        Integer minOrderItemCount, final String customerNameFilter) {
+
         final NestedPropertyCriteria criteria = new NestedPropertyCriteria();
-        
+
         criteria.setFirstResult(pagingAndSort.getFirstResult());
         criteria.setMaxResults(pagingAndSort.getMaxResults());
-        
+
         criteria.setFilterObject(filterObject);
-        
+
         // direct property filter criterion (using the filterObject)
-        criteria.add(new FilterCriterion("creationDate", "creationDate", true, new UnaryFilterObjectValueProvider() {
-                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                        return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
-                    }
-                    
-                    @Override
-                    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                        return super.enabled(filterObjectValues, directValues) && filterEnabled;
-                    }
-                }));
-        
+        criteria.add(new FilterCriterion("creationDate", "creationDate",
+            true, new UnaryFilterObjectValueProvider() {
+
+            public Criterion getCriterion(String targetPropertyName,
+                Object[] filterObjectValues, Object[] directValues) {
+
+                return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
+            }
+
+            @Override
+            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                return super.enabled(filterObjectValues, directValues) && filterEnabled;
+            }
+        }));
+
         // nested property filter criterion (using the filterObject)
-        criteria.add(new FilterCriterion("customer.email", "customer.email", true, new UnaryFilterObjectValueProvider() {
-                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                        return Restrictions.like(targetPropertyName, filterObjectValues[0]);
-                    }
-                    
-                    @Override
-                    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                        return super.enabled(filterObjectValues, directValues) && filterEnabled;
-                    }
+        criteria.add(new FilterCriterion("customer.email", "customer.email",
+            true, new UnaryFilterObjectValueProvider() {
+
+            public Criterion getCriterion(String targetPropertyName,
+                Object[] filterObjectValues, Object[] directValues) {
+
+                return Restrictions.like(targetPropertyName, filterObjectValues[0]);
+            }
+
+            @Override
+            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                return super.enabled(filterObjectValues, directValues) && filterEnabled;
+            }
         }));
-        
+
         // direct property filter criterion (using a direct value)
-        criteria.add(new FilterCriterion("orderItems", minOrderItemCount, false, new UnaryDirectValueProvider() {
-                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                        return Restrictions.sizeGe(targetPropertyName, (Integer) directValues[0]);
-                    }
-                    
-                    @Override
-                    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                        return super.enabled(filterObjectValues, directValues) && filterEnabled;
-                    }
+        criteria.add(new FilterCriterion("orderItems", minOrderItemCount,
+            false, new UnaryDirectValueProvider() {
+
+            public Criterion getCriterion(String targetPropertyName,
+                Object[] filterObjectValues, Object[] directValues) {
+
+                return Restrictions.sizeGe(targetPropertyName, (Integer) directValues[0]);
+            }
+
+            @Override
+            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                return super.enabled(filterObjectValues, directValues) && filterEnabled;
+            }
         }));
-        
-        // nested property filter criterion (bypassing the direct value mechanism via the final keyword)
-        criteria.add(new FilterCriterion("customer.name", null, false, new PropertyFilterCriterionProvider() {
-                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                        return Restrictions.like(targetPropertyName, customerNameFilter);
-                    }
-                    
-                    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                        return (customerNameFilter != null) && filterEnabled;
-                    }
+
+        // nested property filter criterion (bypassing the direct value mechanism
+        // via the final keyword)
+        criteria.add(new FilterCriterion("customer.name", null,
+            false, new PropertyFilterCriterionProvider() {
+
+            public Criterion getCriterion(String targetPropertyName,
+                Object[] filterObjectValues, Object[] directValues) {
+
+                return Restrictions.like(targetPropertyName, customerNameFilter);
+            }
+
+            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                return (customerNameFilter != null) && filterEnabled;
+            }
         }));
-        
+
         if (pagingAndSort.isSortEnabled()) {
-            criteria.add(new SortCriterion(pagingAndSort.getSortPropertyPath(), pagingAndSort.isSortAscending()));
+            criteria.add(new SortCriterion(pagingAndSort.getSortPropertyPath(),
+                pagingAndSort.isSortAscending()));
         }
-        
+
         return query(criteria);
     }
-    
+
 }
 +-----+
   

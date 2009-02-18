@@ -111,10 +111,15 @@
 				<tt>PersistentEnumeration</tt>:</p>
 				<source><![CDATA[
 @MappedSuperclass
-@AttributeOverride(name = "name", column = @Column(length = 255, name = PersistentEnumeration.NAME, unique = true, updatable = false, nullable = false))
+@AttributeOverride(name = "name", column = @Column(
+    length = 255,
+    name = PersistentEnumeration.NAME,
+    unique = true,
+    updatable = false,
+    nullable = false))
 public abstract class CustomPersistentEnumeration extends PersistentEnumeration {
 
-    private static final long serialVersionUID = -8831234427547038088L;
+    // place some custom code here
 
 }]]></source>
 			</answer>
@@ -234,9 +239,9 @@ public Class<T> getEntityClass() {
 				<p>You have to extend the default <tt>NestedPropertyCriterionVisitor</tt> implementation provided by <tt>NestedPropertyCriteria</tt> like this:</p>
 				<source><![CDATA[
 public interface CustomCriterionVisitor extends NestedPropertyCriterionVisitor {
-    
+
     public void visit(CustomCriterion criterion);
-    
+
 }
 
 public class CustomCriterion extends NestedPropertyCriterion {
@@ -244,36 +249,39 @@ public class CustomCriterion extends NestedPropertyCriterion {
     public CustomCriterion(String propertyPath, NestedPropertyJoinType associationJoinType) {
         super(propertyPath, associationJoinType);
     }
-    
+
     @Override
     public void accept(NestedPropertyCriterionVisitor visitor) {
         if (visitor instanceof CustomCriterionVisitor) {
             ((CustomCriterionVisitor) visitor).visit(this);
         }
     }
-    
+
 }
 
 public class CustomCriteria extends NestedPropertyCriteria {
 
     @Override
-    protected NestedPropertyCriterionVisitor getCriterionVisitor(Criteria targetCriteria, Map<String, Criteria> subCriteriaMap, Object filterObject) {
+    protected NestedPropertyCriterionVisitor getCriterionVisitor(Criteria targetCriteria,
+        Map<String, Criteria> subCriteriaMap, Object filterObject) {
         return new DefaultCustomCriterionVisitor(targetCriteria, subCriteriaMap, filterObject);
     }
-    
-    public static class DefaultCustomCriterionVisitor extends DefaultNestedPropertyCriterionVisitor implements CustomCriterionVisitor {
-        
-        public DefaultCustomCriterionVisitor(Criteria targetCriteria, Map<String, Criteria> subCriteriaMap, Object filterObject) {
+
+    public static class DefaultCustomCriterionVisitor extends DefaultNestedPropertyCriterionVisitor
+        implements CustomCriterionVisitor {
+
+        public DefaultCustomCriterionVisitor(Criteria targetCriteria,
+            Map<String, Criteria> subCriteriaMap, Object filterObject) {
             super(targetCriteria, subCriteriaMap, filterObject);
         }
-        
+
         public void visit(CustomCriterion criterion) {
             // visit the criterion instance and update targetCriteria OR subCriteriaMap entry
             // (this depends on criterion's associationPath being null or not)
         }
-        
+
     }
-    
+
 }]]></source>
 				<p>Now you can use <tt>CustomCriteria</tt> as a replacement of <tt>NestedPropertyCriteria</tt> for processing <tt>CustomCriterion</tt> instances
 				(notice we didn't touch the <em>apply</em> method in any way).</p>

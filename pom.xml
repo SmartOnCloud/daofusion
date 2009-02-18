@@ -5,12 +5,12 @@
 		<groupId>com.anasoft.os</groupId>
 		<artifactId>daofusion-parent</artifactId>
 		<version>1.0.0</version>
-		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.anasoft.os</groupId>
 	<artifactId>daofusion-site</artifactId>
+	<version>1.0.x</version>
 	<packaging>pom</packaging>
 	<name>DAO Fusion project site</name>
 	
@@ -19,8 +19,7 @@
 		<df-short>daofusion</df-short>
 		<df-core>daofusion-core</df-core>
 		<df-test>daofusion-test</df-test>
-		<df-core-latestStableVersion>1.0.0</df-core-latestStableVersion>
-		<df-test-latestStableVersion>1.0.0</df-test-latestStableVersion>
+		<df-latestStableVersion>1.0.0</df-latestStableVersion>
 		<df-groupIdPath>com/anasoft/os</df-groupIdPath>
 		
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

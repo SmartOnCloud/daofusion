@@ -3,10 +3,10 @@
  ----
  Vojtech Szocs
  ----
- 17 February 2009
+ 18 February 2009
  ----
 
-Artifact dependencies
+Project dependencies
   
   Specific ${df} projects depend on certain libraries and APIs, as listed below.
   
