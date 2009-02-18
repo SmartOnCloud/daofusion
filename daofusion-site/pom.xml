@@ -35,18 +35,6 @@
 				<configuration>
 					<outputEncoding>${project.reporting.outputEncoding}</outputEncoding>
 				</configuration>
-				<executions>
-					<execution>
-						<id>jar</id>
-						<phase>site</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration>
-							<jarOutputDirectory>${project.reporting.outputDirectory}</jarOutputDirectory>
-						</configuration>
-					</execution>
-				</executions>
 				<!--<dependencies>
 					<dependency>
 						<groupId>sk.dvsk.maven</groupId>
