@@ -74,7 +74,7 @@
 		<site>
 			<id>com.anasoft.os.site</id>
 			<name>ANASOFT OpenSource site</name>
-			<url>scp://shadow.ana.sk/home/http/vhosts/opensource.anasoft.sk/htdocs/daofusion/</url>
+			<url>scp://shadow.ana.sk/home/http/vhosts/opensource.anasoft.sk/htdocs/</url>
 		</site>
 	</distributionManagement>
 	
