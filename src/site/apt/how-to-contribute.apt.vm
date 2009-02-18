@@ -1,0 +1,23 @@
+ ----
+ How to Contribute
+ ----
+ Vojtech Szocs
+ ----
+ 17 February 2009
+ ----
+
+Contributing to ${df}
+  
+  As with any open source project, there are several ways you can help:
+  
+  * report bugs, feature requests and other issues in our {{{./issue-tracking.html} issue tracker}}
+  
+  * submit patches to reported issues (both those you find or that others have filed)
+  
+  * help with the documentation by pointing out areas that are lacking or unclear
+  
+How to join the project
+  
+  Users participating to a higher extent (reporting issues, submitting patches, etc.) will be invited to join the project as contributors.
+  
+  Becoming a committer is possible for contributors showing high commitment to the project and its community as well as proven technical abilities.

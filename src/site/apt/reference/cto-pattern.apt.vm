@@ -1,0 +1,274 @@
+ ----
+ Criteria transfer object pattern
+ ----
+ Vojtech Szocs
+ ----
+ 10 February 2009
+ ----
+
+Criteria transfer object pattern
+  
+  Use the criteria transfer object (CTO) pattern to construct client-side versions of persistent entity criteria instances and pass them through the chosen communication mechanism
+  to the remote server-side component, employing a CTO converter for seamless CTO-to-criteria transformation.
+  
+Sections
+  
+  * {{{./cto-pattern.html#Overview} Overview}}
+  
+  * {{{./cto-pattern.html#Introduction} Introduction}}
+  
+  * {{{./cto-pattern.html#CTO_class_overview_client} CTO class overview (client)}}
+  
+  * {{{./cto-pattern.html#CTO_class_overview_server} CTO class overview (server)}}
+  
+  * {{{./cto-pattern.html#Sample_CTO_converter} Sample CTO converter}}
+  
+  * {{{./cto-pattern.html#FAQ} FAQ}}
+  
+  []
+  
+External resources
+  
+  * {{{http://java.sun.com/blueprints/corej2eepatterns/Patterns/TransferObject.html} Transfer object pattern}}
+  
+  []
+  
+* {Overview}
+  
+  * Project: <${df-core}>
+  
+  * Package reference: <<<com.anasoft.os.daofusion.cto.*>>>
+  
+* {Introduction}
+  
+  Even though the criteria transfer object (CTO) pattern might sound like a buzzword, it's actually a concept that aims for application scenarios with loose coupling between the client
+  and the server. The primary goal here is to enable clients to construct <serializable> versions of persistent entity criteria instances (criteria transfer objects) and pass them through
+  the chosen communication mechanism to remote components which can convert them into <<<PersistentEntityCriteria>>> seamlessly.
+  
+  Using this concept, building complex data grids that use filtering, sorting and paging functionality can be accomplished in a very easy way, assuming that:
+  
+  * GUI changes within grid elements (filter value widgets, sorted column headers, paging options, etc.) will change the corresponding CTO accordingly
+  
+  * data refresh operation will pass the CTO as an argument of a remote method call using the chosen communication mechanism, receiving requested results and populating the data grid thereafter
+  
+  []
+  
+  Besides standard Java based client-server application scenarios, the CTO pattern proves to be useful within the world of {{{http://en.wikipedia.org/wiki/Rich_Internet_application} RIA}}
+  (rich internet application) technologies such as {{{http://code.google.com/webtoolkit/} Google Web Toolkit}} or {{{http://www.adobe.com/products/flex/} Flex}}. In general, any client technology
+  that allows direct or indirect modification of the Java based CTO instance can benefit from the CTO pattern.
+  
+  One important thing to note here is that the CTO pattern defines client-side persistent entity criteria transfer object model along with its server-side processing (the "request"
+  part of the client-server communication). CTO pattern does NOT define "response" the server-side component should produce after retrieving results based on converted CTO instance
+  - this is a task left to the developer based on the {{{http://java.sun.com/blueprints/corej2eepatterns/Patterns/TransferObject.html} transfer object}} strategy for the given project.
+  
+* {CTO class overview (client)}
+  
+  <<<CriteriaTransferObject>>> represents a generic CTO class containing persistent entity criteria as well as the paging specification. <<<CriteriaTransferObject>>> acts as a map-based container
+  for <<<FilterAndSortCriteria>>> instances (the key is the <propertyId> of the given <<<FilterAndSortCriteria>>> instance). This means that all <<<FilterAndSortCriteria>>> instances must have unique
+  <propertyId>'s within the same transfer object.
+  
+  <<<FilterAndSortCriteria>>> defines basic filter and sort criteria for a single property of the target persistent entity. This class is essentially an analogy of server-side <<<FilterCriterion>>>
+  and <<<SortCriterion>>> classes combined together in a simple client-side implementation. The <propertyId> mentioned above is a symbolic persistent entity property identifier which is resolved
+  into the corresponding <propertyPath> back on the server via the CTO converter. <<<FilterAndSortCriteria>>> handles filter values as simple strings to avoid client-side type conversions,
+  making things a bit more generic. Same as the <propertyId>, all filter values are converted into their typed object representations (integers, dates, etc.) during the CTO conversion
+  process. Note that it is common to pass multiple filter values to a single <<<FilterAndSortCriteria>>> instance - a good example would be a date property of an entity which needs to fall
+  between two boundary values.
+  
+  Note that it is important to bind GUI changes within grid elements (filter value widgets, sorted column headers, paging options, etc.) to the associated CTO instance, for example:
+  
++-----+
+    private final CriteriaTransferObject cto = new CriteriaTransferObject();
+    
+    public void onChangeValue(FilterWidget widget) {
+        final String propertyId = widget.getPropertyId();
+        final String value = widget.getValue();
+        cto.get(propertyId).setFilterValue(value);
+    }
++-----+
+  
+  These two simple classes conclude the client part of the CTO pattern.
+  
+* {CTO class overview (server)}
+  
+  <<<CriteriaTransferObjectConverter>>> interface represents the general CTO converter contract defining conversion pattern between <<<CriteriaTransferObject>>> instances and their corresponding
+  <<<PersistentEntityCriteria>>> counterparts:
+  
++-----+
+public interface CriteriaTransferObjectConverter {
+
+	/**
+	 * Converts the given CriteriaTransferObject instance into a corresponding PersistentEntityCriteria according to property mappings defined by the requested property mapping group.
+	 */
+	public PersistentEntityCriteria convert(CriteriaTransferObject transferObject, String mappingGroupName);
+	
+}
++-----+
+  
+  <<<CriteriaTransferObjectConverter>>> uses the notion of property mapping groups to decide which mapping rules to apply for which CTO instance.
+  
+  <<<NestedPropertyCriteriaBasedConverter>>> is the default general purpose <<<CriteriaTransferObjectConverter>>> implementation that uses <<<NestedPropertyCriteria>>> as the server-side criteria
+  implementation. <<<NestedPropertyCriteriaBasedConverter>>> acts as a map-based container for <<<NestedPropertyMappingGroup>>> instances, which in turn contain a map of <<<NestedPropertyMapping>>>
+  instances for specific properties of the target persistent entity. <<<NestedPropertyCriteriaBasedConverter>>> tries to hide internal <<<NestedPropertyMappingGroup>>> processing away from the
+  end-user via the <addMapping> method, which is a preferred way of configuring this CTO converter implementation.
+  
+  As you might guess, a <<<NestedPropertyMapping>>> is pretty essential for the <<<NestedPropertyCriteriaBasedConverter>>> in terms of its configuration. <<<NestedPropertyMapping>>> represents an
+  abstract CTO mapping that supports a nested property of the target persistent entity (just like the <<<NestedPropertyCriterion>>> mentioned in the {{{./entity-criteria-api.html} previous section}}).
+  <<<NestedPropertyMapping>>> defines a general relation between <<<CriteriaTransferObject>>> and <<<NestedPropertyCriteria>>> for a single property of the target persistent entity using the <propertyId>
+  concept as shown above. Updating the server-side criteria instance according to client-side <<<FilterAndSortCriteria>>> is achieved via the abstract <apply> method (this one is called for each
+  <<<NestedPropertyMapping>>> within a <<<NestedPropertyMappingGroup>>> during the CTO conversion):
+  
++-----+
+	/**
+	 * Applies query constraints defined by the clientSideCriteria
+	 * to the serverSideCriteria according to the property mapping
+	 * implementation.
+	 */
+	public abstract void apply(FilterAndSortCriteria clientSideCriteria, NestedPropertyCriteria serverSideCriteria);
++-----+
+  
+  <<<FilterAndSortMapping>>> is the default <<<NestedPropertyMapping>>> subclass that is intended for direct use in conjunction with <<<NestedPropertyCriteriaBasedConverter>>>. Presence of a custom
+  <<<PropertyFilterCriterionProvider>>> implementation within the <<<FilterAndSortMapping>>> indicates the use of the filtering functionality (if not <null>, the given <<<PropertyFilterCriterionProvider>>>
+  implementation will be used to construct a <<<FilterCriterion>>> instance to be added to the server-side criteria).
+  
+  In order to resolve string-based filter values received from the corresponding <<<FilterAndSortCriteria>>> instance into their typed object representations, a custom <<<FilterValueObjectProvider>>>
+  implementation needs to be provided as well (assuming the use of the filtering functionality):
+  
++-----+
+public interface FilterValueObjectProvider {
+
+	/**
+	 * Returns a typed object representation of
+	 * the given string-based filter value.
+	 */
+	public Object getObject(String stringValue);
+	
+}
++-----+
+  
+  Note that all filter values converted via this interface will be passed as <directValues> to the underlying <<<FilterCriterion>>> instance - <<<NestedPropertyCriteriaBasedConverter>>>
+  generally doesn't use the filter object concept since the structure and type of filter values within <<<FilterAndSortCriteria>>> make it too generic for it to be used correctly
+  (remember that the filter object is efficient in applications where GUI changes can be seamlessly propagated to the server).
+  
+  As for the sorting functionality, no additional settings are necessary since the <<<FilterAndSortCriteria>>> instance contains all supported sort options by default. Note that the
+  sorting functionality (underlying <<<SortCriterion>>> instance processing) can be turned off by setting <<<FilterAndSortCriteria>>>'s <sortAscending> property to <null>.
+  
+* {Sample CTO converter}
+  
+  Let's build a sample CTO converter that demonstrates basic property mapping configuration. One way of doing this is to extend the <<<NestedPropertyCriteriaBasedConverter>>> class and
+  provide property mappings within the implementation itself:
+  
++-----+
+public final class DirectValueCriterionProviders {
+
+    private static abstract class UnaryDirectValueProvider implements PropertyFilterCriterionProvider {
+        public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+            return (directValues.length == 1) && (directValues[0] != null);
+        }
+    }
+    
+    private static abstract class BinaryDirectValueProvider implements PropertyFilterCriterionProvider {
+        public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+            return (directValues.length == 2) && (directValues[0] != null) && (directValues[1] != null);
+        }
+    }
+    
+	public static final PropertyFilterCriterionProvider LIKE = new UnaryDirectValueProvider() {
+		public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+			return Restrictions.like(targetPropertyName, directValues[0]);
+		}
+	};
+	
+	public static final PropertyFilterCriterionProvider EQ = new UnaryDirectValueProvider() {
+		public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+			return Restrictions.eq(targetPropertyName, directValues[0]);
+		}
+	};
+	
+	public static final PropertyFilterCriterionProvider BETWEEN = new BinaryDirectValueProvider() {
+		public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+			return Restrictions.between(targetPropertyName, directValues[0], directValues[1]);
+		}
+	};
+	
+	private DirectValueCriterionProviders() {
+	}
+	
+}
+
+public class SampleConverter extends NestedPropertyCriteriaBasedConverter {
+
+	public static final String MAPPING_GROUP_CUSTOMER = "customer";
+	
+	public static final String CUSTOMER_NAME_ID = "name";
+	public static final String CUSTOMER_NAME_PATH = "name";
+	
+	public static final String CUSTOMER_FAVNO_ID = "favNo";
+	public static final String CUSTOMER_FAVNO_PATH = "userProfile.favoriteNumber";
+	
+	public static final String CUSTOMER_JOINDATE_ID = "joinDate";
+	public static final String CUSTOMER_JOINDATE_PATH = "accountCreated";
+	
+	public static final String DATE_FORMAT = "yyyy.MM.dd HH:mm";
+	
+	public void initMappings() {
+		addStringMapping(MAPPING_GROUP_CUSTOMER, CUSTOMER_NAME_ID, CUSTOMER_NAME_PATH);
+		addIntegerMapping(MAPPING_GROUP_CUSTOMER, CUSTOMER_FAVNO_ID, CUSTOMER_FAVNO_PATH);
+		addDateMapping(MAPPING_GROUP_CUSTOMER, CUSTOMER_JOINDATE_ID, CUSTOMER_JOINDATE_PATH);
+	}
+	
+	public Date parseDate(String dateString) {
+		try {
+			return new SimpleDateFormat(DATE_FORMAT).parse(dateString);
+		} catch (ParseException e) {
+			// log the exception
+			return null;
+		}
+	}
+	
+	private void addStringMapping(String mappingGroupName, String propertyId, String propertyPath) {
+		addMapping(mappingGroupName, new FilterAndSortMapping(
+				propertyId,
+				propertyPath,
+				DirectValueCriterionProviders.LIKE,
+				new FilterValueObjectProvider() {
+					public Object getObject(String stringValue) {
+						return stringValue;
+					}
+				}));
+	}
+	
+	private void addIntegerMapping(String mappingGroupName, String propertyId, String propertyPath) {
+		addMapping(mappingGroupName, new FilterAndSortMapping(
+				propertyId,
+				propertyPath,
+				DirectValueCriterionProviders.EQ,
+				new FilterValueObjectProvider() {
+					public Object getObject(String stringValue) {
+						return Integer.valueOf(stringValue);
+					}
+				}));
+	}
+	
+	private void addDateMapping(String mappingGroupName, String propertyId, String propertyPath) {
+		addMapping(mappingGroupName, new FilterAndSortMapping(
+				propertyId,
+				propertyPath,
+				DirectValueCriterionProviders.BETWEEN,
+				new FilterValueObjectProvider() {
+					public Object getObject(String stringValue) {
+						return parseDate(stringValue);
+					}
+				}));
+	}
+	
+}
++-----+
+  
+  The <<<SampleConverter>>> contains a single mapping group that defines some property mappings for the fictional <<<Customer>>> entity (name, favorite number and join date). Things get
+  usually far more complex than this, but basically this is the way how you would typically configure the <<<NestedPropertyCriteriaBasedConverter>>> instance. Note that the <enabled> method
+  of the <<<PropertyFilterCriterionProvider>>> interface could be used for disabling filtering within the given <<<FilterAndSortMapping>>>, just like as in the sample <<<OrderDaoImpl>>> from
+  the {{{./entity-criteria-api.html} previous section}}.
+  
+* {FAQ}
+  
+  We recommend browsing through the {{{./reference-faq.html} Reference Documentation FAQ}} for detailed information on related issues.
