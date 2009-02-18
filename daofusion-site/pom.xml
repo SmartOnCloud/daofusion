@@ -24,9 +24,7 @@
 		<df-groupIdPath>com/anasoft/os</df-groupIdPath>
 		
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		
 		<doxia-module-highlight.version>1.0-alpha-11</doxia-module-highlight.version>
-		<maven-stylus-skin.version>1.1</maven-stylus-skin.version>
 	</properties>
 	
 	<build>
