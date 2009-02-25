@@ -44,7 +44,7 @@ public class CriteriaTransferObject implements Serializable {
     private Integer firstResult;
     private Integer maxResults;
 	
-    private final Map<String, FilterAndSortCriteria> criteriaMap = new HashMap<String, FilterAndSortCriteria>();
+    private Map<String, FilterAndSortCriteria> criteriaMap = new HashMap<String, FilterAndSortCriteria>();
     
 	/**
 	 * @return Index of the starting element or <tt>null</tt>
