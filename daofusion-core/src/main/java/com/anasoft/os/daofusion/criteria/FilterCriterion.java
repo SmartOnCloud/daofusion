@@ -78,6 +78,30 @@ public class FilterCriterion extends NestedPropertyCriterion {
     }
     
     /**
+     * Creates a new filter criterion.
+     * 
+     * <p>
+     * 
+     * This is a convenience constructor supporting single filter object value path
+     * or a single direct value, depending on <tt>useFilterObjectPathResolution</tt>.
+     * 
+     * @param propertyPath Dot-separated logical path to the target property.
+     * @param associationJoinType Type of join to use in case of a nested
+     * (non-direct) persistent entity property (can be <tt>null</tt> otherwise).
+     * @param value Dot-separated logical path pointing to a value reachable
+     * from the root filter object OR a direct value provided by the
+     * user.
+     * @param useFilterObjectPathResolution <tt>true</tt> to treat <tt>value</tt>
+     * as a filter object value path, <tt>false</tt> to treat <tt>value</tt> as
+     * a direct value provided by the user.
+     * @param filterCriterionProvider Custom {@link PropertyFilterCriterionProvider}
+     * implementation.
+     */
+    public FilterCriterion(String propertyPath, NestedPropertyJoinType associationJoinType, Object value, boolean useFilterObjectPathResolution, PropertyFilterCriterionProvider filterCriterionProvider) {
+        this(propertyPath, associationJoinType, useFilterObjectPathResolution ? new String[] { (String) value } : null, useFilterObjectPathResolution ? null : new Object[] { value }, filterCriterionProvider);
+    }
+    
+    /**
      * Creates a new filter criterion using the default nested persistent entity
      * property join type.
      * 
@@ -97,7 +121,7 @@ public class FilterCriterion extends NestedPropertyCriterion {
      * implementation.
      */
     public FilterCriterion(String propertyPath, Object value, boolean useFilterObjectPathResolution, PropertyFilterCriterionProvider filterCriterionProvider) {
-       this(propertyPath, NestedPropertyJoinType.DEFAULT, useFilterObjectPathResolution ? new String[] { (String) value } : null, useFilterObjectPathResolution ? null : new Object[] { value }, filterCriterionProvider);
+        this(propertyPath, NestedPropertyJoinType.DEFAULT, value, useFilterObjectPathResolution, filterCriterionProvider);
     }
     
     /**
