@@ -21,9 +21,9 @@
 	</issueManagement>
 	
 	<scm>
-		<url>http://code.google.com/p/daofusion/source/browse/tags/daofusion-1.0.0</url>
-		<connection>scm:svn:http://daofusion.googlecode.com/svn/tags/daofusion-1.0.0</connection>
-		<developerConnection>scm:svn:https://daofusion.googlecode.com/svn/tags/daofusion-1.0.0</developerConnection>
+		<url>http://code.google.com/p/daofusion/source/browse/trunk</url>
+		<connection>scm:svn:http://daofusion.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://daofusion.googlecode.com/svn/trunk</developerConnection>
 	</scm>
 	
 	<licenses>
