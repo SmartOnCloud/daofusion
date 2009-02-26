@@ -4,7 +4,7 @@
 	<groupId>com.anasoft.os</groupId>
 	<artifactId>daofusion-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<name>DAO Fusion</name>
 	
 	<url>http://opensource.anasoft.sk/daofusion-site/</url>
