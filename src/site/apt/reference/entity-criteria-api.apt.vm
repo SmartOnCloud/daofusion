@@ -51,7 +51,10 @@ External resources
   If you look at the generic <<<AbstractHibernateEntityDao>>> implementation you will notice that it merely delegates the basic DAO operations to the underlying Hibernate <<<Session>>>. Things
   should be easy, right? One of the main benefits of having a standard DAO interface though is the ability to define a custom criteria API that should cover 90% of the most typical
   use cases out there. This is exactly the purpose of the <<<PersistentEntityCriteria>>> interface and associated classes - to shield an average user from any Hibernate-specific implementation
-  details while not restricting advanced users from using the underlying {{{http://www.hibernate.org/hib_docs/v3/api/org/hibernate/Criteria.html} Hibernate Criteria API}} directly if needed at the same time.
+  details while not restricting advanced users from using the underlying {{{http://www.hibernate.org/hib_docs/v3/api/org/hibernate/Criteria.html} Hibernate Criteria API}} directly if needed at
+  the same time. In fact, using the <Hibernate Criteria API> directly in your DAO implementations should be the last resort for all but the most complex cases where a custom <<<PersistentEntityCriteria>>>
+  implementation is not possible (remember that even custom <<<PersistentEntityCriteria>>> implementations can be efficiently and consistently reused between multiple DAOs as opposed to the direct
+  <Hibernate Criteria API> approach).
   
   <<<PersistentEntityCriteria>>> interface defines the general contract for persistent entity query constraints bound to the underlying Hibernate <<<Criteria>>> instance. ${df} enforces the use of
   <Hibernate Criteria API> under the hood to ensure database portability, making it generic across multiple databases (no dynamic HQL / SQL generation involved).
@@ -196,19 +199,6 @@ public static final PropertyFilterCriterionProvider BETWEEN_USING_DIRECT_VALUES
   to employ custom constraints on the <<<Order>>> entity:
   
 +-----+
-public class PagingAndSortDefinition {
-
-    private Integer firstResult;
-    private Integer maxResults;
-
-    private boolean sortEnabled;
-    private String sortPropertyPath;
-    private boolean sortAscending;
-
-    // getters and setters go here
-
-}
-
 public abstract class UnaryDirectValueProvider implements PropertyFilterCriterionProvider {
 
     public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
@@ -225,13 +215,25 @@ public abstract class UnaryFilterObjectValueProvider implements PropertyFilterCr
 
 }
 
+public class QueryDefinition<T extends Persistable<?>> {
+
+    private Integer firstResult;
+    private Integer maxResults;
+
+    private T filterObject;
+    private boolean filterEnabled;
+
+    private boolean sortEnabled;
+    private String sortPropertyPath;
+    private boolean sortAscending;
+
+    // getters and setters go here
+
+}
+
 public interface OrderDao extends PersistentEntityDao<Order, Long> {
 
-    public Order getFilterObject();
-
-    public void setFilterEnabled(boolean filterEnabled);
-
-    public List<Order> getOrders(PagingAndSortDefinition pagingAndSort,
+    public List<Order> getOrders(final QueryDefinition<Order> query,
         Integer minOrderItemCount, final String customerNameFilter);
 
 }
@@ -239,43 +241,23 @@ public interface OrderDao extends PersistentEntityDao<Order, Long> {
 public class OrderDaoImpl extends EntityManagerAwareEntityDao<Order, Long>
     implements OrderDao {
 
-    private final Order filterObject;
-    private boolean filterEnabled = false;
-    
-    // the user is responsible for initializing the filterObject as well
-    // as its associated objects properly according to filter constraints
-    public OrderDaoImpl(Order filterObject) {
-        super();
-        this.filterObject = filterObject;
-    }
-
     public Class<Order> getEntityClass() {
         return Order.class;
     }
 
-    // modify the state of filterObject to change the actual
-    // filter criteria bound to it
-    public Order getFilterObject() {
-        return filterObject;
-    }
-
-    public void setFilterEnabled(boolean filterEnabled) {
-        this.filterEnabled = filterEnabled;
-    }
-
-    public List<Order> getOrders(PagingAndSortDefinition pagingAndSort,
+    public List<Order> getOrders(final QueryDefinition<Order> query,
         Integer minOrderItemCount, final String customerNameFilter) {
 
         final NestedPropertyCriteria criteria = new NestedPropertyCriteria();
 
-        criteria.setFirstResult(pagingAndSort.getFirstResult());
-        criteria.setMaxResults(pagingAndSort.getMaxResults());
+        criteria.setFirstResult(query.getFirstResult());
+        criteria.setMaxResults(query.getMaxResults());
 
-        criteria.setFilterObject(filterObject);
+        criteria.setFilterObject(query.getFilterObject());
 
         // direct property filter criterion (using the filterObject)
-        criteria.add(new FilterCriterion("creationDate", "creationDate",
-            true, new UnaryFilterObjectValueProvider() {
+        criteria.add(new FilterCriterion("creationDate", "creationDate", true,
+            new UnaryFilterObjectValueProvider() {
 
             public Criterion getCriterion(String targetPropertyName,
                 Object[] filterObjectValues, Object[] directValues) {
@@ -285,13 +267,14 @@ public class OrderDaoImpl extends EntityManagerAwareEntityDao<Order, Long>
 
             @Override
             public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return super.enabled(filterObjectValues, directValues) && filterEnabled;
+                return super.enabled(filterObjectValues, directValues)
+                    && query.isFilterEnabled();
             }
         }));
 
         // nested property filter criterion (using the filterObject)
-        criteria.add(new FilterCriterion("customer.email", "customer.email",
-            true, new UnaryFilterObjectValueProvider() {
+        criteria.add(new FilterCriterion("customer.email", "customer.email", true,
+            new UnaryFilterObjectValueProvider() {
 
             public Criterion getCriterion(String targetPropertyName,
                 Object[] filterObjectValues, Object[] directValues) {
@@ -301,13 +284,14 @@ public class OrderDaoImpl extends EntityManagerAwareEntityDao<Order, Long>
 
             @Override
             public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return super.enabled(filterObjectValues, directValues) && filterEnabled;
+                return super.enabled(filterObjectValues, directValues)
+                    && query.isFilterEnabled();
             }
         }));
 
         // direct property filter criterion (using a direct value)
-        criteria.add(new FilterCriterion("orderItems", minOrderItemCount,
-            false, new UnaryDirectValueProvider() {
+        criteria.add(new FilterCriterion("orderItems", minOrderItemCount, false,
+            new UnaryDirectValueProvider() {
 
             public Criterion getCriterion(String targetPropertyName,
                 Object[] filterObjectValues, Object[] directValues) {
@@ -317,14 +301,15 @@ public class OrderDaoImpl extends EntityManagerAwareEntityDao<Order, Long>
 
             @Override
             public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return super.enabled(filterObjectValues, directValues) && filterEnabled;
+                return super.enabled(filterObjectValues, directValues)
+                    && query.isFilterEnabled();
             }
         }));
 
-        // nested property filter criterion (bypassing the direct value mechanism
-        // via the final keyword)
-        criteria.add(new FilterCriterion("customer.name", null,
-            false, new PropertyFilterCriterionProvider() {
+        // nested property filter criterion (bypassing the direct value
+        // mechanism via the final keyword)
+        criteria.add(new FilterCriterion("customer.name", null, false,
+            new PropertyFilterCriterionProvider() {
 
             public Criterion getCriterion(String targetPropertyName,
                 Object[] filterObjectValues, Object[] directValues) {
@@ -333,13 +318,12 @@ public class OrderDaoImpl extends EntityManagerAwareEntityDao<Order, Long>
             }
 
             public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return (customerNameFilter != null) && filterEnabled;
+                return (customerNameFilter != null) && query.isFilterEnabled();
             }
         }));
 
-        if (pagingAndSort.isSortEnabled()) {
-            criteria.add(new SortCriterion(pagingAndSort.getSortPropertyPath(),
-                pagingAndSort.isSortAscending()));
+        if (query.isSortEnabled()) {
+            criteria.add(new SortCriterion(query.getSortPropertyPath(), query.isSortAscending()));
         }
 
         return query(criteria);
@@ -348,17 +332,25 @@ public class OrderDaoImpl extends EntityManagerAwareEntityDao<Order, Long>
 }
 +-----+
   
-  By modifying the state of the <filterObject> via the <getFilterObject> method, the user is able to change the actual filter criteria that use filter object values without touching
-  the underlying <<<NestedPropertyCriteria>>> in any way. This is essentially the main purpose of the filter object approach - to separate the criteria definition from the actual filter
-  values accessible from a single object. In general, the filter object approach is especially useful in applications where GUI changes can be seamlessly propagated to the server,
-  modifying the filter object instance of the given server-side component (for example, a {{{http://java.sun.com/javaee/javaserverfaces/} Java Server Faces}} managed bean bound to
-  web page using server-side AJAX callback handlers). Note that the abstract <<<PropertyFilterCriterionProvider>>> implementations in this example ensure that corresponding <<<FilterCriterion>>>
-  instances won't be processed unless the filter data is consistent (the filter criteria won't be applied unless the filter object or <minOrderItemCount> contain proper values).
+  In this example, <<<QueryDefinition>>> represents a generic persistent entity query that supports filtering, sorting and paging capabilities of the underlying <<<NestedPropertyCriteria>>>
+  implementation (notice that a single sort property is supported in this case though). The user is responsible for initializing the <filterObject> as well as its associated objects properly
+  according to filter constraints bound to it before passing it to the <getOrders> method as part of the <<<QueryDefinition>>>. By modifying the state of the <filterObject>, the user is able
+  to change the actual filter criteria that use filter object values without touching the underlying <<<NestedPropertyCriteria>>> in any way. This is essentially the main purpose of the filter
+  object approach - to separate the criteria definition from the actual filter values accessible from a single object.
+  
+  One important thing to note here is that our sample DAO implementation is stateless, which is generally recommended for most cases. Stateless DAOs can be efficiently managed as
+  {{{http://en.wikipedia.org/wiki/Singleton_pattern} singleton}} beans (e.g. within a Spring context) and injected into service classes without having to worry about
+  {{{http://en.wikipedia.org/wiki/Thread-safety} thread safety}} issues. This is especially true for web applications where each request is bound to a dedicated worker thread.
+  
+  In general, the filter object approach is especially useful in applications where GUI changes can be seamlessly propagated to the server, modifying the filter object instance of the given
+  server-side component (for example, a {{{http://java.sun.com/javaee/javaserverfaces/} Java Server Faces}} managed bean bound to web page using server-side AJAX callback handlers). Note that
+  the abstract <<<PropertyFilterCriterionProvider>>> implementations in the above example ensure that corresponding <<<FilterCriterion>>> instances won't be processed unless the filter data is
+  consistent (the filter criteria won't be applied unless the filter object or <minOrderItemCount> contain proper values).
   
   In certain scenarios where the client side and server side connect more loosely to each other using a custom communication mechanism (e.g. <GWT RPC> for {{{http://code.google.com/webtoolkit/} Google Web Toolkit}}
-  or {{{http://en.wikipedia.org/wiki/Action_Message_Format} AMF}} for {{{http://www.adobe.com/products/flex/} Flex}}), direct filter object changes are not possible since the client side typically uses some local data model bound to the GUI and calls remote services when necessary.
-  Although it is possible to change the filter object accordingly using some server-side request processor, it is much more convenient to use the {{{./cto-pattern.html} criteria transfer object pattern}}
-  in this situation.
+  or {{{http://en.wikipedia.org/wiki/Action_Message_Format} AMF}} for {{{http://www.adobe.com/products/flex/} Flex}}), direct filter object changes are not possible since the client side typically
+  uses some local data model bound to the GUI and calls remote services when necessary. Although it is possible to change the filter object accordingly using some server-side request processor,
+  it is much more convenient to use the {{{./cto-pattern.html} criteria transfer object pattern}} in this situation.
   
 * {FAQ}
   

@@ -1,0 +1,28 @@
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+	
+	<properties>
+		<title>Release changelog</title>
+	</properties>
+	
+	<body>
+		<release version="1.0.1" date="2009-02-26" description="Maintenance release for the 1.0.x branch">
+			<action dev="vojtech.szocs" type="fix">
+				Removed "final" keyword for fields within CriteriaTransferObject and FilterAndSortCriteria
+				to allow full class serialization.
+			</action>
+			<action dev="vojtech.szocs" type="add">
+				Added convenience constructor to FilterCriterion regarding single filter object value path
+				or a single direct value for a specific NestedPropertyJoinType.
+			</action>
+		</release>
+		
+		<release version="1.0.0" date="2009-02-18" description="Initial release">
+			<action dev="vojtech.szocs" type="add">
+        		Initial release.
+      		</action>
+		</release>
+	</body>
+	
+</document>

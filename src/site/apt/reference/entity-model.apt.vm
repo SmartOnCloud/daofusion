@@ -86,7 +86,8 @@ External resources
   Last but not least, <<<PersistentEnumeration>>> as an extension of the <<<PersistentEntity>>> using <<<Long>>> as the primary key column type is suitable for situations when you need dynamic
   enumerations to be stored within the database. <<<PersistentEnumeration>>> contains a name field with unique, not-updatable and not-null constraints which can be used by the
   <<<PersistentEnumerationDao>>> for string-based enumeration lookup. Unlike <<<PersistentEntity>>>, <<<PersistentEnumeration>>> provides the <hashCode> / <equals> method implementation based
-  on the name field.
+  on the name field. Note that the <<<PersistentEnumeration>>> does not contain a version field like <<<MutablePersistentEntity>>> does - users can add this field in enumeration subclasses
+  on their own if they require version-based optimistic locking strategy support.
   
 * {Implementing <hashCode> / <equals> (synthetic generated value approach)}
   

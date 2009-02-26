@@ -303,6 +303,9 @@ public class CustomCriteria extends NestedPropertyCriteria {
 				<p>You're right, but what would be the reason of duplicating the <em>Hibernate Criteria API</em> for this purpose? ${df} aims to cover 90% of the most typical
 				use cases out there (typical <em>CRUD</em> and query operations) and leaves the rest to developers via <tt>BaseHibernateDataAccessor</tt>'s <em>getHibernateCriteria</em>,
 				<em>getSession</em> and <em>rowCount</em> methods.</p>
+				<p>In fact, using the <em>Hibernate Criteria API</em> directly in your DAO implementations should be the last resort for all but the most complex cases where a custom
+				<tt>PersistentEntityCriteria</tt> implementation is not possible (remember that even custom <tt>PersistentEntityCriteria</tt> implementations can be efficiently and
+				consistently reused between multiple DAOs as opposed to the direct <em>Hibernate Criteria API</em> approach).</p>
 			</answer>
 		</faq>
 	</part>

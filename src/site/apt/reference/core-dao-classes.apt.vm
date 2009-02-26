@@ -218,7 +218,9 @@ public abstract class BaseHibernateDataAccessor {
   
   ${df} tries to do its best when it comes to defining persistent entity query constraints via the <<<PersistentEntityCriteria>>> interface. You are, however, free to use the underlying
   <Hibernate Criteria API> on your own using the <getHibernateCriteria>, <getSession> and <rowCount> methods. ${df} doesn't try to hide the <Hibernate Criteria API> away from you, it just defines
-  its own flexible {{{./entity-criteria-api.html} persistent entity criteria API}} that should cover 90% of the most typical use cases out there.
+  its own flexible {{{./entity-criteria-api.html} persistent entity criteria API}} that should cover 90% of the most typical use cases out there. In fact, using the <Hibernate Criteria API> directly
+  in your DAO implementations should be the last resort for all but the most complex cases where a custom <<<PersistentEntityCriteria>>> implementation is not possible (remember that even custom
+  <<<PersistentEntityCriteria>>> implementations can be efficiently and consistently reused between multiple DAOs as opposed to the direct <Hibernate Criteria API> approach).
   
 * {Transaction handling}
   

@@ -8,12 +8,12 @@
 	</skin>
 	
 	<bannerLeft>
-		<src>images/banner-logo.gif</src>
+		<src>images/top-logo.gif</src>
 		<href>${project.parent.url}</href>
 		<alt>${project.parent.name} logo</alt>
 	</bannerLeft>
 	<bannerRight>
-		<src>images/banner-right.gif</src>
+		<src>images/top-right.gif</src>
 	</bannerRight>
 	
 	<body>
@@ -33,9 +33,14 @@
 		
 		<menu name="Getting Started">
 			<item name="Download" href="download.html" />
-			<item name="Tutorials" href="tutorial/tutorial-index.html" />
 			<item name="Dependencies" href="dependencies.html" />
-			<item name="Maven Integration" href="maven-integration.html" />
+			<item name="Changelog" href="changes-report.html" />
+			<item name="Tutorials" href="tutorial/tutorial-index.html" />
+		</menu>
+		
+		<menu name="How to...">
+			<item name="Maven Integration" href="howto/maven-integration.html" />
+			<item name="GWT Integration" href="howto/gwt-integration.html" />
 		</menu>
 		
 		<menu name="Reference Documentation">

@@ -225,7 +225,7 @@ public class SampleConverter extends NestedPropertyCriteriaBasedConverter {
 
     public static final String DATE_FORMAT = "yyyy.MM.dd HH:mm";
 
-    public void initMappings() {
+    public SampleConverter() {
         addStringMapping(MAPPING_GROUP_CUSTOMER, CUSTOMER_NAME_ID, CUSTOMER_NAME_PATH);
         addIntegerMapping(MAPPING_GROUP_CUSTOMER, CUSTOMER_FAVNO_ID, CUSTOMER_FAVNO_PATH);
         addDateMapping(MAPPING_GROUP_CUSTOMER, CUSTOMER_JOINDATE_ID, CUSTOMER_JOINDATE_PATH);

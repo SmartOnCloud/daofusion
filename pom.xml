@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.anasoft.os</groupId>
 		<artifactId>daofusion-parent</artifactId>
-		<version>1.0.0</version>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 	
 	<modelVersion>4.0.0</modelVersion>
@@ -19,7 +19,7 @@
 		<df-short>daofusion</df-short>
 		<df-core>daofusion-core</df-core>
 		<df-test>daofusion-test</df-test>
-		<df-latestStableVersion>1.0.0</df-latestStableVersion>
+		<df-latestStableVersion>1.0.1</df-latestStableVersion>
 		<df-groupIdPath>com/anasoft/os</df-groupIdPath>
 		
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -34,13 +34,30 @@
 				<configuration>
 					<outputEncoding>${project.reporting.outputEncoding}</outputEncoding>
 				</configuration>
-				<!--<dependencies>
+				<dependencies>
 					<dependency>
 						<groupId>sk.dvsk.maven</groupId>
 						<artifactId>doxia-module-highlight</artifactId>
 						<version>${doxia-module-highlight.version}</version>
 					</dependency>
-				</dependencies>-->
+				</dependencies>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changes-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>validate-changes</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>changes-validate</goal>
+						</goals>
+						<configuration>
+							<failOnError>true</failOnError>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -63,6 +80,23 @@
 							<report>project-team</report>
 							<report>issue-tracking</report>
 							<report>scm</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-changes-plugin</artifactId>
+				<configuration>
+					<issueLinkTemplatePerSystem>
+						<default>%URL%/detail?id=%ISSUE%</default>
+					</issueLinkTemplatePerSystem>
+				</configuration>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>changes-report</report>
 						</reports>
 					</reportSet>
 				</reportSets>

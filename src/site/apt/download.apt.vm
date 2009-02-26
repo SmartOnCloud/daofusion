@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 18 February 2009
+ 26 February 2009
  ----
 
 Download ${df}
@@ -18,10 +18,6 @@ Download ${df}
 | <<${df-test}>> | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-test}/${df-latestStableVersion}/${df-test}-${df-latestStableVersion}.jar} ${df-test}-${df-latestStableVersion}.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-test}/${df-latestStableVersion}/${df-test}-${df-latestStableVersion}-sources.jar} ${df-test}-${df-latestStableVersion}-sources.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-test}/${df-latestStableVersion}/${df-test}-${df-latestStableVersion}-javadoc.jar} ${df-test}-${df-latestStableVersion}-javadoc.jar}} |
 *------------+--------+---------+---------*
   
-Project dependencies
+  See the {{{./changes-report.html} changelog}} for more information about changes in this release.
   
-  Specific ${df} projects depend on certain libraries and APIs - see the {{{./dependencies.html} dependencies}} page for more information.
-  
-Maven integration
-  
-  If you're a {{{http://maven.apache.org/} Maven}} user, visit the {{{./maven-integration.html} Maven integration}} page for details about using ${df} within your projects.
+  We also recommend checking out the {{{./dependencies.html} dependencies}} page which lists libraries and APIs required by specific ${df} projects.
