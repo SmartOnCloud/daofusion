@@ -1,0 +1,158 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.anasoft.os</groupId>
+	<artifactId>daofusion-parent</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>DAO Fusion</name>
+	
+	<url>http://opensource.anasoft.sk/daofusion-site/</url>
+	<inceptionYear>2008</inceptionYear>
+	
+	<organization>
+		<name>ANASOFT</name>
+		<url>http://www.anasoft.com/</url>
+	</organization>
+	
+	<issueManagement>
+		<system>GoogleCode</system>
+		<url>http://code.google.com/p/daofusion/issues/list</url>
+	</issueManagement>
+	
+	<scm>
+		<url>http://code.google.com/p/daofusion/source/browse/trunk</url>
+		<connection>scm:svn:http://daofusion.googlecode.com/svn/trunk</connection>
+		<developerConnection>scm:svn:https://daofusion.googlecode.com/svn/trunk</developerConnection>
+	</scm>
+	
+	<licenses>
+		<license>
+			<name>GNU LESSER GENERAL PUBLIC LICENSE</name>
+			<url>http://www.gnu.org/licenses/lgpl.txt</url>
+		</license>
+	</licenses>
+	
+	<developers>
+		<developer>
+			<id>vojtech.szocs</id>
+			<name>Vojtech Szocs</name>
+			<email>vojtech.szocs@anasoft.sk</email>
+			<organization>ANASOFT</organization>
+		</developer>
+		<developer>
+			<id>igor.mihalik</id>
+			<name>Igor Mihalik</name>
+			<email>igor.mihalik@anasoft.sk</email>
+			<organization>ANASOFT</organization>
+		</developer>
+	</developers>
+	
+	<modules>
+		<module>daofusion-core</module>
+		<module>daofusion-test</module>
+	</modules>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<junit.version>4.5</junit.version>
+	</properties>
+	
+	<distributionManagement>
+		<repository>
+			<id>com.anasoft.os.repository.releases</id>
+			<name>ANASOFT OpenSource releases</name>
+			<url>dav:https://anasoft-os-repo.googlecode.com/svn/repository/releases</url>
+			<layout>default</layout>
+		</repository>
+		<snapshotRepository>
+			<id>com.anasoft.os.repository.snapshots</id>
+			<name>ANASOFT OpenSource snapshots</name>
+			<url>dav:https://anasoft-os-repo.googlecode.com/svn/repository/snapshots</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+		<site>
+			<id>com.anasoft.os.site</id>
+			<name>ANASOFT OpenSource site</name>
+			<url>scp://shadow.ana.sk/home/http/vhosts/opensource.anasoft.sk/htdocs/</url>
+		</site>
+	</distributionManagement>
+	
+	<repositories>
+		<repository>
+			<id>com.springsource.repository.bundles.release</id>
+			<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
+			<url>http://repository.springsource.com/maven/bundles/release</url>
+		</repository>
+	</repositories>
+	
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<configuration>
+							<encoding>${project.build.sourceEncoding}</encoding>
+						</configuration>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+</project>

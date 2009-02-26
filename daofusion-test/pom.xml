@@ -1,0 +1,125 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+	<parent>
+		<groupId>com.anasoft.os</groupId>
+		<artifactId>daofusion-parent</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.anasoft.os</groupId>
+	<artifactId>daofusion-test</artifactId>
+	<packaging>jar</packaging>
+	<name>DAO Fusion integration test support</name>
+	
+	<properties>
+		<spring.version>2.5.6</spring.version>
+		<junit-springtestcontext.version>4.4</junit-springtestcontext.version>
+		<c3p0.version>0.9.1.2</c3p0.version>
+		
+		<h2.version>1.0.79</h2.version>
+		<hsqldb.version>1.8.0.10</hsqldb.version>
+		<mysql-connector-java.version>5.1.7</mysql-connector-java.version> <!-- MySQL 5.1.30 -->
+		<postgresql.version>8.3-603.jdbc3</postgresql.version> <!-- PostgreSQL 8.3.5 -->
+		<ojdbc14.version>10.2.0.3.0</ojdbc14.version> <!-- Oracle 10g 10.2.0.3.0 -->
+		<db2-expressc-jcc.version>3.5</db2-expressc-jcc.version> <!-- DB2 9.5 -->
+		<jtds.version>1.2.2</jtds.version> <!-- Microsoft SQL Server 2000 8.00.760 -->
+	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.anasoft.os</groupId>
+			<artifactId>daofusion-core</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>org.springframework.orm</artifactId>
+			<version>${spring.version}</version>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit-springtestcontext.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>${c3p0.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${h2.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>${hsqldb.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-connector-java.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc14</artifactId>
+			<version>${ojdbc14.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.db2</groupId>
+			<artifactId>db2-expressc-jcc</artifactId>
+			<version>${db2-expressc-jcc.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.jtds</groupId>
+			<artifactId>jtds</artifactId>
+			<version>${jtds.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+</project>
