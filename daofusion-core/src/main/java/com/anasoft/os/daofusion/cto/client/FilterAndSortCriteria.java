@@ -40,14 +40,16 @@ import java.util.List;
  */
 public class FilterAndSortCriteria implements Serializable {
 
-    private static final long serialVersionUID = -5452300586719753459L;
-    
     private String propertyId;
 	
 	private List<String> filterValues = new ArrayList<String>();
 	
 	private Boolean sortAscending;
     private Boolean ignoreCase;
+    
+    public FilterAndSortCriteria() {
+        // empty constructor required for DTO deserialization
+    }
     
 	/**
 	 * Creates a new persistent entity criteria.
@@ -73,6 +75,9 @@ public class FilterAndSortCriteria implements Serializable {
 		return filterValues.toArray(new String[0]);
 	}
 	
+	public void clearFilterValues() {
+        filterValues.clear();
+	}
 	/**
 	 * Sets a single filter value to this criteria,
 	 * replacing any filter value(s) set previously.
@@ -80,7 +85,7 @@ public class FilterAndSortCriteria implements Serializable {
 	 * @param value String-based filter value.
 	 */
 	public void setFilterValue(String value) {
-	    filterValues.clear();
+	    clearFilterValues();
 	    filterValues.add(value);
 	}
 	
@@ -91,7 +96,7 @@ public class FilterAndSortCriteria implements Serializable {
 	 * @param values String-based filter values.
 	 */
 	public void setFilterValues(String... values) {
-	    filterValues.clear();
+	    clearFilterValues();
 	    filterValues.addAll(Arrays.asList(values));
 	}
 	
