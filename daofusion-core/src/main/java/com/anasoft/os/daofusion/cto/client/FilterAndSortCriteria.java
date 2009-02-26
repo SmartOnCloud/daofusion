@@ -40,7 +40,7 @@ import java.util.List;
  */
 public class FilterAndSortCriteria implements Serializable {
 
-    private static final long serialVersionUID = -5452300586719753459L;
+    private static final long serialVersionUID = -593864722147943119L;
     
     private String propertyId;
 	
@@ -48,6 +48,19 @@ public class FilterAndSortCriteria implements Serializable {
 	
 	private Boolean sortAscending;
     private Boolean ignoreCase;
+    
+    /**
+     * Creates a new persistent entity criteria
+     * without specifying the property identifier.
+     * 
+     * <p>
+     * 
+     * This constructor serves for deserialization
+     * purposes only and should NOT be used explicitly.
+     */
+    protected FilterAndSortCriteria() {
+        // nothing to do here
+    }
     
 	/**
 	 * Creates a new persistent entity criteria.
@@ -74,13 +87,21 @@ public class FilterAndSortCriteria implements Serializable {
 	}
 	
 	/**
+	 * Clears any filter value(s) set previously
+	 * to this criteria.
+	 */
+	public void clearFilterValues() {
+        filterValues.clear();
+	}
+	
+	/**
 	 * Sets a single filter value to this criteria,
 	 * replacing any filter value(s) set previously.
 	 * 
 	 * @param value String-based filter value.
 	 */
 	public void setFilterValue(String value) {
-	    filterValues.clear();
+	    clearFilterValues();
 	    filterValues.add(value);
 	}
 	
@@ -91,7 +112,7 @@ public class FilterAndSortCriteria implements Serializable {
 	 * @param values String-based filter values.
 	 */
 	public void setFilterValues(String... values) {
-	    filterValues.clear();
+	    clearFilterValues();
 	    filterValues.addAll(Arrays.asList(values));
 	}
 	
