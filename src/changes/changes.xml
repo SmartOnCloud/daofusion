@@ -10,10 +10,17 @@
 		<release version="1.0.1" date="2009-02-26" description="Maintenance release for the 1.0.x branch">
 			<action dev="vojtech.szocs" type="fix">
 				Removed "final" keyword for fields within CriteriaTransferObject and FilterAndSortCriteria
-				to allow full class serialization.
+				to allow proper class serialization.
+			</action>
+			<action dev="vojtech.szocs" type="fix">
+				Added default constructor with "protected" visibility into FilterAndSortCriteria to allow
+				proper class deserialization.
 			</action>
 			<action dev="vojtech.szocs" type="add">
-				Added convenience constructor to FilterCriterion regarding single filter object value path
+				Added "clearFilterValues" method into FilterAndSortCriteria.
+			</action>
+			<action dev="vojtech.szocs" type="add">
+				Added convenience constructor into FilterCriterion regarding single filter object value path
 				or a single direct value for a specific NestedPropertyJoinType.
 			</action>
 		</release>
