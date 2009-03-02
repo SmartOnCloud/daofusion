@@ -7,7 +7,7 @@
 	<version>SNAPSHOT</version>
 	<name>DAO Fusion</name>
 	
-	<url>http://opensource.anasoft.sk/daofusion-site/</url>
+	<url>http://opensource.anasoft.com/daofusion-site/</url>
 	<inceptionYear>2008</inceptionYear>
 	
 	<organization>
@@ -37,13 +37,13 @@
 		<developer>
 			<id>vojtech.szocs</id>
 			<name>Vojtech Szocs</name>
-			<email>vojtech.szocs@anasoft.sk</email>
+			<email>vojtech.szocs@anasoft.com</email>
 			<organization>ANASOFT</organization>
 		</developer>
 		<developer>
 			<id>igor.mihalik</id>
 			<name>Igor Mihalik</name>
-			<email>igor.mihalik@anasoft.sk</email>
+			<email>igor.mihalik@anasoft.com</email>
 			<organization>ANASOFT</organization>
 		</developer>
 	</developers>
