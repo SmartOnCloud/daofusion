@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 10 February 2009
+ 5 March 2009
  ----
 
 Core DAO classes
@@ -18,7 +18,7 @@ Sections
   
   * {{{./core-dao-classes.html#DAO_class_overview} DAO class overview}}
   
-  * {{{./core-dao-classes.html#Transaction_handling} Transaction handling}}
+  * {{{./core-dao-classes.html#Managing_transactions} Managing transactions}}
   
   * {{{./core-dao-classes.html#Sample_persistent_entity_DAO} Sample persistent entity DAO}}
   
@@ -28,7 +28,7 @@ Sections
   
 External resources
   
-  * {{{http://www.ibm.com/developerworks/java/library/j-ts1.html?ca=dgr-jw22SafeJavaTrans&S_TACT=105AGX59&S_CMP=grsitejw22} Transaction strategies: Understanding transaction pitfalls}}
+  * {{{http://www.ibm.com/developerworks/java/library/j-ts1.html} Transaction strategies: Understanding transaction pitfalls}}
   
   []
   
@@ -222,11 +222,19 @@ public abstract class BaseHibernateDataAccessor {
   in your DAO implementations should be the last resort for all but the most complex cases where a custom <<<PersistentEntityCriteria>>> implementation is not possible (remember that even custom
   <<<PersistentEntityCriteria>>> implementations can be efficiently and consistently reused between multiple DAOs as opposed to the direct <Hibernate Criteria API> approach).
   
-* {Transaction handling}
+* {Managing transactions}
   
-  Standard persistent entity DAO implementations don't care about transactions - but should they? What if someone wants to handle transactions manually or use AOP-based declarative
-  transaction management support to create method-level transactional proxies? To maintain the generic nature of the DAO concept, ${df} lets its users handle transactions within the
-  context of DAO method calls completely on their own.
+  Transactions aim to improve integrity and consistency of your data, grouping data access operations into logical units of work which are atomic and properly isolated from each other within
+  concurrent (multi-user) environments. Transactions promote data consistency through its atomicity, ensuring that only valid data will be written to the database. The concepts mentioned here
+  essentially follow the {{{http://en.wikipedia.org/wiki/ACID} ACID}} (Atomicity, Consistency, Isolation, Durability) principle of database transactions.
+  
+  Since {{{http://en.wikipedia.org/wiki/Object-relational_mapping} Object-relational mapping}} frameworks such as Hibernate require a transaction in order to trigger the synchronization between the object
+  cache and the database, the bottom line is simple - you have to care about transactions in your DAO layer in any case.
+  
+  Standard persistent entity DAO implementations don't care about transactions - but should they? What if someone wants to handle transactions manually using the <programmatic transaction model>
+  or create method-level transactional AOP proxies using the <declarative transaction model>? To maintain the generic nature of the DAO concept, ${df} lets its users handle transactions within the
+  context of DAO method calls completely on their own. The use of a specific transaction strategy based on a transaction model as well as transaction attributes always depend on specific business
+  requirements of your project and should be therefore carefully considered in terms of concurrency, performance and data integrity.
   
 * {Sample persistent entity DAO}
   

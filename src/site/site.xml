@@ -38,7 +38,7 @@
 			<item name="Tutorials" href="tutorial/tutorial-index.html" />
 		</menu>
 		
-		<menu name="How to...">
+		<menu name="How To...">
 			<item name="Maven Integration" href="howto/maven-integration.html" />
 			<item name="GWT Integration" href="howto/gwt-integration.html" />
 		</menu>
@@ -50,6 +50,10 @@
 			<item name="Criteria transfer object pattern" href="reference/cto-pattern.html" />
 			<item name="Integration test support" href="reference/integration-tests.html" />
 			<item name="Frequently Asked Questions" href="reference/reference-faq.html" />
+		</menu>
+		
+		<menu name="Tech Notes">
+			<item name="Transaction Management" href="technote/transaction-management.html" />
 		</menu>
 		
 		<menu name="Community">

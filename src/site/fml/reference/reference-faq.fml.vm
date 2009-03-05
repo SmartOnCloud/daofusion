@@ -149,12 +149,12 @@ public abstract class CustomPersistentEnumeration extends PersistentEnumeration 
 		<faq id="core-dao-classes-2">
 			<question>Why do I have to handle transactions myself?</question>
 			<answer>
-				<p>The real question is - why should ${df} enforce a specific transaction handling mechanism at all? What if someone wants to handle transactions
-				manually or use AOP-based declarative transaction management support to create method-level transactional proxies? This would essentially
-				compromise the generic nature of the DAO concept - you have to choose the transaction support implementation for yourself that best suits
-				your needs.</p>
-				<p>A good source of information about transaction strategies and their pitfalls can be found 
-				<a href="http://www.ibm.com/developerworks/java/library/j-ts1.html?ca=dgr-jw22SafeJavaTrans&amp;S_TACT=105AGX59&amp;S_CMP=grsitejw22">here</a>.</p>
+				<p>The real question is - why should ${df} enforce a specific transaction handling mechanism at all? What if someone wants to handle
+				transactions manually using the <tt>programmatic transaction model</tt> or create method-level transactional AOP proxies using the
+				<tt>declarative transaction model</tt>? This would essentially compromise the generic nature of the DAO concept - you have to choose
+				a specific transaction strategy based on a transaction model as well as transaction attributes that best suit specific business requirements
+				of your project</p>
+				<p>See <a href="../technote/transaction-management.html">Transaction Management</a> tech notes for more information about transaction handling.</p>
 			</answer>
 		</faq>
 		
@@ -184,8 +184,8 @@ public Class<T> getEntityClass() {
 		<faq id="core-dao-classes-5">
 			<question>I am fighting with a "session is closed" Hibernate exception.</question>
 			<answer>
-				<p>See <a href="http://www.hibernate.org/42.html">this</a> and <a href="http://www.hibernate.org/43.html">this</a> for a general overview
-				of Hibernate session and transaction management.
+				<p>See <a href="http://www.hibernate.org/42.html">Sessions and transactions</a> and <a href="http://www.hibernate.org/43.html">Open Session in View</a>
+				for a general overview of Hibernate session and transaction management.
 				</p>
 			</answer>
 		</faq>
@@ -431,7 +431,7 @@ entityManagerFactory.jpaVendorAdapter.showSql=false
 			<answer>
 				<p><em>${df-test}</em> project differs from regular libraries in a way that it uses <em>JUnit</em> as a <em>compile-time</em> dependency
 				(<tt>BaseHibernateIntegrationTest</tt> and its subclasses directly depend on <em>JUnit</em>). Furthermore, <em>JUnit</em> version is changed
-				to <tt>4.4</tt> to ensure compatibility with <em>Spring TestContext framework</em> - see <a href="http://jira.springframework.org/browse/SPR-5145">this</a>
+				to <tt>4.4</tt> to ensure compatibility with <em>Spring TestContext framework</em> - see <a href="http://jira.springframework.org/browse/SPR-5145">this issue</a>
 				for more information.</p>
 			</answer>
 		</faq>
