@@ -15,17 +15,13 @@ import com.anasoft.os.daofusion.entity.Persistable;
  * 
  * <p>
  * 
- * The user must provide a default transaction support within
- * the context of DAO method calls. There are basically two
- * ways to achieve this:
- * 
- * <ul>
- * 	<li>use the Spring <tt>Transactional</tt> annotation (or
- * 		any similar metadata) in conjunction with AOP-based
- * 		declarative transaction management support to create
- * 		method-level transactional proxies
- * 	<li>handle method-level transactions manually
- * </ul>
+ * The user is responsible for providing proper transaction
+ * support within the context of DAO method calls. The use
+ * of a specific transaction strategy based on a transaction
+ * model as well as transaction attributes always depend on
+ * specific business requirements of your project and should
+ * be therefore carefully considered in terms of concurrency,
+ * performance and data integrity.
  * 
  * <p>
  * 
