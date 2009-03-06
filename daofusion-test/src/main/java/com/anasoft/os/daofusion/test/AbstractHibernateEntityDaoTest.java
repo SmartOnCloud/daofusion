@@ -438,7 +438,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      * retrieving persistent entities using empty {@link NestedPropertyCriteria}.
      */
     @Test
-    public void testQuery_emptyCompositeCriteria() {
+    public void testQuery_emptyCriteria() {
         final List<Customer> customerList = customerDao.query(new NestedPropertyCriteria(), Customer.class);
         
         assertThat(customerList.size(), equalTo(TOTAL_CUSTOMER_COUNT));
@@ -697,7 +697,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      * Requesting all elements.
      */
     @Test
-    public void testQuery_pagingCriteria_allElements() {
+    public void testQuery_paging_allElements() {
     	final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
         final List<Customer> customerList = customerDao.query(entityCriteria, Customer.class);
         
@@ -715,7 +715,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      * Requesting second element.
      */
     @Test
-    public void testQuery_pagingCriteria_secondElement() {
+    public void testQuery_paging_secondElement() {
     	final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
         entityCriteria.setFirstResult(1);
         entityCriteria.setMaxResults(1);
@@ -736,7 +736,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      * Trying to retrieve entities by exceeding the <tt>firstResult</tt> parameter.
      */
     @Test
-    public void testQuery_pagingCriteria_firstResultOutOfBounds() {
+    public void testQuery_paging_firstResultOutOfBounds() {
     	final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
         entityCriteria.setFirstResult(10);
         
@@ -751,7 +751,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      * and {@link SortCriterion} instances along with the implicit paging functionality.
      */
     @Test
-    public void testQuery_compositeCriteria_filterSortPaging() {
+    public void testQuery_filterSortPaging() {
     	final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
     	
     	entityCriteria.add(new FilterCriterion("stockItem.category.name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
@@ -864,6 +864,38 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
     @Test
     public void testCount_multiInstanceResultSet() {
         final int count = customerDao.count(new NestedPropertyCriteria(), Customer.class);
+        
+        assertThat(count, equalTo(2));
+    }
+    
+    /**
+     * Test for {@link PersistentEntityDao#count(PersistentEntityCriteria, Class)}:
+     * performing instance count on a result set with multiple instances, which is
+     * shaped by {@link FilterCriterion} instances.
+     */
+    @Test
+    public void testCount_multiInstanceResultSet_filterCriteria() {
+        final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        
+        entityCriteria.add(new FilterCriterion("stockItem.category.name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
+            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                return Restrictions.eq(targetPropertyName, directValues[0]);
+            }
+            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                return true;
+            }
+        }));
+        
+        entityCriteria.add(new FilterCriterion("quantity", Integer.valueOf(2), false, new PropertyFilterCriterionProvider() {
+            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                return Restrictions.gt(targetPropertyName, directValues[0]);
+            }
+            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                return true;
+            }
+        }));
+        
+        final int count = orderItemDao.count(entityCriteria, OrderItem.class);
         
         assertThat(count, equalTo(2));
     }

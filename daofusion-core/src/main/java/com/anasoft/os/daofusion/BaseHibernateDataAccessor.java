@@ -1,6 +1,7 @@
 package com.anasoft.os.daofusion;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
@@ -9,6 +10,8 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.ejb.HibernateEntityManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.anasoft.os.daofusion.criteria.PersistentEntityCriteria;
 import com.anasoft.os.daofusion.entity.Persistable;
@@ -24,6 +27,8 @@ import com.anasoft.os.daofusion.entity.Persistable;
  */
 public abstract class BaseHibernateDataAccessor {
 
+    private static final Logger LOG = LoggerFactory.getLogger(BaseHibernateDataAccessor.class);
+    
 	/**
 	 * Returns an open {@link HibernateEntityManager} instance
 	 * providing access to the Hibernate {@link Session}.
@@ -69,6 +74,13 @@ public abstract class BaseHibernateDataAccessor {
      * Hibernate {@link Projections#rowCount rowCount}
      * projection.
      * 
+     * <p>
+     * 
+     * Note that the <tt>criteria</tt> shouldn't contain
+     * any paging constraints since the method relies on
+     * result set with its "shape" defined by the projection
+     * itself.
+     * 
      * @param criteria {@link Criteria} instance for which
      * to perform the row count.
      * @return Number of rows returned by the given
@@ -76,7 +88,17 @@ public abstract class BaseHibernateDataAccessor {
      */
     protected final int rowCount(Criteria criteria) {
         criteria.setProjection(Projections.rowCount());
-        return ((Integer) criteria.list().get(0)).intValue();
+        
+        final List<?> projectionResults = criteria.list();
+        int rowCount = 0;
+        
+        if (projectionResults.size() != 1 || (!(projectionResults.get(0) instanceof Integer))) {
+            LOG.warn("rowCount projection for the given criteria did not result a single integer value, returning zero - did you add unnecessary paging constraints to the criteria?");
+        } else {
+            rowCount = ((Integer) projectionResults.get(0)).intValue();
+        }
+        
+        return rowCount;
     }
     
     /**
