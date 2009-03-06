@@ -54,7 +54,7 @@ External resources
   
   []
   
-  An integration test is basically a {{{http://en.wikipedia.org/wiki/Unit_testing} unit test}} interacting with a database instance via {{{http://java.sun.com/javaee/technologies/persistence.jsp} JPA}}
+  An integration test is basically a {{{http://en.wikipedia.org/wiki/Unit_testing} unit test}} interacting with a database instance via {{{http://java.sun.com/developer/technicalArticles/J2EE/jpa/} JPA}}
   / {{{http://www.hibernate.org/} Hibernate}}, employing a default method-level rollback strategy which ensures proper test data separation between multiple test runs. ${df} achieves this
   using {{{http://www.junit.org/} JUnit}} and {{{http://static.springframework.org/spring/docs/2.5.x/reference/testing.html#integration-testing} Spring TestContext framework}} in a consistent
   integration test infrastructure.

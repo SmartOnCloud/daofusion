@@ -18,7 +18,7 @@
 	
 	<body>
 		<links>
-			<item name="JPA Home Page" href="http://java.sun.com/javaee/technologies/persistence.jsp" />
+			<item name="Java Persistence API" href="http://java.sun.com/developer/technicalArticles/J2EE/jpa/" />
 			<item name="JPA Java EE 5 tutorial" href="http://java.sun.com/javaee/5/docs/tutorial/doc/bnbpz.html" />
 			<item name="Hibernate" href="http://www.hibernate.org/" />
 			<item name="JUnit" href="http://www.junit.org/" />

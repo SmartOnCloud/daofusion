@@ -49,7 +49,7 @@ External resources
   Having the domain model defined, the next logical step is to implement it in Java via persistent entities. Persistent entities are classes that implement entities of the business
   problem which are intended to be stored within the underlying database.
   
-  Each persistent entity follows a standard lifecycle as declared by the {{{http://java.sun.com/javaee/technologies/persistence.jsp} JPA}} specification:
+  Each persistent entity follows a standard lifecycle as declared by the {{{http://java.sun.com/developer/technicalArticles/J2EE/jpa/} JPA}} specification:
   
   * After its creation, the entity starts out in the <transient> state. Being transient means that it is not managed within the persistence context yet. Transient instances have
     usually some properties set by the user before their persistence.

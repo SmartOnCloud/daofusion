@@ -150,7 +150,7 @@ public abstract class CustomPersistentEnumeration extends PersistentEnumeration 
 			<question>Why do I have to handle transactions myself?</question>
 			<answer>
 				<p>The real question is - why should ${df} enforce a specific transaction handling mechanism at all? What if someone wants to handle
-				transactions manually using the <tt>programmatic transaction model</tt> or create method-level transactional AOP proxies using the
+				transactions manually using the <tt>programmatic transaction model</tt> or create transactional AOP proxies using the
 				<tt>declarative transaction model</tt>? This would essentially compromise the generic nature of the DAO concept - you have to choose
 				a specific transaction strategy based on a transaction model as well as transaction attributes that best suit specific business requirements
 				of your project</p>

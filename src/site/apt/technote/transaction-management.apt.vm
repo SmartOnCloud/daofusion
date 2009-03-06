@@ -3,9 +3,104 @@
  ----
  Vojtech Szocs
  ----
- 5 March 2009
+ 6 March 2009
  ----
 
 Transaction Management
   
-  Coming soon.
+  Transactions aim to improve integrity and consistency of your data, grouping data access operations into logical units of work which are atomic and properly isolated from each other within
+  concurrent (multi-user) environments. Transactions promote data consistency through its atomicity, ensuring that only valid data will be written to the database. These concepts essentially
+  follow the {{{http://en.wikipedia.org/wiki/ACID} ACID}} (Atomicity, Consistency, Isolation, Durability) principle of database transactions.
+  
+External resources
+  
+  * {{{http://www.ibm.com/developerworks/java/library/j-ts1.html} Transaction strategies: Understanding transaction pitfalls}} by Mark Richards
+  
+  * {{{http://www.ibm.com/developerworks/java/library/j-ts2.html} Transaction strategies: Models and strategies overview}} by Mark Richards
+  
+  []
+  
+* {Overview}
+  
+  As you might already know, implementing a DAO layer using ${df} requires you to handle transactions as well. This is based on the fact that {{{http://en.wikipedia.org/wiki/Object-relational_mapping} Object-relational mapping}}
+  (ORM) frameworks such as {{{http://www.hibernate.org/} Hibernate}} require a transaction in order to trigger the synchronization between the object cache (session) and the database. Furthermore, the lack of appropriate
+  transaction strategy will have a negative impact on various aspects of your DAO layer, including data integrity, performance, concurrency and locking issues.
+  
+* {Transaction models}
+  
+  There are basically two transaction models which are applicable to ${df} as well as projects using ORM frameworks in general:
+  
+  * <Programmatic transaction model> (bean managed transactions)
+  
+  The user is responsible for the overall transaction management. This typically includes the following steps:
+  
+    * obtaining a transaction from the transaction manager
+  
+    * starting the transaction
+  
+    * committing or rolling back the transaction
+  
+  []
+  
+  * <Declarative transaction model> (container managed transactions)
+  
+  The container takes care of obtaining, starting, committing and rolling back the transaction. The user is responsible for specifying transaction behavior via annotations
+  (<<<@Transactional>>> for {{{http://static.springframework.org/spring/docs/2.5.x/reference/index.html} Spring}}, <<<@TransactionAttribute>>> for {{{http://java.sun.com/developer/technicalArticles/J2EE/jpa/} JPA}}
+  / {{{http://java.sun.com/products/ejb/} EJB 3.0}}).
+  
+  []
+  
+* {Transaction strategies}
+  
+  Transaction models are materialized into transaction strategies depending on specific business requirements of your project in terms of concurrency, performance and data integrity.
+  
+  One of the most common transaction strategies is a strategy aimed at coarse-grained service methods that act as entry points to the back-end business functionality. In this scenario,
+  the client typically performs a single method call per each request. Server-side service method implementation must therefore manage transactions on its own, acting as a "logical unit
+  of work" from the client's point of view.
+  
+* {Hints regarding the declarative transaction model}
+  
+  This section summarizes hints that apply to the <declarative transaction model> support within ORM frameworks such as Hibernate.
+  
+** My DAOs fail to perform database updates without any exceptions being thrown
+  
+  You have to set up and use transactions within the context of DAO method calls so that Hibernate knows when to trigger the synchronization between its object cache and the database.
+  No transactions, no fun.
+  
+** My service methods that use DAO operations won't roll back transactions properly on exceptions
+  
+  By default, a transaction will be rolled back automatically <<only when a runtime (unchecked) exception is caught>>. You must provide transaction rollback support for checked exceptions
+  manually. This is one of the most common pitfalls when using transactions altogether. If you don't specify such rollback support for checked exceptions that might occur within a transaction,
+  your data integrity and consistency is put at a high risk - by default, upon a checked exception, the transaction committs any work that has not yet been committed. This essentially breaks
+  the atomicity and consistency ACID principles and leads to corrupt and inconsistent data.
+  
+  Exception classes for which you want to roll back the transaction are specified differently for different transaction annotations. In case of the <<<@Transactional>>> annotation,
+  the <<<rollbackFor>>> parameter specifies an array of exception classes upon which to force transaction rollback. There is also a <<<noRollbackFor>>> parameter that specifies an array
+  of exception classes upon which to suppress transaction rollback. The <<<@TransactionAttribute>>> annotation doesn't include directives to specify the rollback behavior directly - the user
+  must use <<<SessionContext>>>'s <setRollbackOnly> method within the <<<catch>>> block for the given checked exception to mark the transaction for rollback (note that this cannot be undone
+  and the transaction will be ultimately rolled back upon completion of the method that started the transaction).
+  
+** Read-only operations using <<<@Transactional>>> annotation (<<<readOnly>>> flag set to <<<true>>>)
+  
+  It might happen that Hibernate will bypass the <<<readOnly>>> flag silently and allow database updates in the process. This is due to the fact that the <<<readOnly>>> flag works
+  differently in ORM frameworks as opposed to the classic JDBC approach where a read-only connection exception would be thrown. The bottom line is that you shouldn't rely on the
+  <<<readOnly>>> flag within a transaction scope.
+  
+  For read-only operations resulting in a single <<<SELECT>>> statement (e.g. <<<PersistentEntityDao>>>'s <get> or <query> methods), you should avoid using transactions either by
+  omitting the <<<@Transactional>>> annotation completely or by setting the transaction propagation mode to <<<SUPPORTS>>> so that no transaction is started for the given operation.
+  Depending on the situation, wrapping primitive read-only operations in transactions can lead to issues such as unnecessary shared locks or even deadlocks within the database.
+  Furthermore, executing such operations within transactions consumes processing time and resources.
+  
+  Why should one (always) prefer the <<<SUPPORTS>>> transaction propagation mode against <<<NOT_SUPPORTED>>> regarding read-only operations? The answer is simple - invoking such read-only
+  operation in the context of an existing transaction will cause the query to read data from the database transaction log, whereas running without a transaction scope (<<<NOT_SUPPORTED>>>)
+  will case the query to read unchanged data.
+  
+** Use the <<<REQUIRES_NEW>>> and <<<NOT_SUPPORTED>>> transaction propagation modes with caution
+  
+  The <<<REQUIRES_NEW>>> transaction propagation mode essentially violates the atomicity ACID principle - all database updates are no longer contained within a single logical unit of work.
+  Use this propagation mode for database operations that are independent of the underlying transactional context (e.g. sending emails as part of a business operation for which an email send
+  error should not cause the "entire" transaction to be rolled back).
+  
+  On the other hand, the <<<NOT_SUPPORTED>>> transaction propagation mode is useful for situations which forbid the use of transactions within a transaction context (for example, situations
+  where you want to avoid nested transactions such as stored procedures using transactions on their own). However, the overall impact is similar to the <<<REQUIRES_NEW>>> propagation mode - atomicity
+  of the underlying transaction is violated.

@@ -9,7 +9,7 @@
 Welcome to ${df}
   
   <${df}> is a lightweight yet comprehensive and extensible Java based {{{http://java.sun.com/blueprints/corej2eepatterns/Patterns/DataAccessObject.html} Data Access Object}}
-  (DAO) pattern implementation built on top of {{{http://java.sun.com/javaee/technologies/persistence.jsp} Java Persistence API}} (JPA) and {{{http://www.hibernate.org/} Hibernate}}.
+  (DAO) pattern implementation built on top of {{{http://java.sun.com/developer/technicalArticles/J2EE/jpa/} Java Persistence API}} (JPA) and {{{http://www.hibernate.org/} Hibernate}}.
   
   You could think of ${df} as a solid foundation for your own DAO layers, doing most of the usual heavy lifting for you and providing support for common DAO-related tasks,
   such as:
