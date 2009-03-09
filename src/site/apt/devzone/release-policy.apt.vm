@@ -1,0 +1,47 @@
+ ----
+ Release policy
+ ----
+ Vojtech Szocs
+ ----
+ 9 February 2009
+ ----
+
+Release policy
+  
+  ${df} uses the following policy for official project releases:
+  
+  * <Preparing release>
+  
+    * Create new tag from the target branch.
+  
+    * Update project versions within <<<pom.xml>>> files and commit changes.
+  
+  []
+  
+  * <Deploying artifacts into remote repository>
+  
+    * Within the tag root directory, execute " <<<mvn clean deploy -Prelease>>> ".
+  
+  []
+  
+  * <Deploying project site into remote web server>
+  
+    * Within the site root directory, execute " <<<mvn clean site-deploy>>> ".
+  
+  []
+  
+* Release versioning
+  
+  Each release has a version in format <<<major.minor.bugfix>>>:
+  
+  * <<<major>>> number change indicates fundamental changes in project architecture that may break backwards compatibility
+  
+  * <<<minor>>> number change indicates new functionality that may cause slight API changes
+  
+  * <<<bugfix>>> number change indicates bugfixes, performance enhancements and minor functionality additions that don't break the general API
+  
+* General conventions
+  
+  <${df-site}> project needs to be updated upon any changes done within the target branch. This includes site contents as well as the release changelog.
+  
+  Exactly one <${df-site}> project is maintained for each <<<major.minor>>> number combination which corresponds to the <<<major.minor.x>>> branch naming convention.

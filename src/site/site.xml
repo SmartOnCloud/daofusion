@@ -63,6 +63,10 @@
 			<item name="Issue Tracking" href="issue-tracking.html" />
 			<item name="${df} Team" href="team-list.html" />
 		</menu>
+		
+		<menu name="Developer Zone">
+			<item name="Release policy" href="devzone/release-policy.html" />
+		</menu>
 	</body>
 	
 </project>

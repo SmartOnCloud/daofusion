@@ -19,7 +19,8 @@
 		<df-short>daofusion</df-short>
 		<df-core>daofusion-core</df-core>
 		<df-test>daofusion-test</df-test>
-		<df-latestStableVersion>1.0.2</df-latestStableVersion>
+		<df-site>daofusion-site</df-site>
+		<df-latestStableVersion>1.1.0</df-latestStableVersion>
 		<df-groupIdPath>com/anasoft/os</df-groupIdPath>
 		
 		<df-googleCodeUrl>http://code.google.com/p/daofusion/</df-googleCodeUrl>
