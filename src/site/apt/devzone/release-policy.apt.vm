@@ -44,4 +44,7 @@ Release policy
   
   <${df-site}> project needs to be updated upon any changes done within the target branch. This includes site contents as well as the release changelog.
   
-  Exactly one <${df-site}> project is maintained for each <<<major.minor>>> number combination which corresponds to the <<<major.minor.x>>> branch naming convention.
+  Exactly one <${df-site}> project is maintained for each <<<major.minor>>> number combination which corresponds to the <<<major.minor.x>>> (<<<major.minor-SNAPSHOT>>>
+  in <<<pom.xml>>>) branch naming convention.
+  
+  It is discouraged to create tags directly from the trunk.
