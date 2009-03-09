@@ -34,7 +34,7 @@
 		<menu name="Getting Started">
 			<item name="Download" href="download.html" />
 			<item name="Dependencies" href="dependencies.html" />
-			<item name="Changelog" href="changes-report.html" />
+			<item name="Release changelog" href="changes-report.html" />
 			<item name="Tutorials" href="tutorial/tutorial-index.html" />
 		</menu>
 		
@@ -58,8 +58,9 @@
 		
 		<menu name="Community">
 			<item name="How to Contribute" href="how-to-contribute.html" />
-			<item name="Issue Tracking" href="issue-tracking.html" />
+			<item name="${df} on GoogleCode" href="googlecode.html" />
 			<item name="Source Repository" href="source-repository.html" />
+			<item name="Issue Tracking" href="issue-tracking.html" />
 			<item name="${df} Team" href="team-list.html" />
 		</menu>
 	</body>

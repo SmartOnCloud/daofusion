@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 6 March 2009
+ 9 March 2009
  ----
 
 Transaction Management
@@ -11,6 +11,18 @@ Transaction Management
   Transactions aim to improve integrity and consistency of your data, grouping data access operations into logical units of work which are atomic and properly isolated from each other within
   concurrent (multi-user) environments. Transactions promote data consistency through its atomicity, ensuring that only valid data will be written to the database. These concepts essentially
   follow the {{{http://en.wikipedia.org/wiki/ACID} ACID}} (Atomicity, Consistency, Isolation, Durability) principle of database transactions.
+  
+Sections
+  
+  * {{{./transaction-management.html#Overview} Overview}}
+  
+  * {{{./transaction-management.html#Transaction_models} Transaction models}}
+  
+  * {{{./transaction-management.html#Transaction_strategies} Transaction strategies}}
+  
+  * {{{./transaction-management.html#Hints_regarding_declarative_transaction_model} Hints regarding declarative transaction model}}
+  
+  []
   
 External resources
   
@@ -58,7 +70,7 @@ External resources
   the client typically performs a single method call per each request. Server-side service method implementation must therefore manage transactions on its own, acting as a "logical unit
   of work" from the client's point of view.
   
-* {Hints regarding the declarative transaction model}
+* {Hints regarding declarative transaction model}
   
   This section summarizes hints that apply to the <declarative transaction model> support within ORM frameworks such as Hibernate.
   
@@ -72,7 +84,7 @@ External resources
   By default, a transaction will be rolled back automatically <<only when a runtime (unchecked) exception is caught>>. You must provide transaction rollback support for checked exceptions
   manually. This is one of the most common pitfalls when using transactions altogether. If you don't specify such rollback support for checked exceptions that might occur within a transaction,
   your data integrity and consistency is put at a high risk - by default, upon a checked exception, the transaction committs any work that has not yet been committed. This essentially breaks
-  the atomicity and consistency ACID principles and leads to corrupt and inconsistent data.
+  the atomicity and consistency of the ACID and leads to corrupt and inconsistent data.
   
   Exception classes for which you want to roll back the transaction are specified differently for different transaction annotations. In case of the <<<@Transactional>>> annotation,
   the <<<rollbackFor>>> parameter specifies an array of exception classes upon which to force transaction rollback. There is also a <<<noRollbackFor>>> parameter that specifies an array
@@ -95,9 +107,9 @@ External resources
   operation in the context of an existing transaction will cause the query to read data from the database transaction log, whereas running without a transaction scope (<<<NOT_SUPPORTED>>>)
   will case the query to read unchanged data.
   
-** Use the <<<REQUIRES_NEW>>> and <<<NOT_SUPPORTED>>> transaction propagation modes with caution
+** Using <<<REQUIRES_NEW>>> and <<<NOT_SUPPORTED>>> transaction propagation modes
   
-  The <<<REQUIRES_NEW>>> transaction propagation mode essentially violates the atomicity ACID principle - all database updates are no longer contained within a single logical unit of work.
+  The <<<REQUIRES_NEW>>> transaction propagation mode essentially violates ACID's atomicity - all database updates are no longer contained within a single logical unit of work.
   Use this propagation mode for database operations that are independent of the underlying transactional context (e.g. sending emails as part of a business operation for which an email send
   error should not cause the "entire" transaction to be rolled back).
   

@@ -11,3 +11,11 @@ h4 {
 	margin: 6px 0px 4px 0px;
 	color: #333333;
 }
+
+#leftColumn {
+  width: 200px;
+}
+
+#bodyColumn {
+  margin-left: 230px;
+}

@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 5 March 2009
+ 9 March 2009
  ----
 
 Integration test support
@@ -74,26 +74,34 @@ External resources
   * In-memory databases
   
     * {{{http://www.h2database.com/} H2}} (1.0.79)
+  
     * {{{http://hsqldb.org/} HSQL}} (1.8.0.10)
+  
+  []
   
   * Mid-scale databases
   
     * {{{http://www.mysql.com/} MySQL}} (5.1.30)
+  
     * {{{http://www.postgresql.org/} PostgreSQL}} (8.3.5)
+  
+  []
   
   * Enterprise databases
   
     * {{{http://www.ibm.com/db2} DB2}} (9.5)
+  
     * {{{http://www.oracle.com/technology/products/database/oracle10g/index.html} Oracle 10g}} (10.2.0.3.0)
+  
     * {{{http://en.wikipedia.org/wiki/Microsoft_SQL_Server} MS SQL Server 2000}} (8.00.760)
   
   []
   
-  This means that ${df} includes integration tests for databases listed above as part of unit tests within the ${df-test} project. You are free to check out the ${df-test} project
+  This means that ${df} includes integration tests for databases listed above as part of unit tests within the <${df-test}> project. You are free to check out the <${df-test}> project
   from the {{{../source-repository.html} source code repository}} and run these tests by yourself. This is, however, not quite necessary since ${df}'s {{{../cont-integration.html} continuous integration}}
   system performs this task when building ${df} as well.
   
-  To sum it up, <standard> core integration tests need not to be run manually - the ${df-test} project is intended for use as a {{{http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Dependency_Scope} test-scoped}}
+  To sum it up, <standard> core integration tests need not to be run manually - the <${df-test}> project is intended for use as a {{{http://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Dependency_Scope} test-scoped}}
   library dependency providing an integration test infrastructure for <custom> integration tests.
   
 * {Integration test infrastructure overview}
@@ -108,14 +116,14 @@ External resources
   
   * <<<com.mchange.v2.c3p0.ComboPooledDataSource>>> as the pooled data source providing database access via JDBC
   
-  * <<<org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean>>> as the JPA entity manager factory wrapper, using <<<org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter>>> as the JPA vendor adapter
+  * <<<org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean>>> as the JPA entity manager factory wrapper that uses <<<org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter>>> as its JPA vendor adapter
   
   * <<<org.springframework.orm.jpa.JpaTransactionManager>>> as the transaction manager for JPA entity manager factory
   
   * <<<org.springframework.transaction.interceptor.TransactionInterceptor>>> as the AOP transaction interceptor for declarative transaction management, using <<<org.springframework.transaction.annotation.AnnotationTransactionAttributeSource>>>
     for specifying transaction metadata via annotations
   
-  * proxy-based JPA / AOP transaction annotation support including <<<org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor>>>
+  * proxy-based JPA / AOP transaction annotation support which includes the <<<org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor>>>
   
   []
   
@@ -133,8 +141,12 @@ External resources
   
     * <<<entityManagerFactory.persistenceUnitName>>>
   
+  []
+  
   * Within the <<<META-INF/persistence.xml>>> file a dedicated integration test persistence unit of type <<<RESOURCE_LOCAL>>> needs to be defined for the target database instance. Name of this
     persistence unit must match the <<<entityManagerFactory.persistenceUnitName>>> bean property value. The <<<hibernate.dialect>>> property needs to be set up as well within the persistence unit.
+  
+  []
   
   * Additional persistence unit configuration (e.g. defining entity mappings or setting the default schema name) should be done via the <<<mapping-file>>> element(s) within <<<META-INF/persistence.xml>>>.
   
@@ -167,6 +179,8 @@ External resources
   * business-related DAO functionality should always be atomic from a persistent entity's point of view, for example:
   
     * entity lookup based on custom business criteria that comes from a specific use case scenario regarding that entity
+  
+  []
   
   * everything else performing complex business operations (most typically encompassing multiple persistent entities) should be implemented within the service layer, for example:
   
