@@ -19,8 +19,11 @@
 		<df-short>daofusion</df-short>
 		<df-core>daofusion-core</df-core>
 		<df-test>daofusion-test</df-test>
-		<df-latestStableVersion>1.0.1</df-latestStableVersion>
+		<df-latestStableVersion>1.0.2</df-latestStableVersion>
 		<df-groupIdPath>com/anasoft/os</df-groupIdPath>
+		
+		<df-googleCodeUrl>http://code.google.com/p/daofusion/</df-googleCodeUrl>
+		<anasoft-os-repo-googleCodeUrl>http://code.google.com/p/anasoft-os-repo/</anasoft-os-repo-googleCodeUrl>
 		
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<doxia-module-highlight.version>1.0-alpha-11</doxia-module-highlight.version>
@@ -90,7 +93,7 @@
 				<artifactId>maven-changes-plugin</artifactId>
 				<configuration>
 					<issueLinkTemplatePerSystem>
-						<default>%URL%/detail?id=%ISSUE%</default>
+						<GoogleCode>%URL%/detail?id=%ISSUE%</GoogleCode>
 					</issueLinkTemplatePerSystem>
 				</configuration>
 				<reportSets>
