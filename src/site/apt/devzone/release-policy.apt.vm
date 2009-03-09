@@ -20,13 +20,13 @@ Release Policy
   
   * <Deploying artifacts into remote repository>
   
-    * Within the tag root directory, execute " <<<mvn clean deploy -Prelease>>> ".
+    * Within the tag root directory, execute " <<<mvn clean deploy -Prelease>>> "
   
   []
   
   * <Deploying project site into remote web server>
   
-    * Within the site root directory, execute " <<<mvn clean site-deploy>>> ".
+    * Within the site root directory, execute " <<<mvn clean site-deploy>>> "
   
   []
   
