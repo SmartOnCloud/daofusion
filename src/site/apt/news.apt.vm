@@ -1,0 +1,33 @@
+ ----
+ ${df} news
+ ----
+ Vojtech Szocs
+ ----
+ 9 March 2009
+ ----
+
+${df} news
+  
+* 2009-03-05
+  
+  ${df} was briefly introduced during {{{http://groups.adobe.com/posts/c39c490d91} Slovakia FUG meeting}} held at {{{http://www.fei.stuba.sk/generate_page.php?page_id=793} Faculty of Electrical Engineering and Information Technology}},
+  Slovak University of Technology in Bratislava, Slovakia.
+  
+* 2009-02-26
+  
+  <<${df} 1.0.1>> has been released.
+  
+  This release fixes some issues regarding the <<<CriteriaTransferObject>>> / <<<FilterAndSortCriteria>>> and adds some minor functionality.
+  
+* 2009-02-18
+  
+  We have released ${df} as our contribution to the open-source Java community.
+  
+  ${df} aims to help Java developers build their server-side DAO layers with ease, doing most of the usual heavy lifting and providing support for common DAO-related tasks.
+  ${df} introduces standards and best practices into DAO layer development in terms of a consistent and extensible persistent entity model and standard persistent entity DAO
+  interfaces / abstract implementations which already provide most of the usual DAO functionality. ${df} introduces the criteria transfer object (CTO) pattern which proves
+  to be useful for application scenarios with loose coupling between the client and the server. Last but not least, ${df} provides an out-of-the-box integration test support
+  that ensures proper test coverage of core DAO functionality and enables you to write your own custom integration tests for the chosen database at the same time.
+  
+  The mission of ${df} is simple - build more reliable, maintainable and testable DAO layers using leading technologies such as {{{http://java.sun.com/developer/technicalArticles/J2EE/jpa/} Java Persistence API}}
+  (JPA) and {{{http://www.hibernate.org/} Hibernate}}.

@@ -28,6 +28,7 @@
 		
 		<menu name="Overview">
 			<item name="Welcome" href="index.html" />
+			<item name="What's New" href="news.html" />
 			<item name="License" href="license.html" />
 		</menu>
 		
@@ -65,7 +66,7 @@
 		</menu>
 		
 		<menu name="Developer Zone">
-			<item name="Release policy" href="devzone/release-policy.html" />
+			<item name="Release Policy" href="devzone/release-policy.html" />
 		</menu>
 	</body>
 	
