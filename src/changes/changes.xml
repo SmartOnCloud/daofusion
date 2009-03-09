@@ -7,6 +7,20 @@
 	</properties>
 	
 	<body>
+		<release version="1.0.2" date="???" description="Maintenance release for the 1.0.x branch">
+			<action dev="vojtech.szocs" type="fix" issue="1" system="GoogleCode">
+				Fixed issue "H2: NestedPropertyCriteria created by NestedPropertyCriteriaBasedConverter fails
+				within AbstractHibernateEntityDao#count()".
+			</action>
+			<action dev="vojtech.szocs" type="update">
+				Added "testCount_multiInstanceResultSet_filterCriteria" method into AbstractHibernateEntityDaoTest.
+			</action>
+			<action dev="vojtech.szocs" type="update">
+				Updated BaseHibernateDataAccessor#rowCount() method - now a check is made whether the "rowCount"
+				projection results in a single Integer value (if not, a warning is logged and zero is returned).
+			</action>
+		</release>
+		
 		<release version="1.0.1" date="2009-02-26" description="Maintenance release for the 1.0.x branch">
 			<action dev="vojtech.szocs" type="fix">
 				Removed "final" keyword for fields within CriteriaTransferObject and FilterAndSortCriteria
