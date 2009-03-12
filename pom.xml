@@ -47,6 +47,13 @@
 			<organization>ANASOFT</organization>
 		</developer>
 	</developers>
+	<contributors>
+		<contributor>
+			<name>Michal Jemala</name>
+			<email>michal.jemala@anasoft.com</email>
+			<organization>ANASOFT</organization>
+		</contributor>
+	</contributors>
 	
 	<modules>
 		<module>daofusion-core</module>
