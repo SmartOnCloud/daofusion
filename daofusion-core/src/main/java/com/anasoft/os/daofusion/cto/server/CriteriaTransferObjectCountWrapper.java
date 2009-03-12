@@ -1,0 +1,121 @@
+package com.anasoft.os.daofusion.cto.server;
+
+import java.util.Set;
+
+import com.anasoft.os.daofusion.PersistentEntityDao;
+import com.anasoft.os.daofusion.cto.client.CriteriaTransferObject;
+import com.anasoft.os.daofusion.cto.client.FilterAndSortCriteria;
+
+/**
+ * Server-side {@link CriteriaTransferObject} wrapper for entity
+ * instance count purposes.
+ * 
+ * <p>
+ * 
+ * Use this class to wrap {@link CriteriaTransferObject} instances which
+ * should suppress paging and sort constraints in conjunction with entity
+ * instance count methods defined by the {@link PersistentEntityDao}.
+ * 
+ * @see CriteriaTransferObject
+ * @see PersistentEntityDao
+ * 
+ * @author vojtech.szocs
+ * @author igor.mihalik
+ */
+public class CriteriaTransferObjectCountWrapper {
+
+    private final CriteriaTransferObject transferObject;
+    
+    /**
+     * Creates a new {@link CriteriaTransferObject} wrapper.
+     * 
+     * @param transferObject {@link CriteriaTransferObject} instance to wrap.
+     */
+    public CriteriaTransferObjectCountWrapper(CriteriaTransferObject transferObject) {
+        this.transferObject = transferObject;
+    }
+    
+    /**
+     * Returns a {@link CriteriaTransferObject} instance suitable for entity
+     * instance count methods defined by the {@link PersistentEntityDao}.
+     * 
+     * <p>
+     * 
+     * Resulting transfer object delegates most of its methods to the wrapped
+     * {@link CriteriaTransferObject} instance with the exception of paging
+     * and sort constraints and methods that modify internal state of the
+     * transfer object.
+     * 
+     * <p>
+     * 
+     * Use this method after receiving the original {@link CriteriaTransferObject}
+     * instance from the client prior to conversion, for example:
+     * 
+     * <pre>
+     * PersistentEntityCriteria criteriaForCount = converter.convert(
+     *     new CriteriaTransferObjectCountWrapper(transferObject).wrap(),
+     *     myMappingGroup);
+     * </pre>
+     * 
+     * @return {@link CriteriaTransferObject} instance suitable for entity
+     * instance count methods.
+     */
+    public CriteriaTransferObject wrap() {
+        final CriteriaTransferObject transferObjectForCount = new CriteriaTransferObject() {
+            
+            private static final long serialVersionUID = 1L;
+            
+            @Override
+            public FilterAndSortCriteria get(String propertyId) {
+                final FilterAndSortCriteria transferObjectCriteria = transferObject.get(propertyId);
+                
+                final FilterAndSortCriteria criteriaForCount = new FilterAndSortCriteria(transferObjectCriteria.getPropertyId()) {
+                    
+                    private static final long serialVersionUID = 1L;
+                    
+                    @Override
+                    public String getPropertyId() {
+                        return transferObjectCriteria.getPropertyId();
+                    }
+                    
+                    @Override
+                    public String[] getFilterValues() {
+                        return transferObjectCriteria.getFilterValues();
+                    }
+                    
+                    @Override
+                    public Boolean getSortAscending() {
+                        return null;
+                    }
+                    
+                    @Override
+                    public Boolean getIgnoreCase() {
+                        return null;
+                    }
+                    
+                };
+                
+                return criteriaForCount;
+            }
+            
+            @Override
+            public Integer getFirstResult() {
+                return null;
+            }
+            
+            @Override
+            public Integer getMaxResults() {
+                return null;
+            }
+            
+            @Override
+            public Set<String> getPropertyIdSet() {
+                return transferObject.getPropertyIdSet();
+            }
+            
+        };
+        
+        return transferObjectForCount;
+    }
+    
+}

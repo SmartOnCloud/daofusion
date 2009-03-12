@@ -70,7 +70,7 @@ public class NestedPropertyCriteriaBasedConverterTest {
      * 
      * If all fails (compared instances ultimately seem
      * to be equal), instance class name comparison is
-     * used as a final verdict.
+     * used as the final verdict.
      * 
      * @author vojtech.szocs
      */

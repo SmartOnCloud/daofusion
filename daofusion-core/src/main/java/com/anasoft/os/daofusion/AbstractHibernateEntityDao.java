@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Projections;
 
 import com.anasoft.os.daofusion.criteria.NestedPropertyCriteria;
 import com.anasoft.os.daofusion.criteria.PersistentEntityCriteria;
@@ -12,6 +13,14 @@ import com.anasoft.os.daofusion.entity.Persistable;
 /**
  * Generic persistent entity DAO implementation using JPA / Hibernate
  * persistence APIs.
+ * 
+ * <p>
+ * 
+ * Note that the row count technique implementation relies on Hibernate
+ * {@link Projections#rowCount rowCount} projection. See the
+ * {@link BaseHibernateDataAccessor#rowCount(Criteria)} method
+ * for more information about the row count implementation and
+ * its implications regarding {@link Criteria} instances.
  * 
  * @param <T> Type of the persistent entity the DAO works with.
  * @param <ID> Java type of persistent entity's primary key column.

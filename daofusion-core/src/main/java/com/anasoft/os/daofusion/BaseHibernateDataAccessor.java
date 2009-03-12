@@ -78,8 +78,8 @@ public abstract class BaseHibernateDataAccessor {
      * 
      * Note that the <tt>criteria</tt> shouldn't contain
      * any paging constraints since the method relies on
-     * result set with its "shape" defined by the projection
-     * itself.
+     * a result set with its "shape" defined by the
+     * projection itself.
      * 
      * @param criteria {@link Criteria} instance for which
      * to perform the row count.

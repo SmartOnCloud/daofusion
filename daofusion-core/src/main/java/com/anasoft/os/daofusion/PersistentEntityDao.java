@@ -242,6 +242,13 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
 	 * Returns the total number of instances persisted
 	 * within the database.
 	 * 
+	 * <p>
+	 * 
+	 * The user should be aware of the specific row count technique
+	 * implementation and adapt the <tt>entityCriteria</tt> accordingly
+	 * prior to calling this method (for example, it doesn't make sense
+	 * to add paging constraints when performing a row count in general).
+	 * 
      * @param entityCriteria {@link PersistentEntityCriteria}
      * instance defining persistent entity query constraints.
      * @param targetEntityClass Target persistent entity class.
@@ -253,6 +260,13 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
 	 * Returns the total number of instances persisted
      * within the database, using the implicit persistent
      * entity class.
+	 * 
+	 * <p>
+     * 
+     * The user should be aware of the specific row count technique
+     * implementation and adapt the <tt>entityCriteria</tt> accordingly
+     * prior to calling this method (for example, it doesn't make sense
+     * to add paging constraints when performing a row count in general).
 	 * 
      * @param entityCriteria {@link PersistentEntityCriteria}
      * instance defining persistent entity query constraints.
