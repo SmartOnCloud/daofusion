@@ -19,6 +19,9 @@
 				Updated BaseHibernateDataAccessor#rowCount() method - now a check is made whether the "rowCount"
 				projection results in a single Integer value (if not, a warning is logged and zero is returned).
 			</action>
+			<action dev="igor.mihalik" type="add">
+				Added test-scoped Mockito dependency to the parent POM. TODO: later add info about mock tests if any.
+			</action>
 		</release>
 		
 		<release version="1.0.1" date="2009-02-26" description="Maintenance release of the 1.0.x branch">

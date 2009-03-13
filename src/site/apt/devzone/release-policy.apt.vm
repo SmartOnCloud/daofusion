@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 9 February 2009
+ 13 March 2009
  ----
 
 Release Policy
@@ -42,9 +42,21 @@ Release Policy
   
 * General conventions
   
-  <${df-site}> project needs to be updated upon any changes done within the target branch. This includes site contents as well as the release changelog.
+  Each tag should be created from a corresponding <maintenance branch> upon a new project release. Maintenance branch is a branch that follows
+  the <<<major.minor.x>>> naming convention. Only bugfixes, performance enhancements and minor functionality additions that don't break the general
+  API may be committed to the maintenance branch.
   
-  Exactly one <${df-site}> project is maintained for each <<<major.minor>>> number combination which corresponds to the <<<major.minor.x>>> (<<<major.minor-SNAPSHOT>>>
-  in <<<pom.xml>>>) branch naming convention.
+  Exactly one <${df-site}> project is maintained for each maintenance branch. The site project needs to be updated upon any changes done within
+  the branch as soon as possible. This includes site contents as well as the release changelog.
   
-  It is discouraged to create tags directly from the trunk.
+  New functionality that may cause slight API changes should result in creating a new maintenance branch and a corresponding site project.
+  
+* Maven artifact versioning
+  
+  Artifact versions within <<<pom.xml>>> files reflect the versioning policy in a way that is appropriate for Maven projects:
+  
+  * <<<SNAPSHOT>>> for the trunk
+  
+  * <<<major.minor-SNAPSHOT>>> for maintenance branches
+  
+  * <<<major.minor.bugfix>>> for tags (releases)

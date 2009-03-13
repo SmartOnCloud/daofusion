@@ -67,6 +67,7 @@
 		
 		<menu name="Developer Zone">
 			<item name="Release Policy" href="devzone/release-policy.html" />
+			<item name="Code Review" href="devzone/code-review.html" />
 		</menu>
 	</body>
 	

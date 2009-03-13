@@ -1,0 +1,20 @@
+ ----
+ Code Review
+ ----
+ Vojtech Szocs
+ ----
+ 13 March 2009
+ ----
+
+Code Review
+  
+  In addition to the {{{../issue-tracking.html} issue tracker}} for reporting and commenting on project issues, we encourage committers to use
+  {{{http://codereview.appspot.com/} Rietveld}} code review application hosted on {{{http://code.google.com/appengine/} Google App Engine}}
+  prior to committing their changes into the {{{../source-repository.html} source code repository}}.
+  
+  Code reviews enable project members to comment on patch sets (sets of diffs for a particular revision) made by committers, which improves
+  the overall code quality along with some other positive side effects, such as:
+  
+  * project members are aware of impacts caused by the issue implementation, staying up to date with the current state of the project
+  
+  * code reviews promote a common "coding culture" (conventions, patterns and best practices applied to the source code) across the community
