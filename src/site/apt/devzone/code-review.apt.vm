@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 13 March 2009
+ 16 March 2009
  ----
 
 Code Review
@@ -18,3 +18,20 @@ Code Review
   * project members are aware of impacts caused by the issue implementation, staying up to date with the current state of the project
   
   * code reviews promote a common "coding culture" (conventions, patterns and best practices applied to the source code) across the community
+  
+  []
+  
+Before you commit
+  
+  If you're a committer working on specific issue(s):
+  
+  * Do NOT commit your local changes or close any issues immediately.
+  
+  * Log in to {{{http://codereview.appspot.com/} Rietveld}} with your {{{https://www.google.com/accounts/NewAccount} Google Account}}.
+  
+  * Create a code review issue for any issue(s) you have implemented for the corresponding SVN base (maintenance branch or trunk).
+  
+  * Invite other project members (committers and contributors alike) for a code review by using <Publish + Mail Comments> feature
+    as well as posting code review issue URL(s) for related issues within the {{{../issue-tracking.html} issue tracker}}.
+  
+  * See {{{http://code.google.com/p/rietveld/wiki/CodeReviewHelp} this guide}} for detailed information about the code review process.

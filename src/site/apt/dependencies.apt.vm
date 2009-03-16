@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 18 February 2009
+ 16 March 2009
  ----
 
 Project dependencies
@@ -21,7 +21,7 @@ Project dependencies
 *-------------------------+---------+-------------*
 | <<{{{http://www.slf4j.org/} SLF4J}}>> | <<1.5.6>> | ${df-core} |
 *-------------------------+---------+-------------*
-| <<{{{http://www.junit.org/} JUnit}}>> | <<4.5>> / <<4.4>> | ${df-core} / ${df-test} |
+| <<{{{http://www.junit.org/} JUnit}}>> | <<4.4>> | ${df-test} |
 *-------------------------+---------+-------------*
 | <<{{{http://www.springsource.org/about} Spring}}>> | <<2.5.6>> | ${df-test} |
 *-------------------------+---------+-------------*
