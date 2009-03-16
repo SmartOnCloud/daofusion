@@ -72,13 +72,13 @@ public class CriteriaTransferObjectCountWrapperTest {
         testedCtoWrapper.get("propertyId");
         testedCtoWrapper.setFirstResult(10);
         testedCtoWrapper.setMaxResults(20);
-        testedCtoWrapper.add(mock(FilterAndSortCriteria.class));
+        FilterAndSortCriteria mock = mock(FilterAndSortCriteria.class);
+        testedCtoWrapper.add(mock);
         verify(cto, times(1)).getPropertyIdSet();
         verify(cto, times(1)).get("propertyId");
         verify(cto, never()).setFirstResult(anyInt());
         verify(cto, never()).setMaxResults(anyInt());
-        FilterAndSortCriteria anyFASC = anyObject();
-        verify(cto, never()).add(anyFASC);
+        verify(cto, never()).add(mock);
     }
 
     @Test
