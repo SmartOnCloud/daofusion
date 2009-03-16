@@ -19,9 +19,8 @@
 				to make things about the "rowCount" projection stuff more clear to the end-user.
 			</action>
 			<action dev="vojtech.szocs" type="update">
-				Added "testCount_multiInstanceResultSet_filterCriteria" method into AbstractHibernateEntityDaoTest
-				(performing instance count on a result set with multiple instances, which is shaped by FilterCriterion
-				instances).
+				Updated AbstractHibernateEntityDaoTest: performing instance count on a result set with multiple instances,
+				which is shaped by FilterCriterion instances.
 			</action>
 			<action dev="vojtech.szocs" type="update">
 				Updated BaseHibernateDataAccessor#rowCount() method - now a check is made whether the "rowCount"
@@ -35,9 +34,8 @@
 				prior to adding corresponding FilterCriterion into the NestedPropertyCriteria.
 			</action>
 			<action dev="igor.mihalik" type="update">
-				Added "testConvert_noFilterValues" method into NestedPropertyCriteriaBasedConverterTest
-				(converting criteria transfer object that contains FilterAndSortCriteria instances without
-				any filter values).
+				Updated NestedPropertyCriteriaBasedConverterTest: converting criteria transfer object that contains
+				FilterAndSortCriteria instances without any filter values.
 			</action>
 		</release>
 		

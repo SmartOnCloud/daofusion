@@ -47,3 +47,5 @@ Google Web Toolkit Integration
 
 </module>
 +-----+
+  
+  Now you're ready to use ${df} in your GWT applications.

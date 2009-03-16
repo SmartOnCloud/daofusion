@@ -28,6 +28,7 @@
 		
 		<menu name="Overview">
 			<item name="Welcome" href="index.html" />
+			<item name="Summary" href="summary.html" />
 			<item name="What's New" href="news.html" />
 			<item name="License" href="license.html" />
 		</menu>
