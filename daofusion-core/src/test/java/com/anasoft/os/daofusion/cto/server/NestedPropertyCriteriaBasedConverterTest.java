@@ -340,4 +340,35 @@ public class NestedPropertyCriteriaBasedConverterTest {
 		performTransferObjectConversionTest(transferObject, expectedCriteria);
 	}
 	
+	/**
+	 * Test for {@link NestedPropertyCriteriaBasedConverter#convert(CriteriaTransferObject, String)}:
+	 * converting criteria transfer object that contains {@link FilterAndSortCriteria} instances
+	 * without any filter values.
+	 */
+	@Test
+	public void testConvert_noFilterValues() {
+	    final FilterAndSortCriteria nameCriteria = new FilterAndSortCriteria(SampleConverter.CUSTOMER_NAME_ID);
+	    nameCriteria.setSortAscending(true);
+        nameCriteria.setIgnoreCase(true);
+        
+        final FilterAndSortCriteria favNoCriteria = new FilterAndSortCriteria(SampleConverter.CUSTOMER_FAVNO_ID);
+        favNoCriteria.setSortAscending(true);
+        
+        final FilterAndSortCriteria joinDateCriteria = new FilterAndSortCriteria(SampleConverter.CUSTOMER_JOINDATE_ID);
+        joinDateCriteria.setSortAscending(false);
+        
+        final CriteriaTransferObject transferObject = new CriteriaTransferObject();
+        transferObject.add(nameCriteria);
+        transferObject.add(favNoCriteria);
+        transferObject.add(joinDateCriteria);
+        
+        final NestedPropertyCriteria expectedCriteria = new NestedPropertyCriteria();
+        expectedCriteria.add(new SortCriterion(SampleConverter.CUSTOMER_NAME_PATH, true, true));
+        expectedCriteria.add(new SortCriterion(SampleConverter.CUSTOMER_FAVNO_PATH, true));
+        expectedCriteria.add(new SortCriterion(SampleConverter.CUSTOMER_JOINDATE_PATH, false));
+        
+        performTransferObjectConversionTest(transferObject, expectedCriteria);
+	}
+	
+	
 }

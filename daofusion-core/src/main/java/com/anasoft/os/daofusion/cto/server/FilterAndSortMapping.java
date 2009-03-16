@@ -123,7 +123,7 @@ public class FilterAndSortMapping extends NestedPropertyMapping {
 	 */
 	@Override
 	public void apply(FilterAndSortCriteria clientSideCriteria, NestedPropertyCriteria serverSideCriteria) {
-		if (filterCriterionProvider != null) {
+		if (filterCriterionProvider != null && clientSideCriteria.getFilterValues().length > 0) {
 			serverSideCriteria.add(getFilterCriterion(clientSideCriteria));
 		}
 		
