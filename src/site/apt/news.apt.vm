@@ -20,7 +20,7 @@ ${df} news
   
   <<${df} 1.0.1>> has been released.
   
-  This release fixes some issues regarding the <<<CriteriaTransferObject>>> / <<<FilterAndSortCriteria>>> and adds some minor functionality.
+  See the {{{./changes-report.html} changelog}} for more information about this release.
   
 * 2009-02-18
   

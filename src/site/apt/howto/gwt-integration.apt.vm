@@ -1,11 +1,49 @@
  ----
- Google Web Toolkit (GWT) Integration
+ Google Web Toolkit Integration
  ----
  Vojtech Szocs
  ----
- 25 February 2009
+ 16 March 2009
  ----
 
-Google Web Toolkit (GWT) Integration
+Google Web Toolkit Integration
   
-  Coming soon.
+  ${df} client classes can be integrated into {{{http://code.google.com/webtoolkit/} Google Web Toolkit}} (GWT) applications in a few simple steps.
+  
+* Add client sources to project classpath
+  
+  GWT compiles Java client application classes for which source code is available into equivalent but highly optimized JavaScript code. If you intend
+  to use ${df} client classes within your GWT application, you need to make sure that sources for the given ${df} project are available on the classpath
+  along with corresponding binaries.
+  
+  For {{{http://maven.apache.org/} Maven}} users, this task is as simple as adding the following dependency into your project's <<<pom.xml>>>:
+  
++-----+
+<dependency>
+
+  <groupId>com.anasoft.os</groupId>
+  <artifactId>daofusion-core</artifactId>
+  <version>${daofusion-version}</version>
+  <classifier>sources</classifier>
+  <scope>provided</scope>
+
+</dependency>
++-----+
+  
+  This dependency will essentially add the <<<daofusion-core-$\{daofusion-version\}-sources.jar>>> to the project classpath. The <<<provided>>> scope
+  ensures that this dependency won't be reflected into your final project build.
+  
+  See the {{{./maven-integration.html} Maven integration}} page for more information about how ${df} integrates with Maven.
+  
+* Register client classes within your GWT module
+  
+  Since it's possible to specify multiple <<<source>>> elements within your GWT module descriptor (<<<your-module.gwt.xml>>>), you can register ${df}
+  client classes within your GWT module like this:
+  
++-----+
+<module>
+
+  <source path="com/anasoft/os/daofusion/cto/client" />
+
+</module>
++-----+

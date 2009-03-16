@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 5 March 2009
+ 16 March 2009
  ----
 
 Core DAO classes
@@ -151,63 +151,18 @@ public interface PersistentEnumerationDao<T extends PersistentEnumeration>
 }
 +-----+
   
-  <<<BaseHibernateDataAccessor>>> is the base class for all standard DAO implementations, providing data access through JPA / Hibernate persistence APIs:
+  <<<BaseHibernateDataAccessor>>> is the base class for all standard DAO implementations, providing data access through JPA / Hibernate persistence APIs. This class requires you to implement
+  the abstract <getHibernateEntityManager> method which serves as the entry point for Hibernate <<<Session>>> instances:
   
 +-----+
-public abstract class BaseHibernateDataAccessor {
-
-    /**
-     * Returns an open HibernateEntityManager instance
-     * providing access to the Hibernate Session.
-     */
-    protected abstract HibernateEntityManager getHibernateEntityManager();
-
-    /**
-     * Convenience method for retrieving the current Session
-     * from the entity manager.
-     */
-    protected final Session getSession() {
-        return getHibernateEntityManager().getSession();
-    }
-
-    /**
-     * Convenience method for retrieving a new Criteria
-     * instance bound to the current Session.
-     */
-    protected final Criteria getHibernateCriteria(
-        Class<? extends Persistable<? extends Serializable>> entityClass) {
-
-        return getSession().createCriteria(entityClass);
-    }
-
-    /**
-     * Convenience method for counting the number of rows
-     * returned by the given criteria, based on
-     * Hibernate rowCount projection.
-     */
-    protected final int rowCount(Criteria criteria) {
-        criteria.setProjection(Projections.rowCount());
-        return ((Integer) criteria.list().get(0)).intValue();
-    }
-
-    /**
-     * Returns the Criteria instance corresponding to query
-     * constraints defined within the entityCriteria.
-     */
-    protected Criteria getCriteria(PersistentEntityCriteria entityCriteria,
-        Class<? extends Persistable<? extends Serializable>> entityClass) {
-
-        final Criteria criteria = getHibernateCriteria(entityClass);
-        entityCriteria.apply(criteria);
-
-        return criteria;
-    }
-
-}
+/**
+ * Returns an open HibernateEntityManager instance
+ * providing access to the Hibernate Session.
+ */
+protected abstract HibernateEntityManager getHibernateEntityManager();
 +-----+
   
-  There is no rocket science going on in there though - the user is actually responsible for providing an open <<<HibernateEntityManager>>> instance as the entry point for a Hibernate
-  <<<Session>>>. The reason for declaring an abstract <getHibernateEntityManager> method is to give users free hands when it comes to entity manager instance lookup. The most convenient
+  The reason for declaring an abstract <getHibernateEntityManager> method is to give users free hands when it comes to entity manager instance lookup. The most convenient
   method implementation pattern is to rely on entity manager instance injection via the <<<PersistenceContext>>> annotation (within the JPA persistence context) and simply returning the
   injected instance. Alternatively, the entity manager instance can be created directly via the <<<EntityManagerFactory>>>. ${df} doesn't restrict you when defining the entity manager lookup
   strategy - it just tells you to implement it the way you prefer. Note that all data access happens solely through the {{{http://www.hibernate.org/hib_docs/v3/api/org/hibernate/Criteria.html} Hibernate Criteria API}}

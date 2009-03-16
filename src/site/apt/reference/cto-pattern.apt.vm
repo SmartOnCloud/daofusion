@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 26 February 2009
+ 16 March 2009
  ----
 
 Criteria transfer object pattern
@@ -155,6 +155,26 @@ public interface FilterValueObjectProvider {
   
   As for the sorting functionality, no additional settings are necessary since the <<<FilterAndSortCriteria>>> instance contains all supported sort options by default. Note that the
   sorting functionality (underlying <<<SortCriterion>>> instance processing) can be turned off by setting <<<FilterAndSortCriteria>>>'s <sortAscending> property to <null>.
+  
+  Since the <<<CriteriaTransferObject>>> allows its users to define paging and sort criteria in addition to property filter constraints, converting such CTO instance directly into
+  a <<<NestedPropertyCriteria>>> and passing it to <count> methods of your DAO classes might not work correctly for most databases. This is because <<<AbstractHibernateEntityDao>>>'s
+  row count technique implementation relies on Hibernate <<<rowCount>>> projection (<<<AbstractHibernateEntityDao>>> uses <<<BaseHibernateDataAccessor>>>'s <rowCount> method under
+  the hood for this purpose). The bottom line is that the target <<<Criteria>>> instance shouldn't contain any paging constraints since the <rowCount> method relies on a result set
+  with its "shape" defined by the projection itself. The <<<rowCount>>> projection essentially results in <<<SELECT COUNT(*) FROM ...>>> SQL statement and we expect to receive exactly
+  one integer value as its result (the shape of our projection). Adding paging constraints to such <<<Criteria>>> instance doesn't make much sense for projections since it restricts
+  their elements (which is not what we want in general).
+  
+  So, how can we use CTO instances safely within the context of standard <count> methods? The answer is <<<CriteriaTransferObjectCountWrapper>>> - a simple server-side CTO wrapper
+  designed for entity instance count purposes. <<<CriteriaTransferObjectCountWrapper>>> takes the original CTO instance as its argument and creates a new CTO which delegates most
+  of its methods to the wrapped CTO instance with the exception of paging and sort constraints and methods that modify internal state of the transfer object:
+  
++-----+
+PersistentEntityCriteria criteriaForCount = converter.convert(
+    new CriteriaTransferObjectCountWrapper(transferObject).wrap(),
+    myMappingGroup);
+
+// now you can pass "criteriaForCount" into standard count methods safely
++-----+
   
 * {Sample CTO converter}
   

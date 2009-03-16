@@ -62,12 +62,12 @@
 			<item name="${df} on GoogleCode" href="googlecode.html" />
 			<item name="Source Repository" href="source-repository.html" />
 			<item name="Issue Tracking" href="issue-tracking.html" />
+			<item name="Code Review" href="code-review.html" />
 			<item name="${df} Team" href="team-list.html" />
 		</menu>
 		
 		<menu name="Developer Zone">
 			<item name="Release Policy" href="devzone/release-policy.html" />
-			<item name="Code Review" href="devzone/code-review.html" />
 		</menu>
 	</body>
 	
