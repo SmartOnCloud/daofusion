@@ -181,10 +181,10 @@ public class NestedPropertyCriteriaBasedConverterTest {
 	private SampleConverter converter;
 	
 	/**
-	 * Set up the tested <tt>converter</tt> instance.
+	 * Set up class under test.
 	 */
 	@Before
-	public void setupConverter() {
+	public void setup() {
 		converter = new SampleConverter();
 		converter.initMappings();
 	}
@@ -282,7 +282,7 @@ public class NestedPropertyCriteriaBasedConverterTest {
 	 * affect the structure of a nested property criterion.
 	 */
 	@Test
-	public void testConvert_filterAndSortCriteria() {
+	public void testConvert_filterAndSortCriteria() throws Exception {
 		final String nameCriteriaFilterValue = "Johnny %";
 		final FilterAndSortCriteria nameCriteria = new FilterAndSortCriteria(SampleConverter.CUSTOMER_NAME_ID);
 		nameCriteria.setFilterValue(nameCriteriaFilterValue);
@@ -328,7 +328,7 @@ public class NestedPropertyCriteriaBasedConverterTest {
 	 * persistent entity paging criteria.
 	 */
 	@Test
-	public void testConvert_pagingCriteria() {
+	public void testConvert_pagingCriteria() throws Exception {
 		final CriteriaTransferObject transferObject = new CriteriaTransferObject();
 		transferObject.setFirstResult(1);
 		transferObject.setMaxResults(2);
@@ -346,7 +346,7 @@ public class NestedPropertyCriteriaBasedConverterTest {
 	 * without any filter values.
 	 */
 	@Test
-	public void testConvert_noFilterValues() {
+	public void testConvert_noFilterValues() throws Exception {
 	    final FilterAndSortCriteria nameCriteria = new FilterAndSortCriteria(SampleConverter.CUSTOMER_NAME_ID);
 	    nameCriteria.setSortAscending(true);
         nameCriteria.setIgnoreCase(true);
