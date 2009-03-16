@@ -66,12 +66,10 @@ public class CriteriaTransferObjectCountWrapper {
             private static final long serialVersionUID = 1L;
             
             @Override
-            public FilterAndSortCriteria get(String propertyId) {
+            public FilterAndSortCriteria get(final String propertyId) {
                 final FilterAndSortCriteria transferObjectCriteria = transferObject.get(propertyId);
                 
-                final FilterAndSortCriteria criteriaForCount = new FilterAndSortCriteria(transferObjectCriteria.getPropertyId()) {
-                    
-                    private static final long serialVersionUID = 1L;
+                final FilterAndSortCriteria criteriaForCount = new FilterAndSortCriteria(propertyId) {
                     
                     @Override
                     public String getPropertyId() {
