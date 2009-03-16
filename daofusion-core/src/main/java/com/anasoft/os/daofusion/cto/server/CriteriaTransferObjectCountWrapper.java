@@ -60,10 +60,9 @@ public class CriteriaTransferObjectCountWrapper {
      * @return {@link CriteriaTransferObject} instance suitable for entity
      * instance count methods.
      */
+    @SuppressWarnings("serial")
     public CriteriaTransferObject wrap() {
         final CriteriaTransferObject transferObjectForCount = new CriteriaTransferObject() {
-            
-            private static final long serialVersionUID = 1L;
             
             @Override
             public FilterAndSortCriteria get(final String propertyId) {
