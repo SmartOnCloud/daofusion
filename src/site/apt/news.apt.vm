@@ -8,6 +8,10 @@
 
 ${df} news
   
+* ???
+  
+  <<${df} 1.1.0>> has been released. {{{./changes-report.html} Lot of changes}} within this release.
+  
 * 2009-03-05
   
   ${df} was briefly mentioned at the {{{http://groups.adobe.com/posts/c39c490d91} Slovakia FUG meeting}} held at {{{http://www.fei.stuba.sk/generate_page.php?page_id=793} Faculty of Electrical Engineering and Information Technology}},
@@ -18,9 +22,7 @@ ${df} news
   
 * 2009-02-26
   
-  <<${df} 1.0.1>> has been released.
-  
-  See the {{{./changes-report.html} changelog}} for more information about this release.
+  <<${df} 1.0.1>> has been released. See the {{{./changes-report.html} changelog}} for more information about this release.
   
 * 2009-02-18
   

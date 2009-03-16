@@ -10,17 +10,34 @@
 		<release version="1.1.0" date="???" description="Initial release of the the 1.1.x branch">
 			<action dev="vojtech.szocs" type="fix" issue="1" system="GoogleCode">
 				Fixed issue "H2: NestedPropertyCriteria created by NestedPropertyCriteriaBasedConverter fails
-				within AbstractHibernateEntityDao#count()".
+				within AbstractHibernateEntityDao#count()". Implementation includes a server-side CriteriaTransferObject
+				wrapper for entity instance count purposes (CriteriaTransferObjectCountWrapper) along with the
+				corresponding unit test.
 			</action>
 			<action dev="vojtech.szocs" type="update">
-				Added "testCount_multiInstanceResultSet_filterCriteria" method into AbstractHibernateEntityDaoTest.
+				Updated Javadoc within PersistentEntityDao / AbstractHibernateEntityDao / BaseHibernateDataAccessor
+				to make things about the "rowCount" projection stuff more clear to the end-user.
+			</action>
+			<action dev="vojtech.szocs" type="update">
+				Added "testCount_multiInstanceResultSet_filterCriteria" method into AbstractHibernateEntityDaoTest
+				(performing instance count on a result set with multiple instances, which is shaped by FilterCriterion
+				instances).
 			</action>
 			<action dev="vojtech.szocs" type="update">
 				Updated BaseHibernateDataAccessor#rowCount() method - now a check is made whether the "rowCount"
 				projection results in a single Integer value (if not, a warning is logged and zero is returned).
 			</action>
 			<action dev="igor.mihalik" type="add">
-				Added test-scoped Mockito dependency to the parent POM. TODO: later add info about mock tests if any.
+				Added test-scoped Mockito dependency to the parent POM.
+			</action>
+			<action dev="igor.mihalik" type="update">
+				FilterAndSortMapping#apply() method now checks if FilterAndSortCriteria contains any filter values
+				prior to adding corresponding FilterCriterion into the NestedPropertyCriteria.
+			</action>
+			<action dev="igor.mihalik" type="update">
+				Added "testConvert_noFilterValues" method into NestedPropertyCriteriaBasedConverterTest
+				(converting criteria transfer object that contains FilterAndSortCriteria instances without
+				any filter values).
 			</action>
 		</release>
 		

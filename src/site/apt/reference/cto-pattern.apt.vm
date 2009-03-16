@@ -132,7 +132,8 @@ public abstract void apply(FilterAndSortCriteria clientSideCriteria,
   
   <<<FilterAndSortMapping>>> is the default <<<NestedPropertyMapping>>> subclass that is intended for direct use in conjunction with <<<NestedPropertyCriteriaBasedConverter>>>. Presence of a custom
   <<<PropertyFilterCriterionProvider>>> implementation within the <<<FilterAndSortMapping>>> indicates the use of the filtering functionality (if not <null>, the given <<<PropertyFilterCriterionProvider>>>
-  implementation will be used to construct a <<<FilterCriterion>>> instance to be added to the server-side criteria).
+  implementation will be used to construct a <<<FilterCriterion>>> instance to be added to the server-side criteria). However, the <<<FilterCriterion>>> instance will be added to the server-side criteria
+  only in case the <<<FilterAndSortCriteria>>> contains at least one filter value.
   
   In order to resolve string-based filter values received from the corresponding <<<FilterAndSortCriteria>>> instance into their typed object representations, a custom <<<FilterValueObjectProvider>>>
   implementation needs to be provided as well (assuming the use of the filtering functionality):
