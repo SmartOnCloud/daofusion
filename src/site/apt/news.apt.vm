@@ -3,14 +3,14 @@
  ----
  Vojtech Szocs
  ----
- 16 March 2009
+ 18 March 2009
  ----
 
 ${df} news
   
-* ???
+* 2009-03-18
   
-  <<${df} 1.1.0>> has been released. {{{./changes-report.html} Lot of changes}} within this release.
+  <<${df} 1.1.0>> has been released. {{{./changes-report.html} Lots of changes}} and site updates in this release. ${df} also celebrates its first month of being publicly available.
   
 * 2009-03-05
   

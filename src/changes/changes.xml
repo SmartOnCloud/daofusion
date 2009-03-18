@@ -7,7 +7,7 @@
 	</properties>
 	
 	<body>
-		<release version="1.1.0" date="???" description="Initial release of the the 1.1.x branch">
+		<release version="1.1.0" date="2009-03-18" description="Initial release of the the 1.1.x branch">
 			<action dev="vojtech.szocs" type="fix" issue="1" system="GoogleCode">
 				Fixed issue "H2: NestedPropertyCriteria created by NestedPropertyCriteriaBasedConverter fails
 				within AbstractHibernateEntityDao#count()". Implementation includes a server-side CriteriaTransferObject
@@ -36,6 +36,9 @@
 			<action dev="igor.mihalik" type="update">
 				Updated NestedPropertyCriteriaBasedConverterTest: converting criteria transfer object that contains
 				FilterAndSortCriteria instances without any filter values.
+			</action>
+			<action dev="vojtech.szocs" type="remove">
+				Removed dependency to "maven-eclipse-plugin" within the parent POM.
 			</action>
 		</release>
 		
