@@ -1,0 +1,7 @@
+<dependency>
+	<groupId>com.anasoft.os</groupId>
+	<artifactId>daofusion-core</artifactId>
+	<version>${daofusion-version}</version>
+	<classifier>sources</classifier>
+	<scope>provided</scope>
+</dependency>

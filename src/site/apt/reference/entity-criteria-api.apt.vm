@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 26 February 2009
+ 18 March 2009
  ----
 
 Persistent entity criteria API
@@ -61,17 +61,7 @@ External resources
   
   Let's take a brief look at this interface to get a basic understanding of the criteria API concept:
   
-+-----+
-public interface PersistentEntityCriteria {
-
-    /**
-     * Applies query constraints defined by the persistent entity
-     * criteria implementation to the targetCriteria.
-     */
-    public void apply(Criteria targetCriteria);
-
-}
-+-----+
+%{code-snippet|file=src/site/snippet/reference/entity-criteria-api-PersistentEntityCriteria.java}
   
   As you can see, there is no rocket science going on here - implementations of the <<<PersistentEntityCriteria>>> interface are merely responsible for updating the Hibernate <<<Criteria>>>
   instance according to any query constraints they define.
@@ -114,24 +104,7 @@ public interface PersistentEntityCriteria {
   <<<FilterCriterion>>> defines filter constraints for the given entity property via the <<<PropertyFilterCriterionProvider>>> interface. A custom <<<PropertyFilterCriterionProvider>>> implementation
   is used to construct a Hibernate <<<Criterion>>> instance regarding the filter criterion as well as deciding whether to actually use the provided <<<Criterion>>> instance:
   
-+-----+
-public interface PropertyFilterCriterionProvider {
-
-    /**
-     * Returns a Criterion instance corresponding to the given property
-     * of the target persistent entity.
-     */
-    public Criterion getCriterion(String targetPropertyName,
-        Object[] filterObjectValues, Object[] directValues);
-
-    /**
-     * Returns a flag indicating whether to use this provider during
-     * the FilterCriterion instance processing.
-     */
-    public boolean enabled(Object[] filterObjectValues, Object[] directValues);
-
-}
-+-----+
+%{code-snippet|file=src/site/snippet/reference/entity-criteria-api-PropertyFilterCriterionProvider.java}
   
   There are basically two ways to pass data to the custom <<<PropertyFilterCriterionProvider>>> implementation from within the <<<FilterCriterion>>>:
   
@@ -154,38 +127,7 @@ public interface PropertyFilterCriterionProvider {
   By having full control over the Hibernate <<<Criterion>>> instance creation via the <<<PropertyFilterCriterionProvider>>> interface, the user is able to define even the most complex property
   criteria with ease without having to worry about any nested subcriteria details. For example:
   
-+-----+
-public static final PropertyFilterCriterionProvider LIKE_USING_FILTER_OBJECT
-    = new PropertyFilterCriterionProvider() {
-
-    public Criterion getCriterion(String targetPropertyName,
-        Object[] filterObjectValues, Object[] directValues) {
-
-        return Restrictions.like(targetPropertyName, filterObjectValues[0]);
-    }
-
-    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-        return (filterObjectValues.length == 1) && (filterObjectValues[0] != null);
-    }
-
-};
-
-public static final PropertyFilterCriterionProvider BETWEEN_USING_DIRECT_VALUES
-    = new PropertyFilterCriterionProvider() {
-
-    public Criterion getCriterion(String targetPropertyName,
-        Object[] filterObjectValues, Object[] directValues) {
-
-        return Restrictions.between(targetPropertyName, directValues[0], directValues[1]);
-    }
-
-    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-        return (directValues.length == 2)
-            && (directValues[0] != null) && (directValues[1] != null);
-    }
-
-};
-+-----+
+%{code-snippet|file=src/site/snippet/reference/entity-criteria-api-PropertyFilterCriterionProviderUsage.java}
   
   The combination of <filterObjectValuePaths> and <directValues> enables you to define your own filter value strategy - a single filter object as the source of filter values, direct
   value approach or even a combination of the two.
@@ -198,139 +140,7 @@ public static final PropertyFilterCriterionProvider BETWEEN_USING_DIRECT_VALUES
   The following code shows an extended version of the sample DAO from the {{{./core-dao-classes.html} previous section}}, using filter object together with the direct value approach
   to employ custom constraints on the <<<Order>>> entity:
   
-+-----+
-public abstract class UnaryDirectValueProvider implements PropertyFilterCriterionProvider {
-
-    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-        return (directValues.length == 1) && (directValues[0] != null);
-    }
-
-}
-
-public abstract class UnaryFilterObjectValueProvider implements PropertyFilterCriterionProvider {
-
-    public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-        return (filterObjectValues.length == 1) && (filterObjectValues[0] != null);
-    }
-
-}
-
-public class QueryDefinition<T extends Persistable<?>> {
-
-    private Integer firstResult;
-    private Integer maxResults;
-
-    private T filterObject;
-    private boolean filterEnabled;
-
-    private boolean sortEnabled;
-    private String sortPropertyPath;
-    private boolean sortAscending;
-
-    // getters and setters go here
-
-}
-
-public interface OrderDao extends PersistentEntityDao<Order, Long> {
-
-    public List<Order> getOrders(final QueryDefinition<Order> query,
-        Integer minOrderItemCount, final String customerNameFilter);
-
-}
-
-public class OrderDaoImpl extends EntityManagerAwareEntityDao<Order, Long>
-    implements OrderDao {
-
-    public Class<Order> getEntityClass() {
-        return Order.class;
-    }
-
-    public List<Order> getOrders(final QueryDefinition<Order> query,
-        Integer minOrderItemCount, final String customerNameFilter) {
-
-        final NestedPropertyCriteria criteria = new NestedPropertyCriteria();
-
-        criteria.setFirstResult(query.getFirstResult());
-        criteria.setMaxResults(query.getMaxResults());
-
-        criteria.setFilterObject(query.getFilterObject());
-
-        // direct property filter criterion (using the filterObject)
-        criteria.add(new FilterCriterion("creationDate", "creationDate", true,
-            new UnaryFilterObjectValueProvider() {
-
-            public Criterion getCriterion(String targetPropertyName,
-                Object[] filterObjectValues, Object[] directValues) {
-
-                return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
-            }
-
-            @Override
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return super.enabled(filterObjectValues, directValues)
-                    && query.isFilterEnabled();
-            }
-        }));
-
-        // nested property filter criterion (using the filterObject)
-        criteria.add(new FilterCriterion("customer.email", "customer.email", true,
-            new UnaryFilterObjectValueProvider() {
-
-            public Criterion getCriterion(String targetPropertyName,
-                Object[] filterObjectValues, Object[] directValues) {
-
-                return Restrictions.like(targetPropertyName, filterObjectValues[0]);
-            }
-
-            @Override
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return super.enabled(filterObjectValues, directValues)
-                    && query.isFilterEnabled();
-            }
-        }));
-
-        // direct property filter criterion (using a direct value)
-        criteria.add(new FilterCriterion("orderItems", minOrderItemCount, false,
-            new UnaryDirectValueProvider() {
-
-            public Criterion getCriterion(String targetPropertyName,
-                Object[] filterObjectValues, Object[] directValues) {
-
-                return Restrictions.sizeGe(targetPropertyName, (Integer) directValues[0]);
-            }
-
-            @Override
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return super.enabled(filterObjectValues, directValues)
-                    && query.isFilterEnabled();
-            }
-        }));
-
-        // nested property filter criterion (bypassing the direct value
-        // mechanism via the final keyword)
-        criteria.add(new FilterCriterion("customer.name", null, false,
-            new PropertyFilterCriterionProvider() {
-
-            public Criterion getCriterion(String targetPropertyName,
-                Object[] filterObjectValues, Object[] directValues) {
-
-                return Restrictions.like(targetPropertyName, customerNameFilter);
-            }
-
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return (customerNameFilter != null) && query.isFilterEnabled();
-            }
-        }));
-
-        if (query.isSortEnabled()) {
-            criteria.add(new SortCriterion(query.getSortPropertyPath(), query.isSortAscending()));
-        }
-
-        return query(criteria);
-    }
-
-}
-+-----+
+%{code-snippet|file=src/site/snippet/reference/entity-criteria-api-SampleDaoUsingBothFilterValueStrategies.java}
   
   In this example, <<<QueryDefinition>>> represents a generic persistent entity query that supports filtering, sorting and paging capabilities of the underlying <<<NestedPropertyCriteria>>>
   implementation (notice that a single sort property is supported in this case though). The user is responsible for initializing the <filterObject> as well as its associated objects properly

@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 16 March 2009
+ 18 March 2009
  ----
 
 Google Web Toolkit Integration
@@ -18,17 +18,7 @@ Google Web Toolkit Integration
   
   For {{{http://maven.apache.org/} Maven}} users, this task is as simple as adding the following dependency into your project's <<<pom.xml>>>:
   
-+-----+
-<dependency>
-
-  <groupId>com.anasoft.os</groupId>
-  <artifactId>daofusion-core</artifactId>
-  <version>${daofusion-version}</version>
-  <classifier>sources</classifier>
-  <scope>provided</scope>
-
-</dependency>
-+-----+
+%{code-snippet|file=src/site/snippet/howto/gwt-integration-pom.xml}
   
   This dependency will essentially add the <<<daofusion-core-$\{daofusion-version\}-sources.jar>>> to the project classpath. The <<<provided>>> scope
   ensures that this dependency won't be reflected into your final project build.
@@ -40,12 +30,6 @@ Google Web Toolkit Integration
   Since it's possible to specify multiple <<<source>>> elements within your GWT module descriptor (<<<your-module.gwt.xml>>>), you can register ${df}
   client classes within your GWT module like this:
   
-+-----+
-<module>
-
-  <source path="com/anasoft/os/daofusion/cto/client" />
-
-</module>
-+-----+
+%{code-snippet|file=src/site/snippet/howto/gwt-integration-module.gwt.xml}
   
   Now you're ready to use ${df} in your GWT applications.

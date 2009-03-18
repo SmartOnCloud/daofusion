@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 9 March 2009
+ 18 March 2009
  ----
 
 Integration test support
@@ -197,64 +197,19 @@ External resources
   So, you have your own specific database for which you want to test the core DAO functionality using the standard integration test infrastructure. First thing you need to do is to
   extend <<<AbstractHibernateEntityDaoTest>>> / <<<AbstractHibernateEnumerationDaoTest>>> like this:
   
-+-----+
-@ContextConfiguration(locations = { DatabaseContextLocations.POSTGRESQL })
-@IfProfileValue(name = BaseHibernateIntegrationTest.PROFILE_DBTYPE_NAME, values = {
-    BaseHibernateIntegrationTest.PROFILE_DBTYPE_VALUE_ALL,
-    BaseHibernateIntegrationTest.PROFILE_DBTYPE_VALUE_LOCAL
-})
-public class PostgreSQLHibernateEntityDaoTest extends AbstractHibernateEntityDaoTest {
-
-}
-+-----+
+%{code-snippet|file=src/site/snippet/reference/integration-tests-CustomCoreIntegrationTest-TestClass.java}
   
   In this case, <<<DatabaseContextLocations.POSTGRESQL>>> should point to a Spring context for a local PostgreSQL database instance:
   
-+-----+
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
-
-	<!-- bean property value resolution -->
-	<context:property-override location="classpath:postgresql/test-postgresql-beanSetup.properties" />
-
-</beans>
-+-----+
+%{code-snippet|file=src/site/snippet/reference/integration-tests-CustomCoreIntegrationTest-SpringContext.xml}
   
   The <<<test-postgresql-beanSetup.properties>>> file referenced by this context would look like this:
   
-+-----+
-# pooled JDBC data source configuration
-dataSource.driverClass=org.postgresql.Driver
-dataSource.jdbcUrl=jdbc:postgresql://localhost:5432/postgres
-dataSource.user=postgres
-dataSource.password=postgres
-
-# name of the integration test persistence unit
-entityManagerFactory.persistenceUnitName=dao-test-postgresql
-+-----+
+%{code-snippet|file=src/site/snippet/reference/integration-tests-CustomCoreIntegrationTest-SpringSetup.properties}
   
   Since JPA uses <<<META-INF/persistence.xml>>> as the default persistence metadata descriptor, you need to provide this file as well:
   
-+-----+
-<?xml version="1.0" encoding="UTF-8"?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
-	version="1.0">
-
-	<persistence-unit name="dao-test-postgresql" transaction-type="RESOURCE_LOCAL">
-		<mapping-file>test-core-orm.xml</mapping-file>
-		<properties>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-		</properties>
-	</persistence-unit>
-
-</persistence>
-+-----+
+%{code-snippet|file=src/site/snippet/reference/integration-tests-CustomCoreIntegrationTest-Persistence.xml}
   
   How cool is that? Using the standard integration test infrastructure that sets up the JPA / Hibernate test environment, we are able to write custom core integration tests with
   only a few lines of Java code and configuration. Notice that we're using the <<<test-core-orm.xml>>> file defining entity mappings for the sample <eShop> domain model.

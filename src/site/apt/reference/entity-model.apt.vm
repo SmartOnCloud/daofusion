@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 26 February 2009
+ 18 March 2009
  ----
 
 Persistent entity model
@@ -94,53 +94,7 @@ External resources
   Implementing <hashCode> / <equals> methods correctly can be sometimes very tricky and can lead to strange errors regarding the application behavior. As mentioned above,
   there are basically two approaches to their implementation. The following code demonstrates the synthetic generated value approach based on the <<<UUID>>> class:
   
-+-----+
-@MappedSuperclass
-public abstract class OidBasedMutablePersistentEntity extends MutablePersistentEntity {
-
-    @NaturalId
-    @Column(length = 36, name = "object_id", unique = true, updatable = false, nullable = false)
-    private String oid;
-
-    public OidBasedMutablePersistentEntity() {
-        oid = UUID.randomUUID().toString();
-    }
-
-    public String getOid() {
-        return oid;
-    }
-
-    protected void setOid(String oid) {
-        this.oid = oid;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((oid == null) ? 0 : oid.hashCode());
-        return result;
-    }
-
-    @Override
-    public final boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof OidBasedMutablePersistentEntity)) {
-            return false;
-        }
-
-        final OidBasedMutablePersistentEntity other = (OidBasedMutablePersistentEntity) obj;
-
-        return oid.equals(other.oid);
-    }
-
-}
-+-----+
+%{code-snippet|file=src/site/snippet/reference/entity-model-OidBasedMutablePersistentEntity.java}
   
   Note that the <oid> field setter is marked as protected to avoid direct object identity manipulation.
   
@@ -148,65 +102,7 @@ public abstract class OidBasedMutablePersistentEntity extends MutablePersistentE
   
   The following code shows a sample persistent entity, extending the <<<OidBasedMutablePersistentEntity>>> class as shown above:
   
-+-----+
-@Entity
-@Table(name = "orders")
-public class Order extends OidBasedMutablePersistentEntity {
-
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
-
-    @Embedded
-    private Address shippingAddress;
-
-    @OneToMany(mappedBy = "order")
-    @Cascade(value = {CascadeType.SAVE_UPDATE})
-    private List<OrderItem> orderItems = new ArrayList<OrderItem>();
-
-    @Column(nullable = false)
-    private Boolean complete;
-
-    @ManyToOne
-    @JoinColumn(nullable = false, updatable = false)
-    private Customer customer;
-
-    protected List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    protected void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-
-    public void addOrderItem(OrderItem orderItem) {
-        orderItems.add(orderItem);
-        orderItem.setOrder(this);
-    }
-
-    public void removeOrderItem(OrderItem orderItem) {
-        orderItems.remove(orderItem);
-        orderItem.setOrder(null);
-    }
-
-    public List<OrderItem> getUnmodifiableOrderItemList() {
-        return Collections.unmodifiableList(orderItems);
-    }
-
-    // rest of the getters and setters go here
-
-    public int getTotalPrice() {
-        int result = 0;
-
-        for (OrderItem orderItem : orderItems) {
-            result += orderItem.getTotalPrice();
-        }
-
-        return result;
-    }
-
-}
-+-----+
+%{code-snippet|file=src/site/snippet/reference/entity-model-SamplePersistentEntity.java}
   
   As you can see, there is nothing special happening here except that we are extending the <<<OidBasedMutablePersistentEntity>>> class which implements the synthetic generated value approach.
   
@@ -223,15 +119,7 @@ public class Order extends OidBasedMutablePersistentEntity {
   
   The following code shows a sample persistent enumeration:
   
-+-----+
-@Entity
-@Table(name = "payment_types")
-public class PaymentType extends PersistentEnumeration {
-
-    // place some custom code here
-
-}
-+-----+
+%{code-snippet|file=src/site/snippet/reference/entity-model-SamplePersistentEnumeration.java}
   
   You could add an extra description field to the enumeration class if necessary but basically that's all about it.
   

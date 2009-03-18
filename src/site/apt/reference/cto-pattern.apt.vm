@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 16 March 2009
+ 18 March 2009
  ----
 
 Criteria transfer object pattern
@@ -76,15 +76,7 @@ External resources
   
   Note that it is important to bind GUI changes within grid elements (filter value widgets, sorted column headers, paging options, etc.) to the associated CTO instance, for example:
   
-+-----+
-private final CriteriaTransferObject cto = new CriteriaTransferObject();
-
-public void onChangeValue(FilterWidget widget) {
-    final String propertyId = widget.getPropertyId();
-    final String value = widget.getValue();
-    cto.get(propertyId).setFilterValue(value);
-}
-+-----+
+%{code-snippet|file=src/site/snippet/reference/cto-pattern-CriteriaTransferObjectUsage.java}
   
   These two simple classes conclude the client part of the CTO pattern.
   
@@ -93,19 +85,7 @@ public void onChangeValue(FilterWidget widget) {
   <<<CriteriaTransferObjectConverter>>> interface represents the general CTO converter contract defining conversion pattern between <<<CriteriaTransferObject>>> instances and their corresponding
   <<<PersistentEntityCriteria>>> counterparts:
   
-+-----+
-public interface CriteriaTransferObjectConverter {
-
-    /**
-     * Converts the given CriteriaTransferObject instance into a corresponding
-     * PersistentEntityCriteria according to property mappings defined by the
-     * requested property mapping group.
-     */
-    public PersistentEntityCriteria convert(CriteriaTransferObject transferObject,
-        String mappingGroupName);
-
-}
-+-----+
+%{code-snippet|file=src/site/snippet/reference/cto-pattern-CriteriaTransferObjectConverter.java}
   
   <<<CriteriaTransferObjectConverter>>> uses the notion of property mapping groups to decide which mapping rules to apply for which CTO instance.
   
@@ -120,15 +100,7 @@ public interface CriteriaTransferObjectConverter {
   concept as shown above. Updating the server-side criteria instance according to client-side <<<FilterAndSortCriteria>>> is achieved via the abstract <apply> method (this one is called for each
   <<<NestedPropertyMapping>>> within a <<<NestedPropertyMappingGroup>>> during the CTO conversion):
   
-+-----+
-/**
- * Applies query constraints defined by the clientSideCriteria
- * to the serverSideCriteria according to the property mapping
- * implementation.
- */
-public abstract void apply(FilterAndSortCriteria clientSideCriteria,
-    NestedPropertyCriteria serverSideCriteria);
-+-----+
+%{code-snippet|file=src/site/snippet/reference/cto-pattern-NestedPropertyMapping.java}
   
   <<<FilterAndSortMapping>>> is the default <<<NestedPropertyMapping>>> subclass that is intended for direct use in conjunction with <<<NestedPropertyCriteriaBasedConverter>>>. Presence of a custom
   <<<PropertyFilterCriterionProvider>>> implementation within the <<<FilterAndSortMapping>>> indicates the use of the filtering functionality (if not <null>, the given <<<PropertyFilterCriterionProvider>>>
@@ -138,17 +110,7 @@ public abstract void apply(FilterAndSortCriteria clientSideCriteria,
   In order to resolve string-based filter values received from the corresponding <<<FilterAndSortCriteria>>> instance into their typed object representations, a custom <<<FilterValueObjectProvider>>>
   implementation needs to be provided as well (assuming the use of the filtering functionality):
   
-+-----+
-public interface FilterValueObjectProvider {
-
-    /**
-     * Returns a typed object representation of
-     * the given string-based filter value.
-     */
-    public Object getObject(String stringValue);
-
-}
-+-----+
+%{code-snippet|file=src/site/snippet/reference/cto-pattern-FilterValueObjectProvider.java}
   
   Note that all filter values converted via this interface will be passed as <directValues> to the underlying <<<FilterCriterion>>> instance - <<<NestedPropertyCriteriaBasedConverter>>>
   generally doesn't use the filter object concept since the structure and type of filter values within <<<FilterAndSortCriteria>>> make it too generic for it to be used correctly
@@ -169,142 +131,14 @@ public interface FilterValueObjectProvider {
   designed for entity instance count purposes. <<<CriteriaTransferObjectCountWrapper>>> takes the original CTO instance as its argument and creates a new CTO which delegates most
   of its methods to the wrapped CTO instance with the exception of paging and sort constraints and methods that modify internal state of the transfer object:
   
-+-----+
-PersistentEntityCriteria criteriaForCount = converter.convert(
-    new CriteriaTransferObjectCountWrapper(transferObject).wrap(),
-    myMappingGroup);
-
-// now you can pass "criteriaForCount" into standard count methods safely
-+-----+
+%{code-snippet|file=src/site/snippet/reference/cto-pattern-CriteriaTransferObjectCountWrapperUsage.java}
   
 * {Sample CTO converter}
   
   Let's build a sample CTO converter that demonstrates basic property mapping configuration. One way of doing this is to extend the <<<NestedPropertyCriteriaBasedConverter>>> class and
   provide property mappings within the implementation itself:
   
-+-----+
-public final class DirectValueCriterionProviders {
-
-    private static abstract class UnaryDirectValueProvider
-        implements PropertyFilterCriterionProvider {
-
-        public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-            return (directValues.length == 1) && (directValues[0] != null);
-        }
-    }
-    
-    private static abstract class BinaryDirectValueProvider
-        implements PropertyFilterCriterionProvider {
-
-        public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-            return (directValues.length == 2)
-                && (directValues[0] != null) && (directValues[1] != null);
-        }
-    }
-
-    public static final PropertyFilterCriterionProvider LIKE = new UnaryDirectValueProvider() {
-        public Criterion getCriterion(String targetPropertyName,
-            Object[] filterObjectValues, Object[] directValues) {
-
-            return Restrictions.like(targetPropertyName, directValues[0]);
-        }
-    };
-
-    public static final PropertyFilterCriterionProvider EQ = new UnaryDirectValueProvider() {
-        public Criterion getCriterion(String targetPropertyName,
-            Object[] filterObjectValues, Object[] directValues) {
-
-            return Restrictions.eq(targetPropertyName, directValues[0]);
-        }
-    };
-
-    public static final PropertyFilterCriterionProvider BETWEEN = new BinaryDirectValueProvider() {
-        public Criterion getCriterion(String targetPropertyName,
-            Object[] filterObjectValues, Object[] directValues) {
-
-            return Restrictions.between(targetPropertyName, directValues[0], directValues[1]);
-        }
-    };
-
-    private DirectValueCriterionProviders() {
-    }
-
-}
-
-public class SampleConverter extends NestedPropertyCriteriaBasedConverter {
-
-    public static final String MAPPING_GROUP_CUSTOMER = "customer";
-
-    public static final String CUSTOMER_NAME_ID = "name";
-    public static final String CUSTOMER_NAME_PATH = "name";
-
-    public static final String CUSTOMER_FAVNO_ID = "favNo";
-    public static final String CUSTOMER_FAVNO_PATH = "userProfile.favoriteNumber";
-
-    public static final String CUSTOMER_JOINDATE_ID = "joinDate";
-    public static final String CUSTOMER_JOINDATE_PATH = "accountCreated";
-
-    public static final String DATE_FORMAT = "yyyy.MM.dd HH:mm";
-
-    public SampleConverter() {
-        addStringMapping(MAPPING_GROUP_CUSTOMER, CUSTOMER_NAME_ID, CUSTOMER_NAME_PATH);
-        addIntegerMapping(MAPPING_GROUP_CUSTOMER, CUSTOMER_FAVNO_ID, CUSTOMER_FAVNO_PATH);
-        addDateMapping(MAPPING_GROUP_CUSTOMER, CUSTOMER_JOINDATE_ID, CUSTOMER_JOINDATE_PATH);
-    }
-
-    public Date parseDate(String dateString) {
-        try {
-            return new SimpleDateFormat(DATE_FORMAT).parse(dateString);
-        } catch (ParseException e) {
-            // log the exception
-            return null;
-        }
-    }
-
-    private void addStringMapping(String mappingGroupName,
-        String propertyId, String propertyPath) {
-
-        addMapping(mappingGroupName, new FilterAndSortMapping(
-            propertyId,
-            propertyPath,
-            DirectValueCriterionProviders.LIKE,
-            new FilterValueObjectProvider() {
-                public Object getObject(String stringValue) {
-                    return stringValue;
-                }
-            }));
-    }
-
-    private void addIntegerMapping(String mappingGroupName,
-        String propertyId, String propertyPath) {
-
-        addMapping(mappingGroupName, new FilterAndSortMapping(
-            propertyId,
-            propertyPath,
-            DirectValueCriterionProviders.EQ,
-            new FilterValueObjectProvider() {
-                public Object getObject(String stringValue) {
-                    return Integer.valueOf(stringValue);
-                }
-            }));
-    }
-
-    private void addDateMapping(String mappingGroupName,
-        String propertyId, String propertyPath) {
-
-        addMapping(mappingGroupName, new FilterAndSortMapping(
-            propertyId,
-            propertyPath,
-            DirectValueCriterionProviders.BETWEEN,
-            new FilterValueObjectProvider() {
-                public Object getObject(String stringValue) {
-                    return parseDate(stringValue);
-                }
-            }));
-    }
-
-}
-+-----+
+%{code-snippet|file=src/site/snippet/reference/cto-pattern-SampleCtoConverter.java}
   
   The <<<SampleConverter>>> contains a single mapping group that defines some property mappings for the fictional <<<Customer>>> entity (name, favorite number and join date). Things get
   usually far more complex than this, but basically this is the way how you would typically configure the <<<NestedPropertyCriteriaBasedConverter>>> instance. Note that the <enabled> method
