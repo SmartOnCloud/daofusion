@@ -45,12 +45,6 @@
 			<version>${slf4j.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-jcl</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>runtime</scope>
-		</dependency>
 	</dependencies>
 	
 </project>

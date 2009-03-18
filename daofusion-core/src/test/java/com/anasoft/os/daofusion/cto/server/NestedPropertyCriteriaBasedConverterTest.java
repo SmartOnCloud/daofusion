@@ -181,10 +181,10 @@ public class NestedPropertyCriteriaBasedConverterTest {
 	private SampleConverter converter;
 	
 	/**
-	 * Set up the tested <tt>converter</tt> instance.
+	 * Set up class under test.
 	 */
 	@Before
-	public void setupConverter() {
+	public void setup() {
 		converter = new SampleConverter();
 		converter.initMappings();
 	}
@@ -282,7 +282,7 @@ public class NestedPropertyCriteriaBasedConverterTest {
 	 * affect the structure of a nested property criterion.
 	 */
 	@Test
-	public void testConvert_filterAndSortCriteria() {
+	public void testConvert_filterAndSortCriteria() throws Exception {
 		final String nameCriteriaFilterValue = "Johnny %";
 		final FilterAndSortCriteria nameCriteria = new FilterAndSortCriteria(SampleConverter.CUSTOMER_NAME_ID);
 		nameCriteria.setFilterValue(nameCriteriaFilterValue);
@@ -328,7 +328,7 @@ public class NestedPropertyCriteriaBasedConverterTest {
 	 * persistent entity paging criteria.
 	 */
 	@Test
-	public void testConvert_pagingCriteria() {
+	public void testConvert_pagingCriteria() throws Exception {
 		final CriteriaTransferObject transferObject = new CriteriaTransferObject();
 		transferObject.setFirstResult(1);
 		transferObject.setMaxResults(2);
@@ -339,5 +339,36 @@ public class NestedPropertyCriteriaBasedConverterTest {
 		
 		performTransferObjectConversionTest(transferObject, expectedCriteria);
 	}
+	
+	/**
+	 * Test for {@link NestedPropertyCriteriaBasedConverter#convert(CriteriaTransferObject, String)}:
+	 * converting criteria transfer object that contains {@link FilterAndSortCriteria} instances
+	 * without any filter values.
+	 */
+	@Test
+	public void testConvert_noFilterValues() throws Exception {
+	    final FilterAndSortCriteria nameCriteria = new FilterAndSortCriteria(SampleConverter.CUSTOMER_NAME_ID);
+	    nameCriteria.setSortAscending(true);
+        nameCriteria.setIgnoreCase(true);
+        
+        final FilterAndSortCriteria favNoCriteria = new FilterAndSortCriteria(SampleConverter.CUSTOMER_FAVNO_ID);
+        favNoCriteria.setSortAscending(true);
+        
+        final FilterAndSortCriteria joinDateCriteria = new FilterAndSortCriteria(SampleConverter.CUSTOMER_JOINDATE_ID);
+        joinDateCriteria.setSortAscending(false);
+        
+        final CriteriaTransferObject transferObject = new CriteriaTransferObject();
+        transferObject.add(nameCriteria);
+        transferObject.add(favNoCriteria);
+        transferObject.add(joinDateCriteria);
+        
+        final NestedPropertyCriteria expectedCriteria = new NestedPropertyCriteria();
+        expectedCriteria.add(new SortCriterion(SampleConverter.CUSTOMER_NAME_PATH, true, true));
+        expectedCriteria.add(new SortCriterion(SampleConverter.CUSTOMER_FAVNO_PATH, true));
+        expectedCriteria.add(new SortCriterion(SampleConverter.CUSTOMER_JOINDATE_PATH, false));
+        
+        performTransferObjectConversionTest(transferObject, expectedCriteria);
+	}
+	
 	
 }
