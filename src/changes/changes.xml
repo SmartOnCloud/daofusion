@@ -26,9 +26,6 @@
 				Updated BaseHibernateDataAccessor#rowCount() method - now a check is made whether the "rowCount"
 				projection results in a single Integer value (if not, a warning is logged and zero is returned).
 			</action>
-			<action dev="igor.mihalik" type="add">
-				Added test-scoped Mockito dependency to the parent POM.
-			</action>
 			<action dev="igor.mihalik" type="update">
 				FilterAndSortMapping#apply() method now checks if FilterAndSortCriteria contains any filter values
 				prior to adding corresponding FilterCriterion into the NestedPropertyCriteria.
@@ -37,8 +34,18 @@
 				Updated NestedPropertyCriteriaBasedConverterTest: converting criteria transfer object that contains
 				FilterAndSortCriteria instances without any filter values.
 			</action>
+			<action dev="igor.mihalik" type="add">
+				Added test-scoped Mockito dependency to the parent POM.
+			</action>
 			<action dev="vojtech.szocs" type="remove">
 				Removed dependency to "maven-eclipse-plugin" within the parent POM.
+			</action>
+			<action dev="vojtech.szocs" type="remove">
+				Removed dependency to "slf4j-jcl" within daofusion-core POM. This way, users have the possibility
+				to specify the SLF4J binding on their own.
+			</action>
+			<action dev="vojtech.szocs" type="add">
+				Added dependency to "slf4j-simple" within daofusion-test POM.
 			</action>
 		</release>
 		
