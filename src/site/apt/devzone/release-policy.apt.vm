@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 13 March 2009
+ 19 March 2009
  ----
 
 Release Policy
@@ -27,6 +27,12 @@ Release Policy
   * <Deploying project site into remote web server>
   
     * Within the site root directory, execute " <<<mvn clean site-deploy>>> "
+  
+  []
+  
+  * <Updating related resources>
+  
+    * Update the "Downloads" page on {{{ ${df-googleCodeUrl} } GoogleCode}}.
   
   []
   
