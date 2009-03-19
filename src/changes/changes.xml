@@ -7,7 +7,7 @@
 	</properties>
 	
 	<body>
-		<release version="1.1.0" date="2009-03-18" description="Initial release of the the 1.1.x branch">
+		<release version="1.1.0" date="2009-03-19" description="Initial release of the the 1.1.x branch">
 			<action dev="vojtech.szocs" type="fix" issue="1" system="GoogleCode">
 				Fixed issue "H2: NestedPropertyCriteria created by NestedPropertyCriteriaBasedConverter fails
 				within AbstractHibernateEntityDao#count()". Implementation includes a server-side CriteriaTransferObject
@@ -15,16 +15,16 @@
 				corresponding unit test.
 			</action>
 			<action dev="vojtech.szocs" type="update">
+				Updated BaseHibernateDataAccessor#rowCount() method - now a check is made whether the "rowCount"
+				projection results in a single Integer value (if not, a warning is logged and zero is returned).
+			</action>
+			<action dev="vojtech.szocs" type="update">
 				Updated Javadoc within PersistentEntityDao / AbstractHibernateEntityDao / BaseHibernateDataAccessor
-				to make things about the "rowCount" projection stuff more clear to the end-user.
+				to clarify things about the "rowCount" projection stuff.
 			</action>
 			<action dev="vojtech.szocs" type="update">
 				Updated AbstractHibernateEntityDaoTest: performing instance count on a result set with multiple instances,
 				which is shaped by FilterCriterion instances.
-			</action>
-			<action dev="vojtech.szocs" type="update">
-				Updated BaseHibernateDataAccessor#rowCount() method - now a check is made whether the "rowCount"
-				projection results in a single Integer value (if not, a warning is logged and zero is returned).
 			</action>
 			<action dev="igor.mihalik" type="update">
 				FilterAndSortMapping#apply() method now checks if FilterAndSortCriteria contains any filter values
@@ -37,15 +37,15 @@
 			<action dev="igor.mihalik" type="add">
 				Added test-scoped Mockito dependency to the parent POM.
 			</action>
-			<action dev="vojtech.szocs" type="remove">
-				Removed dependency to "maven-eclipse-plugin" within the parent POM.
-			</action>
-			<action dev="vojtech.szocs" type="remove">
-				Removed dependency to "slf4j-jcl" within daofusion-core POM. This way, users have the possibility
-				to specify the SLF4J binding on their own.
-			</action>
 			<action dev="vojtech.szocs" type="add">
-				Added dependency to "slf4j-simple" within daofusion-test POM.
+				Added test-scoped "slf4j-simple" dependency to the parent POM (default SLF4J binding for unit tests).
+			</action>
+			<action dev="vojtech.szocs" type="remove">
+				Removed dependency to "slf4j-jcl" from daofusion-core POM. This way, users have the possibility
+				to specify desired SLF4J binding on their own.
+			</action>
+			<action dev="vojtech.szocs" type="remove">
+				Removed dependency to "maven-eclipse-plugin" from the parent POM.
 			</action>
 		</release>
 		
