@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 16 March 2009
+ 19 March 2009
  ----
 
 Project dependencies
@@ -11,9 +11,9 @@ Project dependencies
   Specific ${df} projects depend on certain libraries and APIs, as listed below.
   
 *-------------------------+---------+-------------*
-|                         | Version | Required by |
+||                        ||Version ||Required by |
 *-------------------------+---------+-------------*
-| <<Java SDK>> | <<5.0>> | all |
+| <<Java SDK>> | <<5.0+>> | all |
 *-------------------------+---------+-------------*
 | <<{{{http://www.hibernate.org/397.html} Hibernate EntityManager}}>> | <<3.4.0.GA>> | ${df-core} |
 *-------------------------+---------+-------------*

@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 26 February 2009
+ 19 March 2009
  ----
 
 Download ${df}
@@ -11,7 +11,7 @@ Download ${df}
   Latest stable release: <<${df-latestStableVersion}>>
   
 *------------+--------+---------+---------*
-|            | Binary | Sources | Javadoc |
+||           ||Binary ||Sources ||Javadoc |
 *------------+--------+---------+---------*
 | <<${df-core}>> | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-core}/${df-latestStableVersion}/${df-core}-${df-latestStableVersion}.jar} ${df-core}-${df-latestStableVersion}.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-core}/${df-latestStableVersion}/${df-core}-${df-latestStableVersion}-sources.jar} ${df-core}-${df-latestStableVersion}-sources.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-core}/${df-latestStableVersion}/${df-core}-${df-latestStableVersion}-javadoc.jar} ${df-core}-${df-latestStableVersion}-javadoc.jar}} |
 *------------+--------+---------+---------*
