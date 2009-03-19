@@ -176,7 +176,7 @@ External resources
   Assuming that you follow the general {{{http://en.wikipedia.org/wiki/Multitier_architecture} multi-tier client-server architecture}} within your application, there are a couple of things that
   set the DAO and service layers apart from each other:
   
-  * business-related DAO functionality should always be atomic from a persistent entity's point of view, for example:
+  * business-related DAO functionality should always be atomic from a persistent entity point of view, for example:
   
     * entity lookup based on custom business criteria that comes from a specific use case scenario regarding that entity
   

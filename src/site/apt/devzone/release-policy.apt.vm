@@ -55,7 +55,7 @@ Release Policy
   Exactly one <${df-site}> project is maintained for each maintenance branch. The site project needs to be updated upon any changes done within
   the branch as soon as possible. This includes site contents as well as the release changelog.
   
-  New functionality that may cause slight API changes should result in creating a new maintenance branch and a corresponding site project.
+  New functionality that may cause API changes should result in creating a new maintenance branch and a corresponding site project.
   
 * Maven artifact versioning
   
