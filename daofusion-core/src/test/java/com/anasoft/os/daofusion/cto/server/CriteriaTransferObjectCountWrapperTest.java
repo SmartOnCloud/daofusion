@@ -15,7 +15,8 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.BlockJUnit4ClassRunner;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.anasoft.os.daofusion.cto.client.CriteriaTransferObject;
 import com.anasoft.os.daofusion.cto.client.FilterAndSortCriteria;
@@ -28,10 +29,13 @@ import com.anasoft.os.daofusion.cto.client.FilterAndSortCriteria;
  * @author vojtech.szocs
  * @author igor.mihalik
  */
-@RunWith(BlockJUnit4ClassRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class CriteriaTransferObjectCountWrapperTest {
 
+    @Mock
     private CriteriaTransferObject cto;
+    
+    @Mock
     private FilterAndSortCriteria filterAndSortCriteria;
     
     private CriteriaTransferObject testedCtoWrapper;
@@ -41,8 +45,6 @@ public class CriteriaTransferObjectCountWrapperTest {
      */
     @Before
     public void setup() {
-        cto = mock(CriteriaTransferObject.class);
-        filterAndSortCriteria = mock(FilterAndSortCriteria.class);
         testedCtoWrapper = new CriteriaTransferObjectCountWrapper(cto).wrap();
     }
     
