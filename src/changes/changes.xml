@@ -7,6 +7,13 @@
 	</properties>
 	
 	<body>
+		<release version="1.1.1" date="???" description="Maintenance release of the 1.1.x branch">
+			<action dev="vojtech.szocs" type="update">
+				CriteriaTransferObjectCountWrapperTest updated to use @Mock annotations in conjunction
+				with MockitoJUnitRunner.
+			</action>
+		</release>
+		
 		<release version="1.1.0" date="2009-03-19" description="Initial release of the the 1.1.x branch">
 			<action dev="vojtech.szocs" type="fix" issue="1" system="GoogleCode">
 				Fixed issue "H2: NestedPropertyCriteria created by NestedPropertyCriteriaBasedConverter fails
