@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<faqs title="Frequently Asked Questions (Reference Documentation)" toplink="false">
+<faqs title="Frequently Asked Questions (Reference Documentation)" toplink="false"
+	xmlns="http://maven.apache.org/xsd/fml-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/xsd/fml-1.0 http://maven.apache.org/xsd/fml-1.0.xsd">
 	
 	<part id="entity-model">
 		<title>Persistent entity model</title>
