@@ -61,7 +61,7 @@ External resources
   
   Let's take a brief look at this interface to get a basic understanding of the criteria API concept:
   
-%{code-snippet|file=src/site/snippet/reference/entity-criteria-api-PersistentEntityCriteria.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/entity-criteria-api-PersistentEntityCriteria.java}
   
   As you can see, there is no rocket science going on here - implementations of the <<<PersistentEntityCriteria>>> interface are merely responsible for updating the Hibernate <<<Criteria>>>
   instance according to any query constraints they define.
@@ -104,7 +104,7 @@ External resources
   <<<FilterCriterion>>> defines filter constraints for the given entity property via the <<<PropertyFilterCriterionProvider>>> interface. A custom <<<PropertyFilterCriterionProvider>>> implementation
   is used to construct a Hibernate <<<Criterion>>> instance regarding the filter criterion as well as deciding whether to actually use the provided <<<Criterion>>> instance:
   
-%{code-snippet|file=src/site/snippet/reference/entity-criteria-api-PropertyFilterCriterionProvider.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/entity-criteria-api-PropertyFilterCriterionProvider.java}
   
   There are basically two ways to pass data to the custom <<<PropertyFilterCriterionProvider>>> implementation from within the <<<FilterCriterion>>>:
   
@@ -127,7 +127,7 @@ External resources
   By having full control over the Hibernate <<<Criterion>>> instance creation via the <<<PropertyFilterCriterionProvider>>> interface, the user is able to define even the most complex property
   criteria with ease without having to worry about any nested subcriteria details. For example:
   
-%{code-snippet|file=src/site/snippet/reference/entity-criteria-api-PropertyFilterCriterionProviderUsage.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/entity-criteria-api-PropertyFilterCriterionProviderUsage.java}
   
   The combination of <filterObjectValuePaths> and <directValues> enables you to define your own filter value strategy - a single filter object as the source of filter values, direct
   value approach or even a combination of the two.
@@ -140,7 +140,7 @@ External resources
   The following code shows an extended version of the sample DAO from the {{{./core-dao-classes.html} previous section}}, using filter object together with the direct value approach
   to employ custom constraints on the <<<Order>>> entity:
   
-%{code-snippet|file=src/site/snippet/reference/entity-criteria-api-SampleDaoUsingBothFilterValueStrategies.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/entity-criteria-api-SampleDaoUsingBothFilterValueStrategies.java}
   
   In this example, <<<QueryDefinition>>> represents a generic persistent entity query that supports filtering, sorting and paging capabilities of the underlying <<<NestedPropertyCriteria>>>
   implementation (notice that a single sort property is supported in this case though). The user is responsible for initializing the <filterObject> as well as its associated objects properly

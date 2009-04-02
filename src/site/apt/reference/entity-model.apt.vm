@@ -94,7 +94,7 @@ External resources
   Implementing <hashCode> / <equals> methods correctly can be sometimes very tricky and can lead to strange errors regarding the application behavior. As mentioned above,
   there are basically two approaches to their implementation. The following code demonstrates the synthetic generated value approach based on the <<<UUID>>> class:
   
-%{code-snippet|file=src/site/snippet/reference/entity-model-OidBasedMutablePersistentEntity.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/entity-model-OidBasedMutablePersistentEntity.java}
   
   Note that the <oid> field setter is marked as protected to avoid direct object identity manipulation.
   
@@ -102,7 +102,7 @@ External resources
   
   The following code shows a sample persistent entity, extending the <<<OidBasedMutablePersistentEntity>>> class as shown above:
   
-%{code-snippet|file=src/site/snippet/reference/entity-model-SamplePersistentEntity.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/entity-model-SamplePersistentEntity.java}
   
   As you can see, there is nothing special happening here except that we are extending the <<<OidBasedMutablePersistentEntity>>> class which implements the synthetic generated value approach.
   
@@ -119,7 +119,7 @@ External resources
   
   The following code shows a sample persistent enumeration:
   
-%{code-snippet|file=src/site/snippet/reference/entity-model-SamplePersistentEnumeration.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/entity-model-SamplePersistentEnumeration.java}
   
   You could add an extra description field to the enumeration class if necessary but basically that's all about it.
   

@@ -12,6 +12,6 @@ Maven Integration
   
   Integrating ${df} into projects managed by Maven is simple - all you have to do is declare a corresponding <<<repository>>> element within your project's <<<pom.xml>>> like this:
   
-%{code-snippet|file=src/site/snippet/howto/maven-integration-pom.xml}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/howto/maven-integration-pom.xml}
   
   For most users, declaring the <ANASOFT OpenSource releases> repository is sufficient since it points to stable project releases.

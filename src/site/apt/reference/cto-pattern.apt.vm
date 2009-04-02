@@ -76,7 +76,7 @@ External resources
   
   Note that it is important to bind GUI changes within grid elements (filter value widgets, sorted column headers, paging options, etc.) to the associated CTO instance, for example:
   
-%{code-snippet|file=src/site/snippet/reference/cto-pattern-CriteriaTransferObjectUsage.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/cto-pattern-CriteriaTransferObjectUsage.java}
   
   These two simple classes conclude the client part of the CTO pattern.
   
@@ -85,7 +85,7 @@ External resources
   <<<CriteriaTransferObjectConverter>>> interface represents the general CTO converter contract defining conversion pattern between <<<CriteriaTransferObject>>> instances and their corresponding
   <<<PersistentEntityCriteria>>> counterparts:
   
-%{code-snippet|file=src/site/snippet/reference/cto-pattern-CriteriaTransferObjectConverter.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/cto-pattern-CriteriaTransferObjectConverter.java}
   
   <<<CriteriaTransferObjectConverter>>> uses the notion of property mapping groups to decide which mapping rules to apply for which CTO instance.
   
@@ -100,7 +100,7 @@ External resources
   concept as shown above. Updating the server-side criteria instance according to client-side <<<FilterAndSortCriteria>>> is achieved via the abstract <apply> method (this one is called for each
   <<<NestedPropertyMapping>>> within a <<<NestedPropertyMappingGroup>>> during the CTO conversion):
   
-%{code-snippet|file=src/site/snippet/reference/cto-pattern-NestedPropertyMapping.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/cto-pattern-NestedPropertyMapping.java}
   
   <<<FilterAndSortMapping>>> is the default <<<NestedPropertyMapping>>> subclass that is intended for direct use in conjunction with <<<NestedPropertyCriteriaBasedConverter>>>. Presence of a custom
   <<<PropertyFilterCriterionProvider>>> implementation within the <<<FilterAndSortMapping>>> indicates the use of the filtering functionality (if not <null>, the given <<<PropertyFilterCriterionProvider>>>
@@ -110,7 +110,7 @@ External resources
   In order to resolve string-based filter values received from the corresponding <<<FilterAndSortCriteria>>> instance into their typed object representations, a custom <<<FilterValueObjectProvider>>>
   implementation needs to be provided as well (assuming the use of the filtering functionality):
   
-%{code-snippet|file=src/site/snippet/reference/cto-pattern-FilterValueObjectProvider.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/cto-pattern-FilterValueObjectProvider.java}
   
   Note that all filter values converted via this interface will be passed as <directValues> to the underlying <<<FilterCriterion>>> instance - <<<NestedPropertyCriteriaBasedConverter>>>
   generally doesn't use the filter object concept since the structure and type of filter values within <<<FilterAndSortCriteria>>> make it too generic for it to be used correctly
@@ -131,14 +131,14 @@ External resources
   designed for entity instance count purposes. <<<CriteriaTransferObjectCountWrapper>>> takes the original CTO instance as its argument and creates a new CTO which delegates most
   of its methods to the wrapped CTO instance with the exception of paging and sort constraints and methods that modify internal state of the transfer object:
   
-%{code-snippet|file=src/site/snippet/reference/cto-pattern-CriteriaTransferObjectCountWrapperUsage.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/cto-pattern-CriteriaTransferObjectCountWrapperUsage.java}
   
 * {Sample CTO converter}
   
   Let's build a sample CTO converter that demonstrates basic property mapping configuration. One way of doing this is to extend the <<<NestedPropertyCriteriaBasedConverter>>> class and
   provide property mappings within the implementation itself:
   
-%{code-snippet|file=src/site/snippet/reference/cto-pattern-SampleCtoConverter.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/cto-pattern-SampleCtoConverter.java}
   
   The <<<SampleConverter>>> contains a single mapping group that defines some property mappings for the fictional <<<Customer>>> entity (name, favorite number and join date). Things get
   usually far more complex than this, but basically this is the way how you would typically configure the <<<NestedPropertyCriteriaBasedConverter>>> instance. Note that the <enabled> method

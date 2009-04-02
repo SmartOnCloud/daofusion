@@ -57,7 +57,7 @@ Related tech notes
   
   Here is a brief <<<PersistentEntityDao>>> method listing for you to get a basic idea of the standard DAO functionality:
   
-%{code-snippet|file=src/site/snippet/reference/core-dao-classes-PersistentEntityDao.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/core-dao-classes-PersistentEntityDao.java}
   
   As you can see, there are several kinds of operations defined by this interface for the given entity class:
   
@@ -76,12 +76,12 @@ Related tech notes
   <<<PersistentEnumerationDao>>> as an extension of the <<<PersistentEntityDao>>> interface works with <<<PersistentEnumeration>>> instances. The goal of this interface is to define useful lookup
   operations using the name field declared by <<<PersistentEnumeration>>>:
   
-%{code-snippet|file=src/site/snippet/reference/core-dao-classes-PersistentEnumerationDao.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/core-dao-classes-PersistentEnumerationDao.java}
   
   <<<BaseHibernateDataAccessor>>> is the base class for all standard DAO implementations, providing data access through JPA / Hibernate persistence APIs. This class requires you to implement
   the abstract <getHibernateEntityManager> method which serves as the entry point for Hibernate <<<Session>>> instances:
   
-%{code-snippet|file=src/site/snippet/reference/core-dao-classes-BaseHibernateDataAccessor.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/core-dao-classes-BaseHibernateDataAccessor.java}
   
   The reason for declaring an abstract <getHibernateEntityManager> method is to give users free hands when it comes to entity manager instance lookup. The most convenient
   method implementation pattern is to rely on entity manager instance injection via the <<<PersistenceContext>>> annotation (within the JPA persistence context) and simply returning the
@@ -124,7 +124,7 @@ Related tech notes
   
   As a solid Java developer having things like code maintainability always in mind (not mentioning those hot chicks in the marketing department), you would write your DAO classes like this:
   
-%{code-snippet|file=src/site/snippet/reference/core-dao-classes-SampleDao.java}
+%{code-snippet|brush-autodetect=1|file=src/site/snippet/reference/core-dao-classes-SampleDao.java}
   
   Note that this example uses Spring's JPA support (<<<PersistenceAnnotationBeanPostProcessor>>>) to inject open entity manager instance into the <<<EntityManagerHolder>>>.
   <<<EntityManagerAwareEntityDao>>> acts as a base class for domain-specific DAO implementations, providing the <getHibernateEntityManager> method implementation via the <<<EntityManagerHolder>>>.
