@@ -15,6 +15,8 @@
 	<name>DAO Fusion project site</name>
 	
 	<properties>
+		<maven-site-plugin.version>2.0</maven-site-plugin.version>
+		
 		<df>DAO Fusion</df>
 		<df-short>daofusion</df-short>
 		<df-core>daofusion-core</df-core>
@@ -27,7 +29,12 @@
 		<anasoft-os-repo-googleCodeUrl>http://code.google.com/p/anasoft-os-repo/</anasoft-os-repo-googleCodeUrl>
 		
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<doxia-module-highlight.version>1.0-alpha-11</doxia-module-highlight.version>
+		
+		<m2st-syntaxHighlighter-urlBase>syntaxhighlighter</m2st-syntaxHighlighter-urlBase>
+		<m2st-syntaxHighlighter-brushFiles>shBrushPlain.js,shBrushXml.js,shBrushJava.js</m2st-syntaxHighlighter-brushFiles>
+		<m2st-syntaxHighlighter-config>config.clipboardSwf='%ROOT%/scripts/clipboard.swf'</m2st-syntaxHighlighter-config>
+		<m2st-gatc-id>UA-8185683-1</m2st-gatc-id>
+		<m2st-privacyPolicyUrl>http://maven.apache.org/privacy-policy.html</m2st-privacyPolicyUrl>
 	</properties>
 	
 	<build>
@@ -35,14 +42,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
+				<version>${maven-site-plugin.version}</version>
 				<configuration>
 					<outputEncoding>${project.reporting.outputEncoding}</outputEncoding>
 				</configuration>
 				<dependencies>
 					<dependency>
-						<groupId>sk.dvsk.maven</groupId>
-						<artifactId>doxia-module-highlight</artifactId>
-						<version>${doxia-module-highlight.version}</version>
+						<groupId>m2st</groupId>
+						<artifactId>doxia-macros</artifactId>
+						<version>1.0</version>
 					</dependency>
 				</dependencies>
 			</plugin>
