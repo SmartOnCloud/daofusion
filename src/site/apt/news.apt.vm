@@ -8,6 +8,13 @@
 
 ${df} news
   
+* 2009-04-02
+  
+  ${df} site generation is now powered by {{{http://code.google.com/p/m2-site-tools/} m2-site-tools}}. The most notable change is the use of highlighted code snippets
+  throughout the project documentation.
+  
+  ${df} and {{{http://en.wikipedia.org/wiki/Open_source_software} open source software}} were also key themes during our project presentation here at {{{http://www.anasoft.com/} ANASOFT}}.
+  
 * 2009-03-19
   
   <<${df} 1.1.0>> has been released.
