@@ -8,6 +8,15 @@
 	
 	<body>
 		<release version="1.1-SNAPSHOT" date="N/A" description="1.1.x branch (current development)">
+			<action dev="vojtech.szocs" type="fix" issue="2" system="GoogleCode">
+				Fixed issue "Request for merging functionality - NestedPropertyCriteria".
+			</action>
+			<action dev="vojtech.szocs" type="fix" issue="3" system="GoogleCode">
+				Fixed issue "Problem with findSubCriteria in com.anasoft.os.daofusion.criteria.NestedPropertyCriteria - incorrect result criteria hierarchy".
+			</action>
+			<action dev="vojtech.szocs" type="fix" issue="4" system="GoogleCode">
+				Fixed issue "org.h2.jdbc.JdbcSQLException thrown after running core integration tests for H2 database".
+			</action>
 			<action dev="vojtech.szocs" type="update">
 				CriteriaTransferObjectCountWrapperTest updated to use @Mock annotations in conjunction
 				with MockitoJUnitRunner.

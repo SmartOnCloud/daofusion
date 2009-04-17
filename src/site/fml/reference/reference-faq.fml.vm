@@ -111,7 +111,7 @@
 			<answer>
 				<p>Suppose you want to change the <em>length</em> attribute of the name field column mapping within an entity that extends
 				<tt>PersistentEnumeration</tt>:</p>
-				<source><![CDATA[
+				<pre class="brush: java">
 @MappedSuperclass
 @AttributeOverride(name = "name", column = @Column(
     length = 255,
@@ -123,7 +123,7 @@ public abstract class CustomPersistentEnumeration extends PersistentEnumeration 
 
     // place some custom code here
 
-}]]></source>
+}</pre>
 			</answer>
 		</faq>
 		
@@ -165,14 +165,14 @@ public abstract class CustomPersistentEnumeration extends PersistentEnumeration 
 			from the class type parameter using reflection as well.</question>
 			<answer>
 				<p>You're right, but what if someone declares his DAO / entity hierarchy like this:</p>
-				<source><![CDATA[OrderDao<T extends Order> extends PersistentEntityDao<T, Long> => SpecialOrderDao extends OrderDao<SpecialOrder>]]></source>
+				<pre class="brush: java">OrderDao&lt;T extends Order&gt; extends PersistentEntityDao&lt;T, Long&gt; =&gt; SpecialOrderDao extends OrderDao&lt;SpecialOrder&gt;</pre>
 				<p>where</p>
-				<source><![CDATA[Persistable => ... => Order => SpecialOrder]]></source>
+				<pre class="brush: plain">Persistable =&gt; ... =&gt; Order =&gt; SpecialOrder</pre>
 				<p>You can still use something like this if you want (works for direct subclasses of parametrized types):</p>
-				<source><![CDATA[
-public Class<T> getEntityClass() {
-    return (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-}]]></source>
+				<pre class="brush: java">
+public Class&lt;T&gt; getEntityClass() {
+    return (Class&lt;T&gt;) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+}</pre>
 				<p>More information on this topic can be found 
 				<a href="http://www.artima.com/weblogs/viewpost.jsp?thread=208860">here</a>.</p>
 			</answer>
@@ -239,7 +239,7 @@ public Class<T> getEntityClass() {
 			What should I do?</question>
 			<answer>
 				<p>You have to extend the default <tt>NestedPropertyCriterionVisitor</tt> implementation provided by <tt>NestedPropertyCriteria</tt> like this:</p>
-				<source><![CDATA[
+				<pre class="brush: java">
 public interface CustomCriterionVisitor extends NestedPropertyCriterionVisitor {
 
     public void visit(CustomCriterion criterion);
@@ -265,7 +265,7 @@ public class CustomCriteria extends NestedPropertyCriteria {
 
     @Override
     protected NestedPropertyCriterionVisitor getCriterionVisitor(Criteria targetCriteria,
-        Map<String, Criteria> subCriteriaMap, Object filterObject) {
+        Map&lt;String, Criteria&gt; subCriteriaMap, Object filterObject) {
         return new DefaultCustomCriterionVisitor(targetCriteria, subCriteriaMap, filterObject);
     }
 
@@ -273,7 +273,7 @@ public class CustomCriteria extends NestedPropertyCriteria {
         implements CustomCriterionVisitor {
 
         public DefaultCustomCriterionVisitor(Criteria targetCriteria,
-            Map<String, Criteria> subCriteriaMap, Object filterObject) {
+            Map&lt;String, Criteria&gt; subCriteriaMap, Object filterObject) {
             super(targetCriteria, subCriteriaMap, filterObject);
         }
 
@@ -284,7 +284,7 @@ public class CustomCriteria extends NestedPropertyCriteria {
 
     }
 
-}]]></source>
+}</pre>
 				<p>Now you can use <tt>CustomCriteria</tt> as a replacement of <tt>NestedPropertyCriteria</tt> for processing <tt>CustomCriterion</tt> instances
 				(notice we didn't touch the <em>apply</em> method in any way).</p>
 			</answer>
@@ -421,10 +421,10 @@ public class CustomCriteria extends NestedPropertyCriteria {
 			<question>I want to turn off the SQL console output when running integration tests.</question>
 			<answer>
 				<p>Use the <tt>PropertyOverrideConfigurer</tt> to override any default Spring bean values like this:</p>
-				<source><![CDATA[
+				<pre class="brush: java-properties">
 # turn off SQL console output
 entityManagerFactory.jpaVendorAdapter.showSql=false
-]]></source>
+</pre>
 			</answer>
 		</faq>
 		

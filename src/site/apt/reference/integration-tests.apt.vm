@@ -205,7 +205,7 @@ External resources
   
   The <<<test-postgresql-beanSetup.properties>>> file referenced by this context would look like this:
   
-%{code-snippet|brush=text|file=src/site/snippet/reference/integration-tests-CustomCoreIntegrationTest-SpringSetup.properties}
+%{code-snippet|brush=java-properties|file=src/site/snippet/reference/integration-tests-CustomCoreIntegrationTest-SpringSetup.properties}
   
   Since JPA uses <<<META-INF/persistence.xml>>> as the default persistence metadata descriptor, you need to provide this file as well:
   
