@@ -76,7 +76,9 @@ public abstract class BaseHibernateCoreIntegrationTest extends BaseHibernateInte
     protected static final String COUNTRY_JAPAN = "Japan";
     
     protected static final String STOCK_ITEM_CATEGORY_FOOD = "Food";
+    protected static final String STOCK_ITEM_CATEGORY_FOOD_DESC = "Food stuff";
     protected static final String STOCK_ITEM_CATEGORY_COMPUTERS = "Computers";
+    protected static final String STOCK_ITEM_CATEGORY_COMPUTERS_DESC = "IT stuff";
     
     protected static final int TOTAL_CUSTOMER_COUNT = 2;
     protected static final int TOTAL_ORDER_COUNT = TOTAL_CUSTOMER_COUNT;
@@ -120,10 +122,12 @@ public abstract class BaseHibernateCoreIntegrationTest extends BaseHibernateInte
         
         StockItemCategory stockItemCategory = new StockItemCategory();
         stockItemCategory.setName(STOCK_ITEM_CATEGORY_FOOD);
+        stockItemCategory.setDescription(STOCK_ITEM_CATEGORY_FOOD_DESC);
         stockItemCategoryDao.saveOrUpdate(stockItemCategory);
         
         stockItemCategory = new StockItemCategory();
         stockItemCategory.setName(STOCK_ITEM_CATEGORY_COMPUTERS);
+        stockItemCategory.setDescription(STOCK_ITEM_CATEGORY_COMPUTERS_DESC);
         stockItemCategoryDao.saveOrUpdate(stockItemCategory);
         
         assertThat(countryDao.count(new NestedPropertyCriteria(), Country.class), equalTo(2));
@@ -158,6 +162,7 @@ public abstract class BaseHibernateCoreIntegrationTest extends BaseHibernateInte
         final Order orderOne = new Order();
         orderOne.setCreationDate(calendarOne.getTime());
         orderOne.setComplete(false);
+        orderOne.setDescription("one");
         customerOne.addOrder(orderOne);
         
         final Address shippingAddressOne = new Address();
@@ -180,6 +185,7 @@ public abstract class BaseHibernateCoreIntegrationTest extends BaseHibernateInte
             stockItem.setName("Stock item " + stockItem.getOid());
             stockItem.setPrice(i);
             stockItem.setCategory(i % 2 == 0 ? categoryFood : categoryComputers);
+            stockItem.setDescription(null);
             
             final OrderItem orderItem = new OrderItem();
             orderItem.setStockItem(stockItem);
@@ -204,6 +210,7 @@ public abstract class BaseHibernateCoreIntegrationTest extends BaseHibernateInte
         final Order orderTwo = new Order();
         orderTwo.setCreationDate(calendarTwo.getTime());
         orderTwo.setComplete(true);
+        orderTwo.setDescription("two");
         customerTwo.addOrder(orderTwo);
         
         final Address shippingAddressTwo = new Address();
@@ -220,6 +227,7 @@ public abstract class BaseHibernateCoreIntegrationTest extends BaseHibernateInte
             stockItem.setName("Stock item " + stockItem.getOid());
             stockItem.setPrice(i);
             stockItem.setCategory(i % 2 == 0 ? categoryFood : categoryComputers);
+            stockItem.setDescription(null);
             
             final OrderItem orderItem = new OrderItem();
             orderItem.setStockItem(stockItem);

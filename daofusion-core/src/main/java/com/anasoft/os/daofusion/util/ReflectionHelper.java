@@ -14,8 +14,7 @@ public final class ReflectionHelper {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ReflectionHelper.class);
 	
-    private ReflectionHelper() {
-    }
+    private ReflectionHelper() {}
     
     /**
      * Tries to invoke a getter method for the given <tt>propertyName</tt>
