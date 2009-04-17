@@ -59,18 +59,8 @@ public final class HibernateHelper {
     @SuppressWarnings("unchecked")
     public static Criteria findSubCriteria(Criteria targetCriteria, String associationPath, int hibernateJoinType) {
         final StringTokenizer associationPathTokenizer = new StringTokenizer(associationPath, ".");
+        final StringBuilder partialAssociationPath = new StringBuilder();
         Criteria currentCriteria = targetCriteria;
-        StringBuilder partialAssociationPath = new StringBuilder();
-        
-        Iterator<Subcriteria> subCriteriaIterator;
-        if (targetCriteria instanceof CriteriaImpl) {
-            subCriteriaIterator = ((CriteriaImpl) targetCriteria).iterateSubcriteria();
-        } else if (targetCriteria instanceof Subcriteria) {
-            subCriteriaIterator = ((CriteriaImpl) ((Subcriteria) targetCriteria).getParent()).iterateSubcriteria();
-        } else {
-            LOG.error("targetCriteria expected to be either CriteriaImpl or CriteriaImpl.Subcriteria instance, but was {}", targetCriteria.getClass().getName());
-            return null;
-        }
         
         while (associationPathTokenizer.hasMoreTokens()) {
             final String associationPathElement = associationPathTokenizer.nextToken();
@@ -82,6 +72,16 @@ public final class HibernateHelper {
             partialAssociationPath.append(associationPathElement);
             
             // check if there is a subcriteria for associationPathElement within the targetCriteria
+            Iterator<Subcriteria> subCriteriaIterator;
+            if (targetCriteria instanceof CriteriaImpl) {
+                subCriteriaIterator = ((CriteriaImpl) targetCriteria).iterateSubcriteria();
+            } else if (targetCriteria instanceof Subcriteria) {
+                subCriteriaIterator = getRootCriteriaImpl((Subcriteria) targetCriteria).iterateSubcriteria();
+            } else {
+                LOG.error("targetCriteria expected to be either CriteriaImpl or CriteriaImpl.Subcriteria instance, but was {}", targetCriteria.getClass().getName());
+                return null;
+            }
+            
             while (subCriteriaIterator.hasNext()) {
                 final Subcriteria subCriteriaImpl = subCriteriaIterator.next();
                 
@@ -121,21 +121,40 @@ public final class HibernateHelper {
     }
     
     /**
+     * Returns the root {@link CriteriaImpl} instance for
+     * the given <tt>subCriteria</tt>.
+     * 
+     * @param subCriteria {@link Subcriteria} instance.
+     * @return Root {@link CriteriaImpl} instance for
+     * the given <tt>subCriteria</tt>.
+     */
+    private static CriteriaImpl getRootCriteriaImpl(Subcriteria subCriteria) {
+        Subcriteria currentSubCriteria = subCriteria;
+        
+        while (currentSubCriteria.getParent() != null && currentSubCriteria.getParent() instanceof Subcriteria) {
+            currentSubCriteria = (Subcriteria) currentSubCriteria.getParent();
+        }
+        
+        return (CriteriaImpl) currentSubCriteria.getParent();
+    }
+    
+    /**
      * Returns a property path for the given <tt>subCriteria</tt>,
-     * starting from its root {@link Criteria} instance.
+     * starting from its root {@link Subcriteria} instance.
      * 
      * @param subCriteria {@link Subcriteria} instance representing
      * the target property.
      * @return Dot-separated logical path to the target property
      * for the given <tt>subCriteria</tt>, starting from its root
-     * {@link Criteria} instance.
+     * {@link Subcriteria} instance.
      */
-    public static String getSubCriteriaPath(Subcriteria subCriteria){
-        StringBuilder path = new StringBuilder(subCriteria.getPath());
+    private static String getSubCriteriaPath(Subcriteria subCriteria){
+        final StringBuilder path = new StringBuilder(subCriteria.getPath());
+        Subcriteria currentSubCriteria = subCriteria;
         
-        while (subCriteria.getParent() != null && subCriteria.getParent() instanceof Subcriteria) {
-            subCriteria = (Subcriteria) subCriteria.getParent();
-            path.insert(0, ".").insert(0, subCriteria.getPath());
+        while (currentSubCriteria.getParent() != null && currentSubCriteria.getParent() instanceof Subcriteria) {
+            currentSubCriteria = (Subcriteria) currentSubCriteria.getParent();
+            path.insert(0, ".").insert(0, currentSubCriteria.getPath());
         }
         
         return path.toString();
