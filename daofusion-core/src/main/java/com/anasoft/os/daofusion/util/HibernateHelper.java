@@ -41,6 +41,14 @@ public final class HibernateHelper {
      * <a href="http://opensource.atlassian.com/projects/hibernate/browse/HHH-879">
      * duplicate association path</a> Hibernate Criteria API issue.
      * 
+     * <p>
+     * 
+     * Note that the method returns <tt>null</tt> in case
+     * <tt>targetCriteria</tt> is not an instance of
+     * {@link CriteriaImpl} or {@link Subcriteria}
+     * (iterating through {@link Subcriteria} is not
+     * possible in that case).
+     * 
      * @param targetCriteria Root {@link Criteria} instance.
      * @param associationPath Association path of the subcriteria.
      * @param hibernateJoinType Hibernate join type to use
@@ -54,6 +62,16 @@ public final class HibernateHelper {
         Criteria currentCriteria = targetCriteria;
         StringBuilder partialAssociationPath = new StringBuilder();
         
+        Iterator<Subcriteria> subCriteriaIterator;
+        if (targetCriteria instanceof CriteriaImpl) {
+            subCriteriaIterator = ((CriteriaImpl) targetCriteria).iterateSubcriteria();
+        } else if (targetCriteria instanceof Subcriteria) {
+            subCriteriaIterator = ((CriteriaImpl) ((Subcriteria) targetCriteria).getParent()).iterateSubcriteria();
+        } else {
+            LOG.error("targetCriteria expected to be either CriteriaImpl or CriteriaImpl.Subcriteria instance, but was {}", targetCriteria.getClass().getName());
+            return null;
+        }
+        
         while (associationPathTokenizer.hasMoreTokens()) {
             final String associationPathElement = associationPathTokenizer.nextToken();
             boolean subCriteriaFound = false;
@@ -64,7 +82,6 @@ public final class HibernateHelper {
             partialAssociationPath.append(associationPathElement);
             
             // check if there is a subcriteria for associationPathElement within the targetCriteria
-            final Iterator<Subcriteria> subCriteriaIterator = ((CriteriaImpl) targetCriteria).iterateSubcriteria();
             while (subCriteriaIterator.hasNext()) {
                 final Subcriteria subCriteriaImpl = subCriteriaIterator.next();
                 
