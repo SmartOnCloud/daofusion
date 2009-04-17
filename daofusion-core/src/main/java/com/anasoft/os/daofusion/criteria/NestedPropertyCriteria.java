@@ -5,17 +5,15 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.Map.Entry;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
-import org.hibernate.impl.CriteriaImpl;
-import org.hibernate.impl.CriteriaImpl.Subcriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anasoft.os.daofusion.util.HibernateHelper;
 import com.anasoft.os.daofusion.util.ReflectionHelper;
 import com.anasoft.os.daofusion.util.SimpleListContainer;
 
@@ -127,12 +125,6 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 	 * issue which leads to an exception in case of multiple
 	 * subcriteria with same association paths.
 	 * 
-	 * <p>
-	 * 
-	 * More information on this issue can be found at the following
-	 * location:
-	 * http://opensource.atlassian.com/projects/hibernate/browse/HHH-879
-	 * 
 	 * @param targetCriteria {@link Criteria} instance to preprocess.
 	 * @return Map of association paths with corresponding subcriteria
 	 * instances created from the <tt>targetCriteria</tt>.
@@ -157,63 +149,14 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 			final Entry<String, Integer> associationPathEntry = associationPathEntryIterator.next();
 			final String associationPath = associationPathEntry.getKey();
 			
-			final Criteria subCriteria = findSubCriteria(associationPath, targetCriteria, associationPathEntry.getValue());
+			final Criteria subCriteria = HibernateHelper.findSubCriteria(targetCriteria, associationPath, associationPathEntry.getValue());
 			subCriteriaMap.put(associationPath, subCriteria);
 		}
 		
 		return subCriteriaMap;
 	}
 	
-	/**
-	 * Attempts to find a subcriteria with the given
-	 * <tt>associationPath</tt> within the <tt>targetCriteria</tt>.
-	 * 
-	 * <p>
-	 * 
-	 * If not found, the method creates a new subcriteria
-	 * rooted under the <tt>targetCriteria</tt> and returns
-	 * that subcriteria instance.
-	 * 
-	 * @param associationPath Association path of the subcriteria.
-	 * @param targetCriteria Root {@link Criteria} instance.
-	 * @param hibernateJoinType Hibernate join type to use
-	 * for nested subcriteria instances.
-	 * @return Subcriteria instance with the given
-	 * <tt>associationPath</tt> rooted under the <tt>targetCriteria</tt>.
-	 */
-	@SuppressWarnings("unchecked")
-	private Criteria findSubCriteria(String associationPath, Criteria targetCriteria, int hibernateJoinType) {
-		final StringTokenizer associationPathTokenizer = new StringTokenizer(associationPath, ".");
-		Criteria currentCriteria = targetCriteria;
-		
-		while (associationPathTokenizer.hasMoreTokens()) {
-			final String associationPathElement = associationPathTokenizer.nextToken();
-			boolean subCriteriaFound = false;
-			
-			// check if there is a subcriteria for associationPathElement within the targetCriteria
-			final Iterator<Subcriteria> subCriteriaIterator = ((CriteriaImpl) targetCriteria).iterateSubcriteria();
-			while (subCriteriaIterator.hasNext()) {
-				final Subcriteria subCriteriaImpl = subCriteriaIterator.next();
-				
-				if (associationPathElement.equals(subCriteriaImpl.getPath())) {
-					LOG.info("Found existing subcriteria with associationPath element '{}' within the targetCriteria - reusing this subcriteria", associationPathElement);
-					currentCriteria = subCriteriaImpl;
-					subCriteriaFound = true;
-					break;
-				}
-			}
-			
-			// if not found, create a new subcriteria rooted under the currentCriteria
-			if (!subCriteriaFound) {
-				LOG.info("Creating new subcriteria with associationPath element '{}' within the targetCriteria", associationPathElement);
-				currentCriteria = currentCriteria.createCriteria(associationPathElement, hibernateJoinType);
-			}
-		}
-		
-		return currentCriteria;
-	}
-	
-	/**
+    /**
 	 * Returns a {@link NestedPropertyCriterionVisitor} instance
 	 * to be used within the {@link #apply(Criteria)} method.
 	 * 

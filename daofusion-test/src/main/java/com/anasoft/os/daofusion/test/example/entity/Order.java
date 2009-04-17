@@ -63,6 +63,9 @@ public class Order extends OidBasedMutablePersistentEntity {
     @JoinColumn(nullable = false, updatable = false)
     private Customer customer;
     
+    @Column
+    private String description;
+    
     public Date getCreationDate() {
         return creationDate;
     }
@@ -123,6 +126,14 @@ public class Order extends OidBasedMutablePersistentEntity {
     
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+    
+    public String getDescription() {
+        return description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
     }
     
     public int getTotalPrice() {

@@ -900,4 +900,66 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         assertThat(count, equalTo(2));
     }
     
+    /**
+     * Test for duplicate association paths, which should be handled properly
+     * (without any Hibernate exceptions) by {@link NestedPropertyCriteria}.
+     */
+    @Test
+    public void testDuplicateAssociationPaths() {
+        final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        
+        entityCriteria.add(new FilterCriterion("stockItem.category.name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
+            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                return Restrictions.eq(targetPropertyName, directValues[0]);
+            }
+            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                return true;
+            }
+        }));
+        
+        entityCriteria.add(new FilterCriterion("stockItem.category.description", STOCK_ITEM_CATEGORY_COMPUTERS_DESC, false, new PropertyFilterCriterionProvider() {
+            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                return Restrictions.eq(targetPropertyName, directValues[0]);
+            }
+            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                return true;
+            }
+        }));
+        
+        final List<OrderItem> orderItemList = orderItemDao.query(entityCriteria, OrderItem.class);
+        
+        assertThat(orderItemList.size(), equalTo(4));
+    }
+    
+    /**
+     * Test for duplicate association path elements, which should be handled properly
+     * (without any Hibernate exceptions) by {@link NestedPropertyCriteria}.
+     */
+    @Test
+    public void testDuplicateAssociationPathElements() {
+        final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        
+        entityCriteria.add(new FilterCriterion("order.description", null, false, new PropertyFilterCriterionProvider() {
+            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                return Restrictions.isNotNull(targetPropertyName);
+            }
+            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                return true;
+            }
+        }));
+        
+        entityCriteria.add(new FilterCriterion("stockItem.description", null, false, new PropertyFilterCriterionProvider() {
+            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                return Restrictions.isNull(targetPropertyName);
+            }
+            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                return true;
+            }
+        }));
+        
+        final List<OrderItem> orderItemList = orderItemDao.query(entityCriteria, OrderItem.class);
+        
+        assertThat(orderItemList.size(), equalTo(8));
+    }
+    
 }

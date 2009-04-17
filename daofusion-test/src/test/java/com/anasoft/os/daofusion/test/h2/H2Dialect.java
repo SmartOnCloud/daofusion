@@ -20,9 +20,8 @@ import org.hibernate.util.ReflectHelper;
  * <p>
  * 
  * TODO: Replace this class with {@link org.hibernate.dialect.H2Dialect}
- * when issues described at
- * http://opensource.atlassian.com/projects/hibernate/browse/HHH-3401
- * are resolved within the Hibernate core.
+ * when <a href="http://opensource.atlassian.com/projects/hibernate/browse/HHH-3401">
+ * H2 dialect issues</a> are resolved within the Hibernate core.
  * 
  * @author Thomas Mueller
  */
