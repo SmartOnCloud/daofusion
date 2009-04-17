@@ -9,6 +9,8 @@ import org.hibernate.impl.CriteriaImpl.Subcriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anasoft.os.daofusion.criteria.NestedPropertyJoinType;
+
 /**
  * Helper class for Hibernate related stuff.
  * 
@@ -39,11 +41,11 @@ public final class HibernateHelper {
      * <a href="http://opensource.atlassian.com/projects/hibernate/browse/HHH-879">
      * duplicate association path</a> Hibernate Criteria API issue.
      * 
-     * @param associationPath Association path of the subcriteria.
      * @param targetCriteria Root {@link Criteria} instance.
+     * @param associationPath Association path of the subcriteria.
      * @param hibernateJoinType Hibernate join type to use
      * for nested subcriteria instances.
-     * @return Subcriteria instance with the given
+     * @return Subcriteria instance for the given
      * <tt>associationPath</tt> rooted under the <tt>targetCriteria</tt>.
      */
     @SuppressWarnings("unchecked")
@@ -83,6 +85,22 @@ public final class HibernateHelper {
         }
         
         return currentCriteria;
+    }
+    
+    /**
+     * Attempts to find a subcriteria for the given
+     * <tt>associationPath</tt> within the <tt>targetCriteria</tt>
+     * using the {@link NestedPropertyJoinType#DEFAULT default join type}.
+     * 
+     * @param targetCriteria Root {@link Criteria} instance.
+     * @param associationPath Association path of the subcriteria.
+     * @return Subcriteria instance for the given
+     * <tt>associationPath</tt> rooted under the <tt>targetCriteria</tt>.
+     * 
+     * @see #findSubCriteria(Criteria, String, int)
+     */
+    public static Criteria findSubCriteria(Criteria targetCriteria, String associationPath) {
+        return findSubCriteria(targetCriteria, associationPath, NestedPropertyJoinType.DEFAULT.getHibernateJoinType());
     }
     
     /**
