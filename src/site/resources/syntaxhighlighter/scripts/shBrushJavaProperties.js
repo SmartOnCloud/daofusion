@@ -6,7 +6,7 @@
 SyntaxHighlighter.brushes.JavaProperties = function()
 {
 	this.regexList = [
-    { regex: SyntaxHighlighter.regexLib.singleLinePerlComments, css: 'comments' },
+    { regex: /[#!].*$/gm, css: 'comments' },
     { regex: /[:=].*$/gm, css: 'string' }
   ];
 };
