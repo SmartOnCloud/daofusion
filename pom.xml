@@ -33,7 +33,7 @@
 		<m2st-syntaxHighlighter-urlBase>syntaxhighlighter</m2st-syntaxHighlighter-urlBase>
 		<m2st-syntaxHighlighter-brushFiles>shBrushPlain.js,shBrushXml.js,shBrushJava.js,shBrushJavaProperties.js</m2st-syntaxHighlighter-brushFiles>
 		<m2st-syntaxHighlighter-config>config.clipboardSwf='%ROOT%/scripts/clipboard.swf'</m2st-syntaxHighlighter-config>
-		<m2st-gatc-id>UA-8185683-1</m2st-gatc-id>
+		<m2st-gatc-id>UA-8423695-1</m2st-gatc-id>
 		<m2st-privacyPolicyUrl>http://maven.apache.org/privacy-policy.html</m2st-privacyPolicyUrl>
 	</properties>
 	
@@ -50,7 +50,7 @@
 					<dependency>
 						<groupId>m2st</groupId>
 						<artifactId>doxia-macros</artifactId>
-						<version>1.0</version>
+						<version>SNAPSHOT</version>
 					</dependency>
 				</dependencies>
 			</plugin>
