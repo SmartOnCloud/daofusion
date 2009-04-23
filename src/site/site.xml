@@ -4,7 +4,7 @@
 	<skin>
 		<groupId>m2st</groupId>
 		<artifactId>stylus-ext-skin</artifactId>
-		<version>1.0</version>
+		<version>SNAPSHOT</version>
 	</skin>
 	
 	<bannerLeft>
@@ -17,7 +17,7 @@
 	</bannerRight>
 	
 	<poweredBy>
-		<logo name="GNU Lesser General Public License" href="http://www.gnu.org/licenses/lgpl.html" img="images/logos/lgpl.png" />
+		<logo name="GNU Lesser General Public License" href="http://www.gnu.org/licenses/lgpl.html" img="images/logos/lgpl.gif" />
 	</poweredBy>
 	
 	<body>

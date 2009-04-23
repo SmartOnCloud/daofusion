@@ -115,7 +115,7 @@
 @MappedSuperclass
 @AttributeOverride(name = "name", column = @Column(
     length = 255,
-    name = PersistentEnumeration.NAME,
+    name = PersistentEnumeration._NAME,
     unique = true,
     updatable = false,
     nullable = false))

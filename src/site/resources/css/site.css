@@ -3,8 +3,13 @@
 	background: url(../images/top-fill.gif);
 }
 
-.section li {
+li {
 	list-style-type: square;
+}
+
+h1, h2 {
+  color: #333333;
+  font-size: 17px;
 }
 
 h4 {
@@ -18,4 +23,9 @@ h4 {
 
 #bodyColumn {
 	margin-left: 250px;
+}
+
+#navcolumn img {
+  margin-bottom: 10px;
+  margin-left: 10px;
 }

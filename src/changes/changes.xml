@@ -18,6 +18,9 @@
 				Fixed issue "org.h2.jdbc.JdbcSQLException thrown after running core integration tests for H2 database".
 			</action>
 			<action dev="vojtech.szocs" type="update">
+				Persistent property name constant NAME changed to _NAME in PersistentEnumeration.
+			</action>
+			<action dev="vojtech.szocs" type="update">
 				CriteriaTransferObjectCountWrapperTest updated to use @Mock annotations in conjunction
 				with MockitoJUnitRunner.
 			</action>
