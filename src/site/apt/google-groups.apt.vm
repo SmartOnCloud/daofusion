@@ -11,6 +11,7 @@ ${df} on Google Groups
   We encourage people to post their questions, ideas or comments on {{{http://groups.google.com/group/dao-fusion} DAO Fusion discussion group}}
   hosted on {{{http://groups.google.com/} Google Groups}}.
   
-  Our discussion group is also a good place to discuss new features or known issues.
+  Our discussion group is also a good place to discuss new features or known issues. Please use our {{{./issue-tracking.html} issue tracker}}
+  for reporting new issues (e.g. bugs or feature requests).
   
 %{html-template-snippet|missingValuesToEmptyStrings=1|htmlFile=src/site/snippet/html/google-groups-promotion-box.html|paramFile=src/site/snippet/html/google-groups-promotion-box.properties}
