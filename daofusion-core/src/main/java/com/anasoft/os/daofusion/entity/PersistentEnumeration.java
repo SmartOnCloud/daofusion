@@ -33,7 +33,7 @@ public abstract class PersistentEnumeration extends PersistentEntity<Long> {
 
     private static final long serialVersionUID = -5336677804672833628L;
     
-    public static final String NAME = "name";
+    public static final String _NAME = "name";
     
     @NaturalId
     @Column(length = 36, unique = true, updatable = false, nullable = false)
