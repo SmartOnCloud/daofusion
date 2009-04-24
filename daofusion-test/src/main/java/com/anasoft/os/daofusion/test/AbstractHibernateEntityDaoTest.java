@@ -932,6 +932,51 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
     }
     
     /**
+     * Test for duplicate property paths (association path and target property
+     * name), which should be handled properly (without any Hibernate exceptions)
+     * by {@link NestedPropertyCriteria}.
+     */
+    @Test
+    public void testDuplicatePropertyPaths() {
+        final FilterCriterion criterion1 = new FilterCriterion("stockItem.category.name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
+            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                return Restrictions.eq(targetPropertyName, directValues[0]);
+            }
+            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                return true;
+            }
+        });
+        
+        final FilterCriterion criterion2 = new FilterCriterion("stockItem.category.name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
+            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                return Restrictions.eq(targetPropertyName, directValues[0]);
+            }
+            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                return true;
+            }
+        });
+        
+        final FilterCriterion criterion3 = new FilterCriterion("stockItem.category.name", STOCK_ITEM_CATEGORY_FOOD, false, new PropertyFilterCriterionProvider() {
+            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                return Restrictions.eq(targetPropertyName, directValues[0]);
+            }
+            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
+                return true;
+            }
+        });
+        
+        final NestedPropertyCriteria cr1 = new NestedPropertyCriteria();
+        cr1.add(criterion1);
+        cr1.add(criterion2);
+        assertThat(orderItemDao.query(cr1, OrderItem.class).size(), equalTo(4));
+        
+        final NestedPropertyCriteria cr2 = new NestedPropertyCriteria();
+        cr2.add(criterion1);
+        cr2.add(criterion3);
+        assertThat("Two contrary criterion instances return zero items", orderItemDao.query(cr2, OrderItem.class).size(), equalTo(0));
+    }
+    
+    /**
      * Test for duplicate association path elements, which should be handled properly
      * (without any Hibernate exceptions) by {@link NestedPropertyCriteria}.
      */
