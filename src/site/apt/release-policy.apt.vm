@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 19 March 2009
+ 24 April 2009
  ----
 
 Release Policy
@@ -33,6 +33,9 @@ Release Policy
   * <Updating related resources>
   
     * Update the "Downloads" page on {{{ ${df-googleCodeUrl} } GoogleCode}}.
+  
+    * Post a release announcement to the {{{http://groups.google.com/group/dao-fusion/browse_thread/thread/31ce6fa45f443f6c} Release notes thread}}
+      on our {{{./google-groups.html} discussion group}}.
   
   []
   

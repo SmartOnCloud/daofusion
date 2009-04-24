@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 9 March 2009
+ 24 April 2009
  ----
 
 Transaction Management
@@ -29,6 +29,8 @@ External resources
   * {{{http://www.ibm.com/developerworks/java/library/j-ts1.html} Transaction strategies: Understanding transaction pitfalls}} by Mark Richards
   
   * {{{http://www.ibm.com/developerworks/java/library/j-ts2.html} Transaction strategies: Models and strategies overview}} by Mark Richards
+  
+  * {{{http://www.ibm.com/developerworks/java/library/j-ts3/index.html} Transaction strategies: The API Layer strategy}} by Mark Richards
   
   []
   
@@ -66,9 +68,10 @@ External resources
   
   Transaction models are materialized into transaction strategies depending on specific business requirements of your project in terms of concurrency, performance and data integrity.
   
-  One of the most common transaction strategies is a strategy aimed at coarse-grained service methods that act as entry points to the back-end business functionality. In this scenario,
-  the client typically performs a single method call per each request. Server-side service method implementation must therefore manage transactions on its own, acting as a "logical unit
-  of work" from the client's point of view.
+  One of the most common transaction strategies is the {{{http://www.ibm.com/developerworks/java/library/j-ts3/index.html} API Layer strategy}} aimed at coarse-grained service methods
+  that act as entry points to the back-end business functionality. In this scenario, the client performs a single method call per each request without any transaction logic. In other
+  words, the client is restricted to a single request for a given transactional unit of work. Server-side service method implementation must therefore manage transactions on its own,
+  acting as a "logical unit of work" from the client's point of view.
   
 * {Hints regarding declarative transaction model}
   

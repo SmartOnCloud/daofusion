@@ -7,7 +7,7 @@
 	</properties>
 	
 	<body>
-		<release version="1.1-SNAPSHOT" date="N/A" description="1.1.x branch (current development)">
+		<release version="1.1.1" date="2009-04-24" description="Maintenance release of the 1.1.x branch">
 			<action dev="vojtech.szocs" type="fix" issue="2" system="GoogleCode">
 				Fixed issue "Request for merging functionality - NestedPropertyCriteria".
 			</action>
@@ -23,6 +23,9 @@
 			<action dev="vojtech.szocs" type="update">
 				CriteriaTransferObjectCountWrapperTest updated to use @Mock annotations in conjunction
 				with MockitoJUnitRunner.
+			</action>
+			<action dev="vojtech.szocs" type="add">
+				Added LGPL license under src/main/resources/license directory.
 			</action>
 		</release>
 		

@@ -3,10 +3,30 @@
  ----
  Vojtech Szocs
  ----
- 19 March 2009
+ 24 April 2009
  ----
 
 ${df} news
+  
+* 2009-04-24
+  
+  <<${df} 1.1.1>> has been released. Check out the {{{./changes-report.html} changelog}} for more information about this release.
+  
+  There are several important things we want to point out in addition to the new release:
+  
+  * ${df} now has its own {{{./google-groups.html} discussion group}} hosted on {{{http://groups.google.com/} Google Groups}}. This is the place to discuss your questions,
+    ideas, new features or known issues.
+  
+  []
+  
+  * There are discussions going on about the {{{http://groups.google.com/group/dao-fusion/browse_thread/thread/e1ece1641af9c970} bitemporal pattern}} which is intended
+    to be part of ${df} 1.2 feature release.
+    
+    <We also encourage you to post any topics regarding possible functionality changes (e.g. what you would like to see in the next feature release).>
+  
+  []
+  
+  Please note that this is essentially the last release of the 1.1.x branch.
   
 * 2009-04-02
   
