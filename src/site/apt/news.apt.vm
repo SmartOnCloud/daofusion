@@ -20,9 +20,11 @@ ${df} news
   []
   
   * There are discussions going on about the {{{http://groups.google.com/group/dao-fusion/browse_thread/thread/e1ece1641af9c970} bitemporal pattern}} which is intended
-    to be part of ${df} 1.2 feature release.
-    
-    <We also encourage you to post any topics regarding possible functionality changes (e.g. what you would like to see in the next feature release).>
+    to be part of ${df} 1.2 feature release (see the {{{http://groups.google.com/group/dao-fusion/browse_thread/thread/31ce6fa45f443f6c} Release notes thread}} for more
+    information).
+  
+    <We would also like to encourage you to post any topics regarding possible functionality / API changes since now is the right time for such decisions (e.g. what you
+    would like to see in the next feature release).>
   
   []
   
