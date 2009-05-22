@@ -1,0 +1,38 @@
+ ----
+ ${df} Roadmap
+ ----
+ Michal Jemala
+ ----
+ 22 May 2009
+ ----
+
+${df} Roadmap for 1.2.x 
+
+Sections
+  
+  * {{{./roadmap.html#Milestone_1} Milestone 1}}
+  
+  * {{{./roadmap.html#Milestone_2} Milestone 2}}
+  
+  * {{{./roadmap.html#Milestone_3} Milestone 3}}
+  
+  []
+* {Milestone 1} (next couple of days)
+
+  * a step-by-step tutorial for creating sample DAO layer and sample application to show basic ${df} usage
+
+  []
+* {Milestone 2} (near future)
+  
+  * ${df} overview comprising its main concepts, usage and benefits.
+
+  []
+* {Milestone 3} (July 2009)
+  
+  * {{{http://groups.google.com/group/dao-fusion/t/e1ece1641af9c970} Bitemporal pattern support}}
+  
+  * any issues that come up until release, either from the issue tracker or from this discussion group
+  
+  * RELEASE of 1.2.0 (1.2.x branch)
+  
+  []
