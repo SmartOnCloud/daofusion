@@ -24,7 +24,7 @@ public final class PropertyFilterCriterionProviders {
     
     public static final PropertyFilterCriterionProvider LIKE = new UnaryDirectValueProvider() {
         public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-            return Restrictions.like(targetPropertyName, directValues[0]);
+            return Restrictions.like(targetPropertyName, "%" + (String) directValues[0] + "%");
         }
     };
     
