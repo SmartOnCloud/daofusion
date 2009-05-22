@@ -21,7 +21,7 @@ public class DatabaseInitializer {
             "Peter", "Oliver", "David", "Cooper", "Noah", "John", "Anthony" };
     
     private static final String[] LAST_NAMES = { "Horváth", "Kováč", "Varga", "Tóth", "Nagy",
-            "Baláž", "Szabó", "Molnár", "Balog", "Lukáč", "Szöcs", "Jemala" };
+            "Baláž", "Szabó", "Molnár", "Balog", "Lukáč" };
     
     private static final String[] COUNTRIES = { 
             "AF", "AX", "AL", "DZ", "AS", "AD", "AO", "AI",
