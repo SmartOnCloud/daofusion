@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	
+	<display-name>Hello, DAO! - DAO Fusion sample application</display-name>
+	
+	<!-- ** Filters ******************************************************** -->
+	<filter>
+		<filter-name>oemivFilter</filter-name>
+		<filter-class>com.anasoft.os.daofusion.sample.hellodao.server.OpenEntityManagerInViewFilter</filter-class>
+		<init-param>
+			<param-name>persistenceUnitName</param-name>
+			<param-value>default-pu</param-value>
+		</init-param>
+	</filter>
+	
+	<filter-mapping>
+		<filter-name>oemivFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- ** Servlets ****************************************************** -->
+	<servlet>
+		<servlet-name>initServlet</servlet-name>
+		<servlet-class>com.anasoft.os.daofusion.sample.hellodao.server.DatabaseInitializationServlet</servlet-class>
+		<init-param>
+			<param-name>numberOfCustomers</param-name>
+			<param-value>256</param-value>
+		</init-param>
+	</servlet>
+	<servlet>
+		<servlet-name>rpcServlet</servlet-name>
+		<servlet-class>com.anasoft.os.daofusion.sample.hellodao.server.RpcServiceServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>initServlet</servlet-name>
+		<url-pattern>/init</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>rpcServlet</servlet-name>
+		<url-pattern>/rpc</url-pattern>
+	</servlet-mapping>
+	
+	<!-- ** Welcome Files ************************************************* -->
+	<welcome-file-list>
+		<welcome-file>HelloDAO.html</welcome-file>
+	</welcome-file-list>
+	
+</web-app>
