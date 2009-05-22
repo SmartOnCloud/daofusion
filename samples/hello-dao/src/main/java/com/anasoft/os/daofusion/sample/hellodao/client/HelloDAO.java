@@ -50,6 +50,19 @@ public class HelloDAO implements EntryPoint {
         refresh.setWidth100();
         customerButtons.addMember(refresh);
         
+        IButton cleanRefresh = new IButton("Clean refresh");
+        cleanRefresh.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                // drop record cache to force data fetch
+                // from the server
+                customerGrid.invalidateCache();
+                customerGrid.fetchData();
+            }
+        });
+        cleanRefresh.setIcon(ICON_PATH + "refresh.png");
+        cleanRefresh.setWidth100();
+        customerButtons.addMember(cleanRefresh);
+        
         IButton newEntry = new IButton("New entry");
         newEntry.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
