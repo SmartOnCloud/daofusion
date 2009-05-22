@@ -1,6 +1,7 @@
 package com.anasoft.os.daofusion.sample.hellodao.server;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -48,6 +49,12 @@ public class DatabaseInitializationServlet extends HttpServlet {
             initializer.init();
             isInitialized = true;
         }
+        
+        resp.setContentType("text/html");
+        PrintWriter out = resp.getWriter();
+        out.print("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">" +
+        		"<html><head><meta http-equiv=\"refresh\" content=\"0; url=/hellodao/\"></head><body></body></html>");
+        out.flush();
     }
     
     @Override
