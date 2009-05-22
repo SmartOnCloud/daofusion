@@ -65,7 +65,8 @@
 					</dependency>
 					<dependency>
 						<groupId>com.google.gwt</groupId>
-						<artifactId>gwt-dev-${platform}</artifactId>
+						<artifactId>gwt-dev</artifactId>
+						<classifier>${platform}</classifier>
 						<version>${gwt.version}</version>
 					</dependency>
 				</dependencies>
