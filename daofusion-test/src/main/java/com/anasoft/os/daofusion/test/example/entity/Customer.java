@@ -29,7 +29,7 @@ public class Customer extends OidBasedMutablePersistentEntity {
     private String email;
     
     @OneToMany(mappedBy = "customer")
-    @Cascade(value = {CascadeType.SAVE_UPDATE})
+    @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.DELETE})
     private List<Order> orders = new ArrayList<Order>();
     
     public String getFirstName() {

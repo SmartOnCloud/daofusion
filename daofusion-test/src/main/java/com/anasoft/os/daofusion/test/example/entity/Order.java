@@ -53,7 +53,7 @@ public class Order extends OidBasedMutablePersistentEntity {
     private Address billingAddress;
     
     @OneToMany(mappedBy = "order")
-    @Cascade(value = {CascadeType.SAVE_UPDATE})
+    @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.DELETE})
     private List<OrderItem> orderItems = new ArrayList<OrderItem>();
     
     @Column(nullable = false)
