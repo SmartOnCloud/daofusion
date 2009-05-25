@@ -1,0 +1,34 @@
+ ----
+ Coding Conventions
+ ----
+ Vojtech Szocs
+ ----
+ 19 May 2009
+ ----
+
+Coding Conventions
+  
+  Open source projects involve many people at distinct places and time zones collaborating together to build a software that is useful to each
+  and every community member. Applying a simple set of coding conventions and best practices ensures readability, maintainability and overall
+  quality of the source code.
+  
+* Source code
+  
+  {{{http://java.sun.com/docs/codeconv/} Code Conventions for the Java Programming Language}} are standard Java conventions recommended by Sun.
+  
+  {{{http://www.eclipse.org/} Eclipse}} users are encouraged to use our custom {{{./files/eclipse-java-formatter.xml} Java formatter profile}}
+  (you can import this file into Eclipse via <Window> | <Preferences> | <Java> | <Code Style> | <Formatter>).
+  
+  All Javadoc comments should be written in English. If you copy code from other sources, please credit original author(s) too.
+  
+* File encoding
+  
+  <<<UTF-8>>> encoding should be used as the default for all source and configuration (<<<xml>>>, <<<properties>>>) files. You might want to set
+  up your IDE to use <<<UTF-8>>> for all source files prior to checking out ${df} projects.
+  
+* Best practices
+  
+  ${df} developers are encouraged to use and apply any best practices and design patterns they find appropriate.
+  
+  Practicing {{{./code-review.html} code reviews}} when proposing or committing source code patches for a particular revision is highly recommended.
+  Patch sets representing non-trivial issue fixes or other major changes should definitely go through the code review process in any case.

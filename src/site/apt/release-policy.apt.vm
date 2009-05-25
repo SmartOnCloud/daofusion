@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 24 April 2009
+ 25 May 2009
  ----
 
 Release Policy
@@ -20,13 +20,13 @@ Release Policy
   
   * <Deploying artifacts into remote repository>
   
-    * Within the tag root directory, execute "<<<mvn clean deploy -Prelease>>>"
+    * Within the tag root directory, execute <<<mvn clean deploy -Prelease>>>
   
   []
   
   * <Deploying project site into remote web server>
   
-    * Within the site root directory, execute "<<<mvn clean site-deploy>>>"
+    * Within the site root directory, execute <<<mvn clean site-deploy>>>
   
   []
   
@@ -55,10 +55,11 @@ Release Policy
   the <<<major.minor.x>>> naming convention. Only bugfixes, performance enhancements and minor functionality additions that don't break the general
   API may be committed to the maintenance branch.
   
+  New functionality that may cause API changes or changes in project architecture should be considered as part of new <feature release>. New
+  maintenance branch and a corresponding site project should be created for each and every feature release.
+  
   Exactly one <${df-site}> project is maintained for each maintenance branch. The site project needs to be updated upon any changes done within
   the branch as soon as possible. This includes site contents as well as the release changelog.
-  
-  New functionality that may cause API changes should result in creating a new maintenance branch and a corresponding site project.
   
 * Maven artifact versioning
   

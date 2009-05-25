@@ -41,7 +41,10 @@
 			<item name="Download" href="download.html" />
 			<item name="Dependencies" href="dependencies.html" />
 			<item name="Release changelog" href="changes-report.html" />
-			<item name="Tutorials" href="tutorial/tutorial-index.html" />
+		</menu>
+		
+		<menu name="Tutorials">
+			<item name="Hello, DAO!" href="tutorial/hellodao.html" />
 		</menu>
 		
 		<menu name="How To...">
@@ -71,11 +74,9 @@
 			<item name="${df} Team" href="team-list.html" />
 		</menu>
 		
-		<menu name="Contributor Zone">
-			<item name="Code Review" href="code-review.html" />
-		</menu>
-		
 		<menu name="Developer Zone">
+			<item name="Coding Conventions" href="coding-conventions.html" />
+			<item name="Code Review" href="code-review.html" />
 			<item name="Release Policy" href="release-policy.html" />
 		</menu>
 	</body>

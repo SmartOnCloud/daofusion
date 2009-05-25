@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 16 March 2009
+ 19 May 2009
  ----
 
 Code Review
@@ -13,7 +13,7 @@ Code Review
   their patches for code review.
   
   Code reviews enable project members to comment on patch sets (sets of diffs for a particular revision) made by other project members, which improves
-  the overall code quality along with some other positive side effects, such as:
+  the overall source code quality along with some other positive side effects, such as:
   
   * project members are aware of impacts caused by the issue implementation, staying up to date with the current state of the project
   

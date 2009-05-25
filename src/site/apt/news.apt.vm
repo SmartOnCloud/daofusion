@@ -3,10 +3,18 @@
  ----
  Vojtech Szocs
  ----
- 24 April 2009
+ 25 May 2009
  ----
 
 ${df} news
+  
+* 2009-05-25
+  
+  ${df} team is happy to announce the availability of {{{./tutorial/hellodao.html} Hello, DAO!}} tutorial. <Hello, DAO!> aims to help developers get familiar with ${df}
+  concepts using popular web application technologies and tools.
+  
+  We are currently preparing for a new feature release - see the {{{./roadmap.html} roadmap}} for more information about project milestones and their progress. Stay tuned,
+  <<${df} 1.2.0>> is on its way!
   
 * 2009-04-24
   

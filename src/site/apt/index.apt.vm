@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 9 February 2009
+ 25 May 2009
  ----
 
 Welcome to ${df}
@@ -39,3 +39,13 @@ Welcome to ${df}
   Integration tests interact with the chosen database instance and make sure that all standard DAO implementations are properly and thoroughly tested using a non-trivial sample
   domain model. Note that ${df} is integration-tested against most popular databases, including {{{http://www.mysql.com/} MySQL}}, {{{http://www.postgresql.org/} PostgreSQL}},
   {{{http://www.ibm.com/db2} DB2}}, {{{http://www.oracle.com/technology/products/database/oracle10g/index.html} Oracle 10g}} and {{{http://en.wikipedia.org/wiki/Microsoft_SQL_Server} MS SQL Server 2000}}.
+  
+Getting started
+  
+  Check out our {{{./tutorial/hellodao.html} Hello, DAO!}} tutorial to get up and running with ${df}. Post your questions, ideas or comments on our {{{http://groups.google.com/group/dao-fusion} discussion group}}
+  or use our {{{./issue-tracking.html} issue tracker}} for reporting issues.
+  
+Get involved
+  
+  ${df} team is currently preparing for a new feature release (see the {{{./roadmap.html} roadmap}} for more information about project milestones and their progress). Everyone is welcome
+  to join the community and contribute with his or her ideas (e.g. what you would like to see in the next feature release).

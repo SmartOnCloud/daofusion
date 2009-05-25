@@ -1,0 +1,34 @@
+ ----
+ Hello, DAO! tutorial
+ ----
+ Vojtech Szocs
+ ----
+ 25 May 2009
+ ----
+
+Hello, DAO! tutorial
+  
+  We have prepared a sample application to help developers get familiar with ${df} concepts using popular web application technologies and tools:
+  
+  * {{{http://java.sun.com/javaee/5/docs/tutorial/doc/bnafd.html} Java Servlet API}} (Java EE)
+  
+  * {{{http://code.google.com/webtoolkit/} Google Web Toolkit}} (presentation logic and RPC support) / {{{http://code.google.com/p/smartgwt/} SmartGWT}} (fancy UI widgets)
+  
+  * {{{http://maven.apache.org/} Maven}} (project build and application startup) / {{{http://ant.apache.org/} Ant}} (GWT project compilation)
+  
+  []
+  
+Instructions
+  
+  First, check out <Hello, DAO!> sources from the {{{http://daofusion.googlecode.com/svn/trunk/samples/hello-dao/} trunk}}. If you use {{{http://www.eclipse.org/} Eclipse IDE}},
+  you can generate Eclipse project files via <<<mvn eclipse:eclipse>>>.
+  
+  Next, start the application via <<<mvn jetty:run>>>. It can take some time though since Maven needs to look for required dependencies. Please note that <Hello, DAO!> uses
+  an embedded {{{http://www.h2database.com/} H2}} database instance running <<in the same JVM>> as the application itself.
+  
+  Once you see something like <<<[INFO] Started Jetty Server>>> on the console, you can {{{http://localhost:8080/hellodao/init} launch}} the application. There should be enough
+  Javadocs / comments hanging around in source files to figure out how things work (we recommend to start with <<<WEB-INF/web.xml>>> first).
+  
+Step-by-step tutorial
+  
+  We are currently working on a step-by-step tutorial for <Hello, DAO!> which should demonstrate basic steps when building DAO layers with ${df}.

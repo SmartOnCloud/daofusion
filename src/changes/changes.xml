@@ -7,6 +7,13 @@
 	</properties>
 	
 	<body>
+		<release version="SNAPSHOT" date="N/A" description="Current development (trunk)">
+			<action dev="vojtech.szocs" type="fix">
+				Corrected cascade type definitions on Customer and Order entities within daofusion-test.
+				This could potentionally cause ConstraintViolationExceptions when deleting related entities.
+			</action>
+		</release>
+		
 		<release version="1.1.1" date="2009-04-24" description="Maintenance release of the 1.1.x branch">
 			<action dev="vojtech.szocs" type="fix" issue="2" system="GoogleCode">
 				Fixed issue "Request for merging functionality - NestedPropertyCriteria".
