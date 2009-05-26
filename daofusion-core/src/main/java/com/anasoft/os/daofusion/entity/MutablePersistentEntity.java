@@ -41,4 +41,11 @@ public abstract class MutablePersistentEntity extends PersistentEntity<Long> {
 		this.version = version;
 	}
 	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+	    MutablePersistentEntity clone = MutablePersistentEntity.class.cast(super.clone());
+	    clone.version = null;
+        return clone;
+	}
+	
 }

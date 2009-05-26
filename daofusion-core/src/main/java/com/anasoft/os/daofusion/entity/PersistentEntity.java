@@ -18,6 +18,13 @@ import javax.persistence.MappedSuperclass;
  * depending on the chosen method implementation
  * pattern.
  * 
+ * <p>
+ * 
+ * This class implicitly supports the {@link Object#clone()
+ * clone} operation. Subclasses can implement {@link Cloneable}
+ * interface if they wish to add explicit <tt>clone</tt>
+ * operation support.
+ * 
  * @param <ID> Java type of the primary key column.
  * 
  * @see Persistable
@@ -39,6 +46,13 @@ public abstract class PersistentEntity<ID extends Serializable> implements Persi
 	
 	protected void setId(ID id) {
 		this.id = id;
+	}
+	
+    @Override
+	protected Object clone() throws CloneNotSupportedException {
+	    PersistentEntity<ID> clone = PersistentEntity.class.cast(super.clone());
+	    clone.id = null;
+        return clone;
 	}
 	
 }
