@@ -48,6 +48,7 @@ public abstract class PersistentEntity<ID extends Serializable> implements Persi
 		this.id = id;
 	}
 	
+    @SuppressWarnings("unchecked")
     @Override
 	protected Object clone() throws CloneNotSupportedException {
 	    PersistentEntity<ID> clone = PersistentEntity.class.cast(super.clone());
