@@ -128,6 +128,96 @@ public abstract class CustomPersistentEnumeration extends PersistentEnumeration 
 		</faq>
 		
 		<faq id="entity-model-8">
+			<question>How can I add explicit <em>clone</em> operation support for my entities?</question>
+			<answer>
+				<p><tt>PersistentEntity</tt> as well as its abstract subclasses support the <em>clone</em> operation implicitly - they contain
+				a custom <em>clone</em> method implementation that nullifies certain fields (<em>id</em> and <em>version</em>), without implementing
+				the <tt>Cloneable</tt> interface on their own. If you want to add explicit <em>clone</em> support for your persistent entities,
+				you can do something like this (assume that you follow the synthetic generated value approach for implementing <em>hashCode</em> / <em>equals</em> methods):</p>
+				<pre class="brush: java">
+@MappedSuperclass
+public abstract class OidBasedMutablePersistentEntity extends MutablePersistentEntity {
+
+    public static final int OID_COLUMN_LENGTH = 36;
+    public static final String OID_COLUMN_NAME = "object_id";
+
+    @NaturalId
+    @Column(length = OID_COLUMN_LENGTH, name = OID_COLUMN_NAME,
+            unique = true, updatable = false, nullable = false)
+    private String oid;
+
+    public OidBasedMutablePersistentEntity() {
+        oid = generateOid();
+    }
+
+    public String getOid() {
+        return oid;
+    }
+
+    protected void setOid(String oid) {
+        this.oid = oid;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((oid == null) ? 0 : oid.hashCode());
+        return result;
+    }
+
+    @Override
+    public final boolean equals(Object obj) {
+        if (this == obj) 
+            return true;
+        if (obj == null) 
+            return false;
+        if (!(obj instanceof OidBasedMutablePersistentEntity)) 
+            return false;
+        return (oid == null) ? false : oid.equals(((OidBasedMutablePersistentEntity) obj).oid);
+    }
+
+    protected String generateOid() {
+        return UUID.randomUUID().toString();
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        OidBasedMutablePersistentEntity clone = OidBasedMutablePersistentEntity.class.cast(super.clone());
+        // clone will have a newly generated oid value
+        clone.oid = generateOid();
+        return clone;
+    }
+
+}
+
+@Entity
+public abstract class Employee extends OidBasedMutablePersistentEntity implements Cloneable {
+
+    @Column(nullable = true)
+    private String name;
+    
+    // getter and setter omitted
+
+    @Override
+    public Supplier clone() throws CloneNotSupportedException {
+        // CloneNotSupportedException should never happen since
+        // PersistentEntity supports the clone operation
+        return Supplier.class.cast(super.clone());
+    }
+
+}
+
+@Entity
+public class JavaDeveloper extends Employee {
+
+    // no need to override clone here
+
+}</pre>
+			</answer>
+		</faq>
+		
+		<faq id="entity-model-9">
 			<question>I get a strange behavior when using <tt>PersistentEnumeration</tt> subclasses.</question>
 			<answer>
 				<p>Did you set the name field value properly after constructing the entity? If not, the whole <em>hashCode</em> / <em>equals</em> method

@@ -1,8 +1,12 @@
 @MappedSuperclass
 public abstract class OidBasedMutablePersistentEntity extends MutablePersistentEntity {
 
+    public static final int OID_COLUMN_LENGTH = 36;
+    public static final String OID_COLUMN_NAME = "object_id";
+
     @NaturalId
-    @Column(length = 36, name = "object_id", unique = true, updatable = false, nullable = false)
+    @Column(length = OID_COLUMN_LENGTH, name = OID_COLUMN_NAME,
+            unique = true, updatable = false, nullable = false)
     private String oid;
 
     public OidBasedMutablePersistentEntity() {
@@ -27,19 +31,13 @@ public abstract class OidBasedMutablePersistentEntity extends MutablePersistentE
 
     @Override
     public final boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj) 
             return true;
-        }
-        if (obj == null) {
+        if (obj == null) 
             return false;
-        }
-        if (!(obj instanceof OidBasedMutablePersistentEntity)) {
+        if (!(obj instanceof OidBasedMutablePersistentEntity)) 
             return false;
-        }
-
-        final OidBasedMutablePersistentEntity other = (OidBasedMutablePersistentEntity) obj;
-
-        return oid.equals(other.oid);
+        return (oid == null) ? false : oid.equals(((OidBasedMutablePersistentEntity) obj).oid);
     }
 
 }

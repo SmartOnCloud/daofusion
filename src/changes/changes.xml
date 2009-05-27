@@ -8,6 +8,10 @@
 	
 	<body>
 		<release version="SNAPSHOT" date="N/A" description="Current development (trunk)">
+			<action dev="vojtech.szocs" type="add">
+				Added implicit clone operation support for PersistentEntity and MutablePersistentEntity.
+				See the Reference documentation FAQ for more information.
+			</action>
 			<action dev="vojtech.szocs" type="fix">
 				Corrected cascade type definitions on Customer and Order entities within daofusion-test.
 				This could potentionally cause ConstraintViolationExceptions when deleting related entities.
