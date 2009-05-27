@@ -6,7 +6,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -21,10 +20,18 @@ import org.slf4j.LoggerFactory;
 import com.anasoft.os.daofusion.sample.hellodao.server.dao.impl.EntityManagerHolder;
 
 /**
- * Simple implementation of the "Open EntityManager In View" pattern.
+ * Simple implementation of the <em>Open EntityManager In View</em>
+ * pattern.
  * <p>
  * We recommend using Spring's <tt>OpenEntityManagerInViewFilter</tt>
  * in serious applications.
+ * <p>
+ * <b>Important notice:</b> This filter provides a single transaction
+ * for the entire request processing ({@link FilterChain#doFilter(ServletRequest, ServletResponse, FilterChain)
+ * doFilter} method execution), which means that it is NOT possible to
+ * use various transaction propagation modes in your service methods.
+ * You would normally use declarative transaction model supported by
+ * Spring or EJB container in serious applications.
  */
 public class OpenEntityManagerInViewFilter implements Filter {
     
@@ -65,9 +72,9 @@ public class OpenEntityManagerInViewFilter implements Filter {
      * the {@link EntityManager} is closed and its reference held by
      * {@link EntityManagerHolder} is cleared.
      * <p>
-     * Should a {@link PersistenceException} occur during filter chain
-     * execution, the transaction is rolled back and the exception is
-     * propagated up to the servlet container.
+     * Should an exception occur during filter chain execution, the
+     * transaction is rolled back and the exception is propagated up
+     * to the servlet container.
      */
     public final void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -87,14 +94,14 @@ public class OpenEntityManagerInViewFilter implements Filter {
             tx.begin();
             doFilterInternal(request, response, chain);
             tx.commit();
-        } catch (PersistenceException pe) {
+        } catch (Exception ex) {
             try {
                 tx.rollback();
-            } catch (Exception e) {
+            } catch (Exception rollbackEx) {
                 // swallow rollback errors
-                log.error("Error upon transaction rollback", e);
+                log.error("Error upon transaction rollback", rollbackEx);
             }
-            throw pe;
+            throw new ServletException(ex);
         } finally {
             EntityManagerHolder.set(null);
             
@@ -104,8 +111,9 @@ public class OpenEntityManagerInViewFilter implements Filter {
     }
     
     /**
-     * Default implementation invokes the {@link Filter#doFilter(ServletRequest,
-     * ServletResponse, FilterChain) doFilter} method.
+     * Default implementation invokes the
+     * {@link FilterChain#doFilter(ServletRequest, ServletResponse, FilterChain)
+     * doFilter} method.
      */
     protected void doFilterInternal(ServletRequest request,
             ServletResponse response, FilterChain chain) throws IOException,
