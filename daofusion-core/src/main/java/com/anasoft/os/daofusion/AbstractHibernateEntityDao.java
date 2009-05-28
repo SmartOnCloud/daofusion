@@ -35,9 +35,8 @@ public abstract class AbstractHibernateEntityDao<T extends Persistable<ID>, ID e
 	/**
 	 * @see com.anasoft.os.daofusion.PersistentEntityDao#get(java.io.Serializable, java.lang.Class)
 	 */
-	@SuppressWarnings("unchecked")
 	public <S extends T> S get(ID id, Class<S> targetEntityClass) {
-		return (S) getSession().get(targetEntityClass, id);
+	    return targetEntityClass.cast(getSession().get(targetEntityClass, id));
 	}
 	
 	/**

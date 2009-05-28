@@ -21,12 +21,11 @@ public abstract class AbstractHibernateEnumerationDao<T extends PersistentEnumer
 	/**
 	 * @see com.anasoft.os.daofusion.PersistentEnumerationDao#get(java.lang.String, java.lang.Class)
 	 */
-	@SuppressWarnings("unchecked")
 	public <S extends T> S get(String name, Class<S> targetEntityClass) {
 		final Criteria criteria = getHibernateCriteria(targetEntityClass);
 		criteria.add(Restrictions.eq(PersistentEnumeration._NAME, name));
 		
-		return (S) criteria.uniqueResult();
+		return targetEntityClass.cast(criteria.uniqueResult());
 	}
 	
     /**
