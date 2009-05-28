@@ -51,7 +51,7 @@
 						<configuration>
 							<tasks>
 								<ant antfile="${basedir}/build.xml" inheritRefs="true" target="CompileGWTSources">
-									<property name="gwt.module" value="hellodao" />
+									<property name="gwt.module" value="HelloDAO" />
 								</ant>
 							</tasks>
 						</configuration>
