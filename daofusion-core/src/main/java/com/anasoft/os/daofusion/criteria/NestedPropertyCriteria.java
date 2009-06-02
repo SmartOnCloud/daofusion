@@ -130,6 +130,11 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 	 * Returns a {@link NestedPropertyCriterionVisitor} instance
      * to be used within the {@link #apply(Criteria)} method.
      * 
+     * <p>
+     * 
+     * Override this method if you want to plug in your custom
+     * {@link NestedPropertyCriterionVisitor} implementation.
+     * 
      * @param targetCriteria {@link Criteria} instance to update.
      * @param associationPathRegister {@link AssociationPathRegister}
      * initialized with Hibernate {@link Criteria} mappings.

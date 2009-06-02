@@ -90,10 +90,27 @@ public class NestedPropertyCriteriaBasedConverter extends SimpleMapContainer<Str
 	}
 	
 	/**
+	 * Creates a {@link NestedPropertyCriteria} instance to be used
+	 * within the {@link #convert(CriteriaTransferObject, String)}
+	 * method.
+	 * 
+	 * <p>
+	 * 
+	 * Override this method if you want to plug in your custom
+     * {@link NestedPropertyCriteria} implementation.
+	 * 
+	 * @return {@link NestedPropertyCriteria} instance to hold
+	 * criteria from the criteria transfer object.
+	 */
+	protected NestedPropertyCriteria createCriteria() {
+	    return new NestedPropertyCriteria();
+	}
+	
+	/**
 	 * @see com.anasoft.os.daofusion.cto.server.CriteriaTransferObjectConverter#convert(com.anasoft.os.daofusion.cto.client.CriteriaTransferObject, java.lang.String)
 	 */
 	public PersistentEntityCriteria convert(CriteriaTransferObject transferObject, String mappingGroupName) {
-		NestedPropertyCriteria nestedCriteria = new NestedPropertyCriteria();
+		NestedPropertyCriteria nestedCriteria = createCriteria();
 		
 		Set<String> propertyIdSet = transferObject.getPropertyIdSet();
 		Map<String, NestedPropertyMapping> propertyMappings = getPropertyMappings(mappingGroupName);
