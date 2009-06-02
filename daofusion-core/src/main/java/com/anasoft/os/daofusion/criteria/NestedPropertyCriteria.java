@@ -116,14 +116,7 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 	 * {@link Criteria} mappings.
 	 */
 	protected AssociationPathRegister createAssociationPathRegister(Criteria rootCriteria) {
-	    AssociationPathRegister register = new AssociationPathRegister(rootCriteria);
-	    
-	    List<NestedPropertyCriterion> propertyCriterionList = getObjectList();
-	    for (NestedPropertyCriterion propertyCriterion : propertyCriterionList) {
-	        register.add(propertyCriterion.getAssociationPath());
-	    }
-	    
-	    return register;
+	    return new AssociationPathRegister(rootCriteria);
 	}
 	
 	/**

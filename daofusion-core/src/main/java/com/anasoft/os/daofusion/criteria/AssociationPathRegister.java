@@ -96,41 +96,6 @@ public class AssociationPathRegister {
     }
 	
 	/**
-	 * Adds the given {@link AssociationPath} to the register,
-	 * creating a corresponding Hibernate {@link Criteria}
-	 * mapping unless it's already present.
-	 * 
-	 * <p>
-	 * 
-	 * You can safely call this method multiple times with
-	 * same association paths.
-	 * 
-	 * @param associationPath Association path to add.
-	 * @return 
-	 */
-	public AssociationPathRegister add(AssociationPath associationPath) {
-		if (pathToCriteriaMap.containsKey(associationPath)) {
-			return this;
-		}
-		
-		for (AssociationPath partialPath : associationPath) {
-			if (!pathToCriteriaMap.containsKey(partialPath)) {
-				AssociationPath superPath = partialPath.getSuperPath();
-				AssociationPathElement lastElement = partialPath.getLastElement();
-				
-				Criteria parentCriteria = pathToCriteriaMap.get(superPath);
-				Criteria criteria = parentCriteria.createCriteria(
-				        lastElement.getValue(),
-				        lastElement.getJoinType().getHibernateJoinType());
-				
-				pathToCriteriaMap.put(partialPath, criteria);
-			}
-		}
-		
-		return this;
-	}
-	
-	/**
 	 * Returns a {@link Criteria} instance for the given
 	 * {@link AssociationPath} or <tt>null</tt> in case
 	 * there is no such mapping.
@@ -147,6 +112,22 @@ public class AssociationPathRegister {
      * {@link AssociationPath} (can be <tt>null</tt>).
 	 */
 	public Criteria get(AssociationPath associationPath) {
+	    if (!pathToCriteriaMap.containsKey(associationPath)) {
+    	    for (AssociationPath partialPath : associationPath) {
+                if (!pathToCriteriaMap.containsKey(partialPath)) {
+                    AssociationPath superPath = partialPath.getSuperPath();
+                    AssociationPathElement lastElement = partialPath.getLastElement();
+                    
+                    Criteria parentCriteria = pathToCriteriaMap.get(superPath);
+                    Criteria criteria = parentCriteria.createCriteria(
+                            lastElement.getValue(),
+                            lastElement.getJoinType().getHibernateJoinType());
+                    
+                    pathToCriteriaMap.put(partialPath, criteria);
+                }
+            }
+	    }
+	    
 		return pathToCriteriaMap.get(associationPath);
 	}
 	
