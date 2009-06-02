@@ -50,11 +50,13 @@
 	</developers>
 	<contributors>
 		<contributor>
+			<id>michal.jemala</id>
 			<name>Michal Jemala</name>
 			<email>michal.jemala@anasoft.com</email>
 			<organization>ANASOFT</organization>
 		</contributor>
 		<contributor>
+			<id>jan.pastor</id>
 			<name>Jan Pastor</name>
 			<email>jan.pastor@anasoft.com</email>
 			<organization>ANASOFT</organization>
