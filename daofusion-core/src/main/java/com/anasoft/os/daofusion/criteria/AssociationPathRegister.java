@@ -14,20 +14,28 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Register of {@link AssociationPath} instances and corresponding
- * Hibernate {@link Criteria} to be used when updating the root
+ * Hibernate {@link Criteria} to be used when modifying the root
  * {@link Criteria} instance.
  * 
  * <p>
  * 
- * This class is used by {@link NestedPropertyCriteria} to prepare
- * subcriteria mappings in a safe way, avoiding the
+ * This class is used by {@link NestedPropertyCriteria} to initialize
+ * {@link Subcriteria} mappings in a safe way, avoiding the
  * <a href="http://opensource.atlassian.com/projects/hibernate/browse/HHH-879">
  * duplicate association path</a> Hibernate Criteria API issue.
  * 
  * <p>
  * 
- * You can use this class to modify existing {@link Criteria} instances
- * as well if necessary (always prefer {@link #add(AssociationPath)} in
+ * {@link AssociationPathRegister} is a thin wrapper around the given
+ * {@link Criteria} instance that gets initialized with existing
+ * {@link Subcriteria} mappings at construction time. It is therefore
+ * safe to create multiple {@link AssociationPathRegister} instances
+ * operating on the same {@link Criteria}.
+ * 
+ * <p>
+ * 
+ * You can use this class to modify {@link Criteria} instances in a safe
+ * way on your own as well (always prefer {@link #get(AssociationPath)} in
  * favor of calling the {@link Criteria#createCriteria(String, String, int)
  * createCriteria} method directly).
  * 
@@ -97,19 +105,27 @@ public class AssociationPathRegister {
 	
 	/**
 	 * Returns a {@link Criteria} instance for the given
-	 * {@link AssociationPath} or <tt>null</tt> in case
-	 * there is no such mapping.
+	 * {@link AssociationPath}.
 	 * 
 	 * <p>
 	 * 
-	 * Use the {@link #add(AssociationPath)} method to
-	 * initialize Hibernate {@link Criteria} mappings
-	 * prior to calling this method.
+	 * This method ensures that Hibernate {@link Criteria}
+	 * mappings are lazily initialized (with existing criteria
+	 * being reused) prior to returning the target
+	 * {@link Criteria}.
 	 * 
+	 * <p>
+	 * 
+	 * You can safely call this method multiple times with
+     * same association path argument. Note that <em>unused
+     * association path criteria instances might break your
+     * query behavior</em> (don't call this method if you
+     * do nothing with its result).
+     * 
 	 * @param associationPath Association path for which
 	 * to obtain the {@link Criteria} instance.
 	 * @return {@link Criteria} instance for the given
-     * {@link AssociationPath} (can be <tt>null</tt>).
+     * {@link AssociationPath}.
 	 */
 	public Criteria get(AssociationPath associationPath) {
 	    if (!pathToCriteriaMap.containsKey(associationPath)) {

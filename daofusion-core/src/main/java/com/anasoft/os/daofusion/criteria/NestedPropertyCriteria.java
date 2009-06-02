@@ -108,18 +108,6 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 	}
 	
 	/**
-	 * Creates the {@link AssociationPathRegister} according to association
-	 * paths defined by {@link NestedPropertyCriterion} instances.
-	 * 
-	 * @param rootCriteria Root {@link Criteria} instance.
-	 * @return {@link AssociationPathRegister} initialized with Hibernate
-	 * {@link Criteria} mappings.
-	 */
-	protected AssociationPathRegister createAssociationPathRegister(Criteria rootCriteria) {
-	    return new AssociationPathRegister(rootCriteria);
-	}
-	
-	/**
 	 * Returns a {@link NestedPropertyCriterionVisitor} instance
      * to be used within the {@link #apply(Criteria)} method.
      * 
@@ -147,7 +135,7 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 		
 		NestedPropertyCriterionVisitor visitor = getCriterionVisitor(
 				targetCriteria,
-				createAssociationPathRegister(targetCriteria),
+				new AssociationPathRegister(targetCriteria),
 				filterObject);
 		
 		for (NestedPropertyCriterion criterion : criterionList) {
