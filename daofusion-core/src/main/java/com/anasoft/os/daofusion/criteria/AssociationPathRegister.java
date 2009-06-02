@@ -106,10 +106,11 @@ public class AssociationPathRegister {
 	 * same association paths.
 	 * 
 	 * @param associationPath Association path to add.
+	 * @return 
 	 */
-	public void add(AssociationPath associationPath) {
+	public AssociationPathRegister add(AssociationPath associationPath) {
 		if (pathToCriteriaMap.containsKey(associationPath)) {
-			return;
+			return this;
 		}
 		
 		for (AssociationPath partialPath : associationPath) {
@@ -125,6 +126,8 @@ public class AssociationPathRegister {
 				pathToCriteriaMap.put(partialPath, criteria);
 			}
 		}
+		
+		return this;
 	}
 	
 	/**
