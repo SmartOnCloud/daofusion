@@ -1,11 +1,6 @@
 package com.anasoft.os.daofusion.criteria;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
@@ -13,7 +8,6 @@ import org.hibernate.criterion.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anasoft.os.daofusion.util.HibernateHelper;
 import com.anasoft.os.daofusion.util.ReflectionHelper;
 import com.anasoft.os.daofusion.util.SimpleListContainer;
 
@@ -29,25 +23,24 @@ import com.anasoft.os.daofusion.util.SimpleListContainer;
  * subclasses via a default {@link NestedPropertyCriterionVisitor}
  * implementation. The {@link PersistentEntityCriteria#apply(Criteria)}
  * method implementation contains code that visits all
- * {@link NestedPropertyCriterion} instances, updating a single
- * {@link Criteria} instance within the visitor class.
+ * {@link NestedPropertyCriterion} instances, updating the given
+ * root {@link Criteria} instance within the visitor class.
  * 
  * <p>
  * 
- * Additionally, a nested persistent entity property criteria
+ * Additionally, the nested persistent entity property criteria
  * contains features that are common to either all or certain
  * {@link NestedPropertyCriterion} instances:
  * 
  * <ul>
  * 	<li>paging criteria definition (<tt>firstResult</tt> and
  * 		<tt>maxResults</tt>)
- * 	<li>filter object which can be used as the source for filter
- * 		values (see {@link FilterCriterion} for more information
- * 		about the filter object and direct filter value concepts)
- * 	<li>the ability to preprocess a {@link Criteria} instance
- * 		regarding possible nested subcriteria in a generic way
- * 		to avoid the "duplicate association path" Hibernate Criteria
- * 		API issue
+ * 	<li>filter object as an <em>optional</em> source of filter values
+ *      (see {@link FilterCriterion} for more information about
+ *      the filter object and direct filter value concepts)
+ * 	<li>use of {@link AssociationPathRegister} for root {@link Criteria}
+ *      preprocessing regarding nested subcriteria (association paths
+ *      defined by {@link NestedPropertyCriterion} instances)
  * </ul>
  * 
  * @see NestedPropertyCriterion
@@ -115,71 +108,48 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 	}
 	
 	/**
-	 * {@link Criteria} instance preprocessing regarding possible
-	 * nested subcriteria.
+	 * Creates the {@link AssociationPathRegister} according to association
+	 * paths defined by {@link NestedPropertyCriterion} instances.
 	 * 
-	 * <p>
-	 * 
-	 * This kind of preprocessing is necessary in order to avoid
-	 * the "duplicate association path" Hibernate Criteria API
-	 * issue which leads to an exception in case of multiple
-	 * subcriteria with same association paths.
-	 * 
-	 * @param targetCriteria {@link Criteria} instance to preprocess.
-	 * @return Map of association paths with corresponding subcriteria
-	 * instances created from the <tt>targetCriteria</tt>.
+	 * @param rootCriteria Root {@link Criteria} instance.
+	 * @return {@link AssociationPathRegister} initialized with Hibernate
+	 * {@link Criteria} mappings.
 	 */
-	protected Map<String, Criteria> preprocessSubCriteria(Criteria targetCriteria) {
-		final Map<String, Criteria> subCriteriaMap = new HashMap<String, Criteria>();
-		final Map<String, Integer> associationPathMap = new LinkedHashMap<String, Integer>();
-		
-		// extract association paths and corresponding join types to associationPathMap
-		final List<NestedPropertyCriterion> propertyCriterionList = getObjectList();
-		for (NestedPropertyCriterion propertyCriterion : propertyCriterionList) {
-			final String associationPath = propertyCriterion.getAssociationPath();
-			
-			if (associationPath != null) {
-				associationPathMap.put(associationPath, propertyCriterion.getAssociationJoinType().getHibernateJoinType());
-			}
-		}
-		
-		// populate subCriteriaMap according to associationPathMap
-		final Iterator<Entry<String, Integer>> associationPathEntryIterator = associationPathMap.entrySet().iterator();
-		while (associationPathEntryIterator.hasNext()) {
-			final Entry<String, Integer> associationPathEntry = associationPathEntryIterator.next();
-			final String associationPath = associationPathEntry.getKey();
-			
-			final Criteria subCriteria = HibernateHelper.findSubCriteria(targetCriteria, associationPath, associationPathEntry.getValue());
-			subCriteriaMap.put(associationPath, subCriteria);
-		}
-		
-		return subCriteriaMap;
+	protected AssociationPathRegister createAssociationPathRegister(Criteria rootCriteria) {
+	    AssociationPathRegister register = new AssociationPathRegister(rootCriteria);
+	    
+	    List<NestedPropertyCriterion> propertyCriterionList = getObjectList();
+	    for (NestedPropertyCriterion propertyCriterion : propertyCriterionList) {
+	        register.add(propertyCriterion.getAssociationPath());
+	    }
+	    
+	    return register;
 	}
 	
-    /**
+	/**
 	 * Returns a {@link NestedPropertyCriterionVisitor} instance
-	 * to be used within the {@link #apply(Criteria)} method.
-	 * 
-	 * @param targetCriteria {@link Criteria} instance to update.
-	 * @param subCriteriaMap Map of association paths with corresponding
-	 * subcriteria instances created from the <tt>targetCriteria</tt>.
-	 * @param filterObject Filter object (can be <tt>null</tt>).
-	 * @return {@link NestedPropertyCriterionVisitor} instance operating
-	 * on the <tt>targetCriteria</tt>.
+     * to be used within the {@link #apply(Criteria)} method.
+     * 
+     * @param targetCriteria {@link Criteria} instance to update.
+     * @param associationPathRegister {@link AssociationPathRegister}
+     * initialized with Hibernate {@link Criteria} mappings.
+     * @param filterObject Filter object (can be <tt>null</tt>).
+     * @return {@link NestedPropertyCriterionVisitor} instance operating
+     * on the <tt>targetCriteria</tt>.
 	 */
-	protected NestedPropertyCriterionVisitor getCriterionVisitor(Criteria targetCriteria, Map<String, Criteria> subCriteriaMap, Object filterObject) {
-	    return new DefaultNestedPropertyCriterionVisitor(targetCriteria, subCriteriaMap, filterObject);
+	protected NestedPropertyCriterionVisitor getCriterionVisitor(Criteria targetCriteria, AssociationPathRegister associationPathRegister, Object filterObject) {
+	    return new DefaultNestedPropertyCriterionVisitor(targetCriteria, associationPathRegister, filterObject);
 	}
 	
 	/**
 	 * @see com.anasoft.os.daofusion.criteria.PersistentEntityCriteria#apply(org.hibernate.Criteria)
 	 */
 	public final void apply(Criteria targetCriteria) {
-		final List<NestedPropertyCriterion> criterionList = getObjectList();
+		List<NestedPropertyCriterion> criterionList = getObjectList();
 		
-		final NestedPropertyCriterionVisitor visitor = getCriterionVisitor(
+		NestedPropertyCriterionVisitor visitor = getCriterionVisitor(
 				targetCriteria,
-				preprocessSubCriteria(targetCriteria),
+				createAssociationPathRegister(targetCriteria),
 				filterObject);
 		
 		for (NestedPropertyCriterion criterion : criterionList) {
@@ -206,7 +176,7 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 	
 	/**
 	 * Default {@link NestedPropertyCriterionVisitor} implementation
-	 * which operates on a single {@link Criteria} instance.
+	 * operating on the given {@link Criteria} instance.
 	 * 
 	 * @see NestedPropertyCriterionVisitor
 	 * 
@@ -215,21 +185,12 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 	public static class DefaultNestedPropertyCriterionVisitor implements NestedPropertyCriterionVisitor {
 
 	    protected final Criteria targetCriteria;
-	    protected final Map<String, Criteria> subCriteriaMap;
-	    
+	    protected final AssociationPathRegister associationPathRegister;
 	    protected final Object filterObject;
 	    
-	    /**
-	     * Creates a new nested property criterion visitor.
-	     * 
-	     * @param targetCriteria {@link Criteria} instance to update.
-	     * @param subCriteriaMap Map of association paths with corresponding
-	     * subcriteria instances created from the <tt>targetCriteria</tt>.
-	     * @param filterObject Filter object (can be <tt>null</tt>).
-	     */
-	    public DefaultNestedPropertyCriterionVisitor(Criteria targetCriteria, Map<String, Criteria> subCriteriaMap, Object filterObject) {
+	    public DefaultNestedPropertyCriterionVisitor(Criteria targetCriteria, AssociationPathRegister associationPathRegister, Object filterObject) {
 	        this.targetCriteria = targetCriteria;
-	        this.subCriteriaMap = subCriteriaMap;
+            this.associationPathRegister = associationPathRegister;
 	        this.filterObject = filterObject;
 	    }
 	    
@@ -242,7 +203,7 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 	        Object[] filterObjectValues = null;
 	        
 	        if (filterObject != null) {
-	            final String[] filterObjectValuePaths = criterion.getFilterObjectValuePaths();
+	            String[] filterObjectValuePaths = criterion.getFilterObjectValuePaths();
 	            
 	            if (filterObjectValuePaths != null) {
 	                filterObjectValues = new Object[filterObjectValuePaths.length];
@@ -254,24 +215,21 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 	        }
 	        
 	        // apply query constraints to the Criteria instance
-	        final PropertyFilterCriterionProvider criterionProvider = criterion.getFilterCriterionProvider();
-            final Object[] directValues = criterion.getDirectValues();
+	        PropertyFilterCriterionProvider criterionProvider = criterion.getFilterCriterionProvider();
+            Object[] directValues = criterion.getDirectValues();
             
 	        if (criterionProvider.enabled(filterObjectValues, directValues)) {
-	            final Criterion propertyFilterCriterion = criterionProvider.getCriterion(
+	            Criterion propertyFilterCriterion = criterionProvider.getCriterion(
 	                    criterion.getTargetPropertyName(),
 	                    filterObjectValues,
 	                    directValues);
 	            
-	            final String associationPath = criterion.getAssociationPath();
-	            
-	            if (associationPath != null) {
-	                subCriteriaMap.get(associationPath).add(propertyFilterCriterion);
-	            } else {
-	                targetCriteria.add(propertyFilterCriterion);
-	            }
+	            AssociationPath associationPath = criterion.getAssociationPath();
+	            associationPathRegister.get(associationPath).add(propertyFilterCriterion);
 	        } else {
-	            LOG.info("Skipping FilterCriterion instance processing for propertyPath '{}' - associated filter criterion provider reports to be disabled", criterion.getPropertyPath());
+	            LOG.info("Skipping FilterCriterion instance processing for associationPath '{}' / targetPropertyName '{}' - associated filter criterion provider reports to be disabled",
+	                    criterion.getAssociationPath().toString(),
+	                    criterion.getTargetPropertyName());
 	        }
 	    }
 	    
@@ -279,21 +237,16 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 	     * @see com.anasoft.os.daofusion.criteria.NestedPropertyCriterionVisitor#visit(com.anasoft.os.daofusion.criteria.SortCriterion)
 	     */
 	    public void visit(SortCriterion criterion) {
-	        final String targetPropertyName = criterion.getTargetPropertyName();
+	        String targetPropertyName = criterion.getTargetPropertyName();
 	        
-	        final Order order = criterion.isSortAscending() ? Order.asc(targetPropertyName) : Order.desc(targetPropertyName);
+	        Order order = criterion.isSortAscending() ? Order.asc(targetPropertyName) : Order.desc(targetPropertyName);
 	        
 	        if (criterion.isIgnoreCase()) {
 	            order.ignoreCase();
 	        }
 	        
-	        final String associationPath = criterion.getAssociationPath();
-	        
-	        if (associationPath != null) {
-	            subCriteriaMap.get(associationPath).addOrder(order);
-	        } else {
-	            targetCriteria.addOrder(order);
-	        }
+	        AssociationPath associationPath = criterion.getAssociationPath();
+            associationPathRegister.get(associationPath).addOrder(order);
 	    }
 	    
 	}

@@ -4,17 +4,10 @@ import org.hibernate.criterion.CriteriaSpecification;
 
 /**
  * Enumeration of possible database join types
- * applicable to {@link NestedPropertyCriterion}
+ * applicable to {@link AssociationPathElement}
  * instances.
  * 
- * <p>
- * 
- * Note that the join type for a particular nested
- * property criterion is considered only in case
- * the corresponding <tt>propertyPath</tt> points
- * to a truly nested (non-direct) persistent entity
- * property.
- * 
+ * @see AssociationPathElement
  * @see NestedPropertyCriterion
  * 
  * @author vojtech.szocs

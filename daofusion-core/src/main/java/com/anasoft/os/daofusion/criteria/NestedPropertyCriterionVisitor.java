@@ -4,8 +4,8 @@ import org.hibernate.Criteria;
 
 /**
  * Visitor for specific {@link NestedPropertyCriterion} subclasses
- * intended to group the query constraint application logic
- * operating on a single {@link Criteria} instance.
+ * that groups the query constraint application logic operating on
+ * the root {@link Criteria} instance.
  * 
  * @see NestedPropertyCriterion
  * @see NestedPropertyCriteria
@@ -17,11 +17,11 @@ public interface NestedPropertyCriterionVisitor {
 	/**
 	 * @param criterion Persistent entity property criterion to visit.
 	 */
-	public void visit(FilterCriterion criterion);
+	void visit(FilterCriterion criterion);
 	
 	/**
 	 * @param criterion Persistent entity property criterion to visit.
 	 */
-	public void visit(SortCriterion criterion);
+	void visit(SortCriterion criterion);
 	
 }

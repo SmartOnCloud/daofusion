@@ -94,7 +94,7 @@ public abstract class AbstractHibernateEntityDao<T extends Persistable<ID>, ID e
 	 * @see com.anasoft.os.daofusion.PersistentEntityDao#deleteAll(java.lang.Class)
 	 */
 	public <S extends T> int deleteAll(Class<S> targetEntityClass) {
-	    final List<S> instancesToDelete = getAll(targetEntityClass);
+	    List<S> instancesToDelete = getAll(targetEntityClass);
 	    
 	    for (S instance : instancesToDelete) {
 	        delete(instance);
@@ -136,7 +136,7 @@ public abstract class AbstractHibernateEntityDao<T extends Persistable<ID>, ID e
 	 * @see com.anasoft.os.daofusion.PersistentEntityDao#uniqueResult(com.anasoft.os.daofusion.criteria.PersistentEntityCriteria, boolean, java.lang.Class)
 	 */
 	public <S extends T> S uniqueResult(PersistentEntityCriteria entityCriteria, boolean returnNullOnMultipleResults, Class<S> targetEntityClass) {
-		final List<S> resultList = query(entityCriteria, targetEntityClass);
+		List<S> resultList = query(entityCriteria, targetEntityClass);
 		S result = null;
 		
 		if ((returnNullOnMultipleResults && resultList.size() == 1) || (!returnNullOnMultipleResults && resultList.size() > 0)) {
@@ -157,7 +157,7 @@ public abstract class AbstractHibernateEntityDao<T extends Persistable<ID>, ID e
 	 * @see com.anasoft.os.daofusion.PersistentEntityDao#count(com.anasoft.os.daofusion.criteria.PersistentEntityCriteria, java.lang.Class)
 	 */
 	public <S extends T> int count(PersistentEntityCriteria entityCriteria, Class<S> targetEntityClass) {
-        final Criteria criteria = getCriteria(entityCriteria, targetEntityClass);
+        Criteria criteria = getCriteria(entityCriteria, targetEntityClass);
         return rowCount(criteria);
 	}
 	

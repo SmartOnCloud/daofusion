@@ -18,6 +18,8 @@ import org.springframework.test.annotation.ExpectedException;
 
 import com.anasoft.os.daofusion.AbstractHibernateEntityDao;
 import com.anasoft.os.daofusion.PersistentEntityDao;
+import com.anasoft.os.daofusion.criteria.AssociationPath;
+import com.anasoft.os.daofusion.criteria.AssociationPathElement;
 import com.anasoft.os.daofusion.criteria.FilterCriterion;
 import com.anasoft.os.daofusion.criteria.NestedPropertyCriteria;
 import com.anasoft.os.daofusion.criteria.PersistentEntityCriteria;
@@ -45,9 +47,9 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      * @return Sample {@link PromotedStockItem} transient instance.
      */
     private PromotedStockItem getSampleStockItemTransient() {
-        final StockItemCategory foodCategory = stockItemCategoryDao.get(STOCK_ITEM_CATEGORY_FOOD, StockItemCategory.class);
+        StockItemCategory foodCategory = stockItemCategoryDao.get(STOCK_ITEM_CATEGORY_FOOD, StockItemCategory.class);
         
-        final PromotedStockItem stockItemTransient = new PromotedStockItem();
+        PromotedStockItem stockItemTransient = new PromotedStockItem();
         stockItemTransient.setName("Milk");
         stockItemTransient.setDescription("Moo moo!");
         stockItemTransient.setPrice(5);
@@ -63,7 +65,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      * @param instance {@link PromotedStockItem} instance to modify.
      */
     private void modifySampleStockItem(PromotedStockItem instance) {
-        final StockItemCategory computerCategory = stockItemCategoryDao.get(STOCK_ITEM_CATEGORY_COMPUTERS, StockItemCategory.class);
+        StockItemCategory computerCategory = stockItemCategoryDao.get(STOCK_ITEM_CATEGORY_COMPUTERS, StockItemCategory.class);
         
         instance.setName("MacBook");
         instance.setDescription("Portable computer.");
@@ -77,7 +79,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      * which violates database constraints.
      */
     private PromotedStockItem getSampleConstraintViolatingStockItemTransient() {
-        final PromotedStockItem stockItemTransient = getSampleStockItemTransient();
+        PromotedStockItem stockItemTransient = getSampleStockItemTransient();
         stockItemTransient.setName(null);
         
         return stockItemTransient;
@@ -114,13 +116,13 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     private void verifyStockItemsInList(List<PromotedStockItem> stockItemList, Long[] instanceIds, PromotedStockItem[] referenceInstances) {
     	for (PromotedStockItem stockItem : stockItemList) {
-    		final int instanceIdIndex = Arrays.binarySearch(instanceIds, stockItem.getId());
+    		int instanceIdIndex = Arrays.binarySearch(instanceIds, stockItem.getId());
     		assertThat(instanceIdIndex >= 0, equalTo(true));
     		
-    		final Long referenceId = instanceIds[instanceIdIndex];
+    		Long referenceId = instanceIds[instanceIdIndex];
     		assertThat(stockItem.getId(), equalTo(referenceId));
     		
-    		final PromotedStockItem referenceStockItem = referenceInstances != null ? referenceInstances[instanceIdIndex] : null;
+    		PromotedStockItem referenceStockItem = referenceInstances != null ? referenceInstances[instanceIdIndex] : null;
     		if (referenceStockItem != null) {
     			verifyStockItemPropertiesMatch(stockItem, referenceStockItem);
     		}
@@ -139,7 +141,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     private void verifyMutablePersistentEntitiesInList(List<? extends MutablePersistentEntity> entityList, Long[] instanceIds) {
     	for (MutablePersistentEntity entity : entityList) {
-    		final int instanceIdIndex = Arrays.binarySearch(instanceIds, entity.getId());
+    		int instanceIdIndex = Arrays.binarySearch(instanceIds, entity.getId());
     		assertThat(instanceIdIndex >= 0, equalTo(true));
     	}
     }
@@ -149,7 +151,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      * transient instance.
      */
     private PromotedStockItem getModifiedSampleStockItemTransient() {
-        final PromotedStockItem stockItemTransientModified = getSampleStockItemTransient();
+        PromotedStockItem stockItemTransientModified = getSampleStockItemTransient();
         modifySampleStockItem(stockItemTransientModified);
         
         return stockItemTransientModified;
@@ -160,9 +162,9 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      * entity which provides an empty result set.
      */
     private PersistentEntityCriteria getEmptyResultSetCustomerCriteria() {
-    	final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+    	NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
     	
-    	entityCriteria.add(new FilterCriterion("email", "nobody@non-existing-provider.net", false, new PropertyFilterCriterionProvider() {
+    	entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "email", "nobody@non-existing-provider.net", false, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.eq(targetPropertyName, directValues[0]);
             }
@@ -198,8 +200,8 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testSaveOrUpdate_persistingTransientInstance() {
-        final PromotedStockItem stockItemTransient = getSampleStockItemTransient();
-        final PromotedStockItem stockItemPersistent = stockItemDao.saveOrUpdate(stockItemTransient);
+        PromotedStockItem stockItemTransient = getSampleStockItemTransient();
+        PromotedStockItem stockItemPersistent = stockItemDao.saveOrUpdate(stockItemTransient);
         
         assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistent), equalTo(true));
@@ -214,7 +216,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testSaveOrUpdate_updatingDetachedInstance() {
-        final PromotedStockItem stockItemDetached = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
+        PromotedStockItem stockItemDetached = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
         
         assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemDetached), equalTo(true));
@@ -226,7 +228,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         
         modifySampleStockItem(stockItemDetached);
         
-        final PromotedStockItem stockItemPersistent = stockItemDao.saveOrUpdate(stockItemDetached);
+        PromotedStockItem stockItemPersistent = stockItemDao.saveOrUpdate(stockItemDetached);
         
         assertThat(stockItemPersistent.getId(), notNullValue());
         
@@ -241,7 +243,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
     @Test
     @ExpectedException(HibernateException.class)
     public void testSaveOrUpdate_persistingConstraintViolatingTransientInstance() {
-        final PromotedStockItem stockItemTransientViolating = getSampleConstraintViolatingStockItemTransient();
+        PromotedStockItem stockItemTransientViolating = getSampleConstraintViolatingStockItemTransient();
         
         stockItemDao.saveOrUpdate(stockItemTransientViolating);
     }
@@ -252,7 +254,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testDeleteByInstance_deletingPersistentInstance() {
-        final PromotedStockItem stockItemPersistent = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
+        PromotedStockItem stockItemPersistent = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
         
         assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistent), equalTo(true));
@@ -271,7 +273,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testDeleteById_deletingPersistentInstance() {
-        final PromotedStockItem stockItemPersistent = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
+        PromotedStockItem stockItemPersistent = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
         
         assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistent), equalTo(true));
@@ -290,14 +292,14 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testDeleteAll_deletingPersistentInstances() {
-        final PromotedStockItem stockItemPersistentOne = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
-        final PromotedStockItem stockItemPersistentTwo = stockItemDao.saveOrUpdate(getModifiedSampleStockItemTransient());
+        PromotedStockItem stockItemPersistentOne = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
+        PromotedStockItem stockItemPersistentTwo = stockItemDao.saveOrUpdate(getModifiedSampleStockItemTransient());
         
         assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(2));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistentOne), equalTo(true));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistentTwo), equalTo(true));
         
-        final int instanceDeleteCount = stockItemDao.deleteAll(PromotedStockItem.class);
+        int instanceDeleteCount = stockItemDao.deleteAll(PromotedStockItem.class);
         
         assertThat(instanceDeleteCount, equalTo(2));
         
@@ -315,7 +317,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testRefresh_refreshingPersistentInstance() {
-        final PromotedStockItem stockItemPersistent = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
+        PromotedStockItem stockItemPersistent = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
         
         assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistent), equalTo(true));
@@ -340,7 +342,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testRefresh_refreshingDetachedInstance() {
-        final PromotedStockItem stockItemDetached = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
+        PromotedStockItem stockItemDetached = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
         
         assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemDetached), equalTo(true));
@@ -372,7 +374,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testGet_retrievingPersistentInstance() {
-        final PromotedStockItem stockItemDetached = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
+        PromotedStockItem stockItemDetached = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
         
         assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemDetached), equalTo(true));
@@ -381,7 +383,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         
         assertThat(stockItemDao.getHibernateSession().contains(stockItemDetached), equalTo(false));
         
-        final PromotedStockItem stockItemPersistent = stockItemDao.get(stockItemDetached.getId(), PromotedStockItem.class);
+        PromotedStockItem stockItemPersistent = stockItemDao.get(stockItemDetached.getId(), PromotedStockItem.class);
         
         assertThat(stockItemPersistent, notNullValue());
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistent), equalTo(true));
@@ -396,7 +398,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testGet_retrievingNonExistingPersistentInstance() {
-        final PromotedStockItem stockItemPersistentNonExisting = stockItemDao.get(1L, PromotedStockItem.class);
+        PromotedStockItem stockItemPersistentNonExisting = stockItemDao.get(1L, PromotedStockItem.class);
         
         assertThat(stockItemPersistentNonExisting, nullValue());
         assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(0));
@@ -408,8 +410,8 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testGetAll_retrievingPersistentInstances() {
-        final PromotedStockItem stockItemPersistentOne = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
-        final PromotedStockItem stockItemPersistentTwo = stockItemDao.saveOrUpdate(getModifiedSampleStockItemTransient());
+        PromotedStockItem stockItemPersistentOne = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
+        PromotedStockItem stockItemPersistentTwo = stockItemDao.saveOrUpdate(getModifiedSampleStockItemTransient());
         
         assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(2));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistentOne), equalTo(true));
@@ -421,7 +423,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistentOne), equalTo(false));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistentTwo), equalTo(false));
         
-        final List<PromotedStockItem> stockItemList = stockItemDao.getAll(PromotedStockItem.class);
+        List<PromotedStockItem> stockItemList = stockItemDao.getAll(PromotedStockItem.class);
         
         assertThat(stockItemList.size(), equalTo(2));
         
@@ -439,7 +441,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testQuery_emptyCriteria() {
-        final List<Customer> customerList = customerDao.query(new NestedPropertyCriteria(), Customer.class);
+        List<Customer> customerList = customerDao.query(new NestedPropertyCriteria(), Customer.class);
         
         assertThat(customerList.size(), equalTo(TOTAL_CUSTOMER_COUNT));
         
@@ -456,17 +458,17 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testQuery_filterCriteria_directProperties() {
-        final Customer filterObject = new Customer();
+        Customer filterObject = new Customer();
         filterObject.setFirstName(CUSTOMER_TWO_FIRST_NAME);
         filterObject.setLastName(CUSTOMER_TWO_LAST_NAME_PREFIX + "%");
         filterObject.setEmail("%" + CUSTOMER_EMAIL_SUFFIX);
         
-        final Integer orderCount = ORDER_PER_CUSTOMER_COUNT;
+        Integer orderCount = ORDER_PER_CUSTOMER_COUNT;
         
-        final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
         entityCriteria.setFilterObject(filterObject);
         
-        entityCriteria.add(new FilterCriterion("firstName", "firstName", true, new PropertyFilterCriterionProvider() {
+        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "firstName", "firstName", true, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
             }
@@ -475,7 +477,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        entityCriteria.add(new FilterCriterion("lastName", "lastName", true, new PropertyFilterCriterionProvider() {
+        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "lastName", "lastName", true, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.like(targetPropertyName, filterObjectValues[0]);
             }
@@ -484,7 +486,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        entityCriteria.add(new FilterCriterion("email", "email", true, new PropertyFilterCriterionProvider() {
+        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "email", "email", true, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.like(targetPropertyName, filterObjectValues[0]);
             }
@@ -493,7 +495,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        entityCriteria.add(new FilterCriterion("orders", orderCount, false, new PropertyFilterCriterionProvider() {
+        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "orders", orderCount, false, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.sizeEq(targetPropertyName, (Integer) directValues[0]);
             }
@@ -502,11 +504,11 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        final List<Customer> customerList = customerDao.query(entityCriteria, Customer.class);
+        List<Customer> customerList = customerDao.query(entityCriteria, Customer.class);
         
         assertThat(customerList.size(), equalTo(1));
         
-        final Customer singleResult = customerList.get(0);
+        Customer singleResult = customerList.get(0);
         
         assertThat(singleResult.getId(), notNullValue());
         assertThat(singleResult.getId(), equalTo(customerTwoId));
@@ -527,30 +529,35 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testQuery_filterCriteria_nestedProperties() {
-        final Customer filterCustomer = new Customer();
+        Customer filterCustomer = new Customer();
         filterCustomer.setFirstName(CUSTOMER_ONE_FIRST_NAME);
         filterCustomer.setEmail("%" + CUSTOMER_EMAIL_SUFFIX);
         
-        final Order filterOrder = new Order();
+        Order filterOrder = new Order();
         filterOrder.setShippingAddress(orderOneShippingAddress);
         filterOrder.setComplete(false);
         filterCustomer.addOrder(filterOrder);
         
-        final StockItem filterStockItem = new StockItem();
+        StockItem filterStockItem = new StockItem();
         filterStockItem.setPrice(0);
         
-        final StockItemCategory filterStockItemCategory = new StockItemCategory();
+        StockItemCategory filterStockItemCategory = new StockItemCategory();
         filterStockItemCategory.setName(STOCK_ITEM_CATEGORY_FOOD);
         filterStockItem.setCategory(filterStockItemCategory);
         
-        final OrderItem filterObject = new OrderItem();
+        OrderItem filterObject = new OrderItem();
         filterObject.setStockItem(filterStockItem);
         filterOrder.addOrderItem(filterObject);
         
-        final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
         entityCriteria.setFilterObject(filterObject);
         
-        entityCriteria.add(new FilterCriterion("order.shippingAddress", "order.shippingAddress", true, new PropertyFilterCriterionProvider() {
+        AssociationPathElement orderElement = new AssociationPathElement("order");
+        AssociationPathElement customerElement = new AssociationPathElement("customer");
+        AssociationPathElement stockItemElement = new AssociationPathElement("stockItem");
+        AssociationPathElement categoryElement = new AssociationPathElement("category");
+        
+        entityCriteria.add(new FilterCriterion(new AssociationPath(orderElement), "shippingAddress", "order.shippingAddress", true, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
             }
@@ -559,7 +566,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        entityCriteria.add(new FilterCriterion("order.complete", "order.complete", true, new PropertyFilterCriterionProvider() {
+        entityCriteria.add(new FilterCriterion(new AssociationPath(orderElement), "complete", "order.complete", true, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
             }
@@ -568,7 +575,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        entityCriteria.add(new FilterCriterion("order.customer.firstName", "order.customer.firstName", true, new PropertyFilterCriterionProvider() {
+        entityCriteria.add(new FilterCriterion(new AssociationPath(orderElement, customerElement), "firstName", "order.customer.firstName", true, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
             }
@@ -577,7 +584,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        entityCriteria.add(new FilterCriterion("order.customer.email", "order.customer.email", true, new PropertyFilterCriterionProvider() {
+        entityCriteria.add(new FilterCriterion(new AssociationPath(orderElement, customerElement), "email", "order.customer.email", true, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.like(targetPropertyName, filterObjectValues[0]);
             }
@@ -586,7 +593,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        entityCriteria.add(new FilterCriterion("stockItem.price", "stockItem.price", true, new PropertyFilterCriterionProvider() {
+        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement), "price", "stockItem.price", true, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.gt(targetPropertyName, filterObjectValues[0]);
             }
@@ -595,7 +602,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        entityCriteria.add(new FilterCriterion("stockItem.category.name", "stockItem.category.name", true, new PropertyFilterCriterionProvider() {
+        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", "stockItem.category.name", true, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
             }
@@ -604,11 +611,11 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        final List<OrderItem> orderItemList = orderItemDao.query(entityCriteria, OrderItem.class);
+        List<OrderItem> orderItemList = orderItemDao.query(entityCriteria, OrderItem.class);
         
         assertThat(orderItemList.size(), equalTo(1));
         
-        final OrderItem singleResult = orderItemList.get(0);
+        OrderItem singleResult = orderItemList.get(0);
         
         assertThat(singleResult.getId(), notNullValue());
         
@@ -630,11 +637,11 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testQuery_sortCriteria_directProperties() {
-    	final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
-        entityCriteria.add(new SortCriterion("firstName", false, false));
-        entityCriteria.add(new SortCriterion("email", true, true));
+    	NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        entityCriteria.add(new SortCriterion(AssociationPath.ROOT, "firstName", false, false));
+        entityCriteria.add(new SortCriterion(AssociationPath.ROOT, "email", true, true));
         
-        final List<Customer> customerList = customerDao.query(entityCriteria, Customer.class);
+        List<Customer> customerList = customerDao.query(entityCriteria, Customer.class);
         
         assertThat(customerList.size(), equalTo(TOTAL_CUSTOMER_COUNT));
         
@@ -651,24 +658,29 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testQuery_sortCriteria_nestedProperties() {
-    	final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
-        entityCriteria.add(new SortCriterion("order.customer.email", true, true));
-        entityCriteria.add(new SortCriterion("stockItem.category.name", true, false));
-        entityCriteria.add(new SortCriterion("stockItem.price", false));
+        AssociationPathElement orderElement = new AssociationPathElement("order");
+        AssociationPathElement customerElement = new AssociationPathElement("customer");
+        AssociationPathElement stockItemElement = new AssociationPathElement("stockItem");
+        AssociationPathElement categoryElement = new AssociationPathElement("category");
         
-        final List<OrderItem> orderItemList = orderItemDao.query(entityCriteria, OrderItem.class);
+    	NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        entityCriteria.add(new SortCriterion(new AssociationPath(orderElement, customerElement), "email", true, true));
+        entityCriteria.add(new SortCriterion(new AssociationPath(stockItemElement, categoryElement), "name", true, false));
+        entityCriteria.add(new SortCriterion(new AssociationPath(stockItemElement), "price", false));
+        
+        List<OrderItem> orderItemList = orderItemDao.query(entityCriteria, OrderItem.class);
         
         assertThat(orderItemList.size(), equalTo(TOTAL_ORDER_ITEM_COUNT));
         
         for (int i = 0; i < TOTAL_ORDER_ITEM_COUNT; i++) {
-            final OrderItem result = orderItemList.get(i);
+            OrderItem result = orderItemList.get(i);
             
             assertThat(result.getId(), notNullValue());
             
-            final String customerEmailPrefix = i < (TOTAL_ORDER_ITEM_COUNT / 2) ? CUSTOMER_ONE_EMAIL_PREFIX : CUSTOMER_TWO_EMAIL_PREFIX;
+            String customerEmailPrefix = i < (TOTAL_ORDER_ITEM_COUNT / 2) ? CUSTOMER_ONE_EMAIL_PREFIX : CUSTOMER_TWO_EMAIL_PREFIX;
             assertThat(result.getOrder().getCustomer().getEmail().startsWith(customerEmailPrefix), equalTo(true));
             
-            final int resultModuloPosition = i % (TOTAL_ORDER_ITEM_COUNT / 2);
+            int resultModuloPosition = i % (TOTAL_ORDER_ITEM_COUNT / 2);
             
             String categoryName;
             if (resultModuloPosition < 2) {
@@ -698,8 +710,8 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testQuery_paging_allElements() {
-    	final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
-        final List<Customer> customerList = customerDao.query(entityCriteria, Customer.class);
+    	NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        List<Customer> customerList = customerDao.query(entityCriteria, Customer.class);
         
         assertThat(customerList.size(), equalTo(TOTAL_CUSTOMER_COUNT));
         
@@ -716,11 +728,11 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testQuery_paging_secondElement() {
-    	final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+    	NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
         entityCriteria.setFirstResult(1);
         entityCriteria.setMaxResults(1);
         
-        final List<Customer> customerList = customerDao.query(entityCriteria, Customer.class);
+        List<Customer> customerList = customerDao.query(entityCriteria, Customer.class);
         
         assertThat(customerList.size(), equalTo(1));
         
@@ -737,10 +749,10 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testQuery_paging_firstResultOutOfBounds() {
-    	final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+    	NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
         entityCriteria.setFirstResult(10);
         
-        final List<Customer> customerList = customerDao.query(entityCriteria, Customer.class);
+        List<Customer> customerList = customerDao.query(entityCriteria, Customer.class);
         
         assertThat(customerList.size(), equalTo(0));
     }
@@ -752,9 +764,12 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testQuery_filterSortPaging() {
-    	final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        AssociationPathElement stockItemElement = new AssociationPathElement("stockItem");
+        AssociationPathElement categoryElement = new AssociationPathElement("category");
+        
+    	NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
     	
-    	entityCriteria.add(new FilterCriterion("stockItem.category.name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
+    	entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.eq(targetPropertyName, directValues[0]);
             }
@@ -763,12 +778,12 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        entityCriteria.add(new SortCriterion("stockItem.price", false));
+        entityCriteria.add(new SortCriterion(new AssociationPath(stockItemElement), "price", false));
         
         entityCriteria.setFirstResult(1);
         entityCriteria.setMaxResults(2);
         
-        final List<OrderItem> orderItemList = orderItemDao.query(entityCriteria, OrderItem.class);
+        List<OrderItem> orderItemList = orderItemDao.query(entityCriteria, OrderItem.class);
         
         assertThat(orderItemList.size(), equalTo(2));
         
@@ -784,9 +799,9 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testUniqueResult_emptyResultSet() {
-        final PersistentEntityCriteria entityCriteria = getEmptyResultSetCustomerCriteria();
+        PersistentEntityCriteria entityCriteria = getEmptyResultSetCustomerCriteria();
         
-        final Customer uniqueCustomer = customerDao.uniqueResult(entityCriteria, false, Customer.class);
+        Customer uniqueCustomer = customerDao.uniqueResult(entityCriteria, false, Customer.class);
         
         assertThat(uniqueCustomer, nullValue());
     }
@@ -797,8 +812,8 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testUniqueResult_singleInstanceResultSet() {
-    	final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
-        entityCriteria.add(new FilterCriterion("email", customerOneEmail, false, new PropertyFilterCriterionProvider() {
+    	NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "email", customerOneEmail, false, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.eq(targetPropertyName, directValues[0]);
             }
@@ -807,7 +822,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        final Customer uniqueCustomer = customerDao.uniqueResult(entityCriteria, false, Customer.class);
+        Customer uniqueCustomer = customerDao.uniqueResult(entityCriteria, false, Customer.class);
         
         assertThat(uniqueCustomer, notNullValue());
         assertThat(uniqueCustomer.getId(), equalTo(customerOneId));
@@ -823,7 +838,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testUniqueResult_multiInstanceResultSet_dontEnforceSingleResult() {
-        final Customer uniqueCustomer = customerDao.uniqueResult(new NestedPropertyCriteria(), false, Customer.class);
+        Customer uniqueCustomer = customerDao.uniqueResult(new NestedPropertyCriteria(), false, Customer.class);
         
         assertThat(uniqueCustomer, notNullValue());
         assertThat(uniqueCustomer.getId(), equalTo(customerOneId));
@@ -839,7 +854,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testUniqueResult_multiInstanceResultSet_enforceSingleResult() {
-        final Customer uniqueCustomer = customerDao.uniqueResult(new NestedPropertyCriteria(), true, Customer.class);
+        Customer uniqueCustomer = customerDao.uniqueResult(new NestedPropertyCriteria(), true, Customer.class);
         
         assertThat(uniqueCustomer, nullValue());
     }
@@ -850,9 +865,9 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testCount_emptyResultSet() {
-        final PersistentEntityCriteria entityCriteria = getEmptyResultSetCustomerCriteria();
+        PersistentEntityCriteria entityCriteria = getEmptyResultSetCustomerCriteria();
         
-        final int count = customerDao.count(entityCriteria, Customer.class);
+        int count = customerDao.count(entityCriteria, Customer.class);
         
         assertThat(count, equalTo(0));
     }
@@ -863,7 +878,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testCount_multiInstanceResultSet() {
-        final int count = customerDao.count(new NestedPropertyCriteria(), Customer.class);
+        int count = customerDao.count(new NestedPropertyCriteria(), Customer.class);
         
         assertThat(count, equalTo(2));
     }
@@ -875,9 +890,12 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testCount_multiInstanceResultSet_filterCriteria() {
-        final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        AssociationPathElement stockItemElement = new AssociationPathElement("stockItem");
+        AssociationPathElement categoryElement = new AssociationPathElement("category");
         
-        entityCriteria.add(new FilterCriterion("stockItem.category.name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
+        NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        
+        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.eq(targetPropertyName, directValues[0]);
             }
@@ -886,7 +904,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        entityCriteria.add(new FilterCriterion("quantity", Integer.valueOf(2), false, new PropertyFilterCriterionProvider() {
+        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "quantity", Integer.valueOf(2), false, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.gt(targetPropertyName, directValues[0]);
             }
@@ -895,7 +913,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        final int count = orderItemDao.count(entityCriteria, OrderItem.class);
+        int count = orderItemDao.count(entityCriteria, OrderItem.class);
         
         assertThat(count, equalTo(2));
     }
@@ -906,9 +924,12 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testDuplicateAssociationPaths() {
-        final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        AssociationPathElement stockItemElement = new AssociationPathElement("stockItem");
+        AssociationPathElement categoryElement = new AssociationPathElement("category");
         
-        entityCriteria.add(new FilterCriterion("stockItem.category.name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
+        NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        
+        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.eq(targetPropertyName, directValues[0]);
             }
@@ -917,7 +938,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        entityCriteria.add(new FilterCriterion("stockItem.category.description", STOCK_ITEM_CATEGORY_COMPUTERS_DESC, false, new PropertyFilterCriterionProvider() {
+        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "description", STOCK_ITEM_CATEGORY_COMPUTERS_DESC, false, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.eq(targetPropertyName, directValues[0]);
             }
@@ -926,7 +947,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        final List<OrderItem> orderItemList = orderItemDao.query(entityCriteria, OrderItem.class);
+        List<OrderItem> orderItemList = orderItemDao.query(entityCriteria, OrderItem.class);
         
         assertThat(orderItemList.size(), equalTo(4));
     }
@@ -938,7 +959,10 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testDuplicatePropertyPaths() {
-        final FilterCriterion criterion1 = new FilterCriterion("stockItem.category.name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
+        AssociationPathElement stockItemElement = new AssociationPathElement("stockItem");
+        AssociationPathElement categoryElement = new AssociationPathElement("category");
+        
+        FilterCriterion criterion1 = new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.eq(targetPropertyName, directValues[0]);
             }
@@ -947,7 +971,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         });
         
-        final FilterCriterion criterion2 = new FilterCriterion("stockItem.category.name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
+        FilterCriterion criterion2 = new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.eq(targetPropertyName, directValues[0]);
             }
@@ -956,7 +980,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         });
         
-        final FilterCriterion criterion3 = new FilterCriterion("stockItem.category.name", STOCK_ITEM_CATEGORY_FOOD, false, new PropertyFilterCriterionProvider() {
+        FilterCriterion criterion3 = new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_FOOD, false, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.eq(targetPropertyName, directValues[0]);
             }
@@ -965,12 +989,12 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         });
         
-        final NestedPropertyCriteria cr1 = new NestedPropertyCriteria();
+        NestedPropertyCriteria cr1 = new NestedPropertyCriteria();
         cr1.add(criterion1);
         cr1.add(criterion2);
         assertThat(orderItemDao.query(cr1, OrderItem.class).size(), equalTo(4));
         
-        final NestedPropertyCriteria cr2 = new NestedPropertyCriteria();
+        NestedPropertyCriteria cr2 = new NestedPropertyCriteria();
         cr2.add(criterion1);
         cr2.add(criterion3);
         assertThat("Two contrary criterion instances return zero items", orderItemDao.query(cr2, OrderItem.class).size(), equalTo(0));
@@ -982,9 +1006,12 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testDuplicateAssociationPathElements() {
-        final NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        AssociationPathElement orderElement = new AssociationPathElement("order");
+        AssociationPathElement stockItemElement = new AssociationPathElement("stockItem");
         
-        entityCriteria.add(new FilterCriterion("order.description", null, false, new PropertyFilterCriterionProvider() {
+        NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
+        
+        entityCriteria.add(new FilterCriterion(new AssociationPath(orderElement), "description", null, false, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.isNotNull(targetPropertyName);
             }
@@ -993,7 +1020,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        entityCriteria.add(new FilterCriterion("stockItem.description", null, false, new PropertyFilterCriterionProvider() {
+        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement), "description", null, false, new PropertyFilterCriterionProvider() {
             public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
                 return Restrictions.isNull(targetPropertyName);
             }
@@ -1002,7 +1029,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
             }
         }));
         
-        final List<OrderItem> orderItemList = orderItemDao.query(entityCriteria, OrderItem.class);
+        List<OrderItem> orderItemList = orderItemDao.query(entityCriteria, OrderItem.class);
         
         assertThat(orderItemList.size(), equalTo(8));
     }

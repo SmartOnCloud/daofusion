@@ -36,6 +36,6 @@ public interface FilterValueObjectProvider {
      * @param stringValue String-based filter value.
      * @return Filter value object representation.
      */
-	public Object getObject(String stringValue);
+	Object getObject(String stringValue);
 	
 }

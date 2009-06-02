@@ -24,7 +24,7 @@ import com.anasoft.os.daofusion.util.SimpleMapContainer;
  * relations between the {@link CriteriaTransferObject}
  * and {@link NestedPropertyCriteria} for a specific
  * persistent entity via {@link NestedPropertyMappingGroup}
- * instances.
+ * definitions.
  * 
  * @see CriteriaTransferObjectConverter
  * @see NestedPropertyMapping
@@ -47,6 +47,12 @@ public class NestedPropertyCriteriaBasedConverter extends SimpleMapContainer<Str
 	 * Note that the method creates the mapping
 	 * group if not found within the converter.
 	 * 
+	 * <p>
+	 * 
+	 * This is the preferred way of configuring
+	 * property mappings for this converter
+	 * implementation.
+	 * 
 	 * @param mappingGroupName Name of the property
 	 * mapping group.
 	 * @param mapping Persistent entity property
@@ -58,7 +64,7 @@ public class NestedPropertyCriteriaBasedConverter extends SimpleMapContainer<Str
 			add(new NestedPropertyMappingGroup(mappingGroupName));
 		}
 		
-		final NestedPropertyMappingGroup group = getObjectMap().get(mappingGroupName);
+		NestedPropertyMappingGroup group = getObjectMap().get(mappingGroupName);
 		group.add(mapping);
 	}
 	
@@ -87,14 +93,14 @@ public class NestedPropertyCriteriaBasedConverter extends SimpleMapContainer<Str
 	 * @see com.anasoft.os.daofusion.cto.server.CriteriaTransferObjectConverter#convert(com.anasoft.os.daofusion.cto.client.CriteriaTransferObject, java.lang.String)
 	 */
 	public PersistentEntityCriteria convert(CriteriaTransferObject transferObject, String mappingGroupName) {
-		final NestedPropertyCriteria nestedCriteria = new NestedPropertyCriteria();
+		NestedPropertyCriteria nestedCriteria = new NestedPropertyCriteria();
 		
-		final Set<String> propertyIdSet = transferObject.getPropertyIdSet();
-		final Map<String, NestedPropertyMapping> propertyMappings = getPropertyMappings(mappingGroupName);
+		Set<String> propertyIdSet = transferObject.getPropertyIdSet();
+		Map<String, NestedPropertyMapping> propertyMappings = getPropertyMappings(mappingGroupName);
 		
 		for (String propertyId : propertyIdSet) {
-		    final FilterAndSortCriteria clientSideCriteria = transferObject.get(propertyId);
-		    final NestedPropertyMapping mapping = propertyMappings.get(propertyId);
+		    FilterAndSortCriteria clientSideCriteria = transferObject.get(propertyId);
+		    NestedPropertyMapping mapping = propertyMappings.get(propertyId);
             
             if (mapping != null) {
                 mapping.apply(clientSideCriteria, nestedCriteria);

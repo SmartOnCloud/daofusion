@@ -145,33 +145,33 @@ public abstract class BaseHibernateCoreIntegrationTest extends BaseHibernateInte
      * instance.
      */
     private void createEntityTestData() {
-        final Country countrySlovakia = countryDao.get(COUNTRY_SLOVAKIA, Country.class);
-        final Country countryJapan = countryDao.get(COUNTRY_JAPAN, Country.class);
+        Country countrySlovakia = countryDao.get(COUNTRY_SLOVAKIA, Country.class);
+        Country countryJapan = countryDao.get(COUNTRY_JAPAN, Country.class);
         
-        final StockItemCategory categoryFood = stockItemCategoryDao.get(STOCK_ITEM_CATEGORY_FOOD, StockItemCategory.class);
-        final StockItemCategory categoryComputers = stockItemCategoryDao.get(STOCK_ITEM_CATEGORY_COMPUTERS, StockItemCategory.class);
+        StockItemCategory categoryFood = stockItemCategoryDao.get(STOCK_ITEM_CATEGORY_FOOD, StockItemCategory.class);
+        StockItemCategory categoryComputers = stockItemCategoryDao.get(STOCK_ITEM_CATEGORY_COMPUTERS, StockItemCategory.class);
         
         // Customer #1
-        final Customer customerOne = new Customer();
+        Customer customerOne = new Customer();
         customerOne.setFirstName(CUSTOMER_ONE_FIRST_NAME);
         customerOne.setLastName("Rambo");
         customerOne.setEmail(CUSTOMER_ONE_EMAIL_PREFIX + "@some" + CUSTOMER_EMAIL_SUFFIX);
         
-        final Calendar calendarOne = Calendar.getInstance();
+        Calendar calendarOne = Calendar.getInstance();
         
-        final Order orderOne = new Order();
+        Order orderOne = new Order();
         orderOne.setCreationDate(calendarOne.getTime());
         orderOne.setComplete(false);
         orderOne.setDescription("one");
         customerOne.addOrder(orderOne);
         
-        final Address shippingAddressOne = new Address();
+        Address shippingAddressOne = new Address();
         shippingAddressOne.setStreet("Blossom street 5");
         shippingAddressOne.setCity("Bratislava");
         shippingAddressOne.setZip("81234");
         shippingAddressOne.setCountry(countrySlovakia);
         
-        final Address billingAddressOne = new Address();
+        Address billingAddressOne = new Address();
         shippingAddressOne.setStreet("Tokio Hotel");
         shippingAddressOne.setCity("Tokio");
         shippingAddressOne.setZip("98765");
@@ -181,13 +181,13 @@ public abstract class BaseHibernateCoreIntegrationTest extends BaseHibernateInte
         orderOne.setBillingAddress(billingAddressOne);
         
         for (int i = 0; i < ORDER_ITEM_PER_ORDER_COUNT; i++) {
-            final StockItem stockItem = new StockItem();
+            StockItem stockItem = new StockItem();
             stockItem.setName("Stock item " + stockItem.getOid());
             stockItem.setPrice(i);
             stockItem.setCategory(i % 2 == 0 ? categoryFood : categoryComputers);
             stockItem.setDescription(null);
             
-            final OrderItem orderItem = new OrderItem();
+            OrderItem orderItem = new OrderItem();
             orderItem.setStockItem(stockItem);
             orderItem.setQuantity(i + 1);
             
@@ -199,21 +199,21 @@ public abstract class BaseHibernateCoreIntegrationTest extends BaseHibernateInte
         orderOneShippingAddress = shippingAddressOne;
         
         // Customer #2
-        final Customer customerTwo = new Customer();
+        Customer customerTwo = new Customer();
         customerTwo.setFirstName(CUSTOMER_TWO_FIRST_NAME);
         customerTwo.setLastName(CUSTOMER_TWO_LAST_NAME_PREFIX + "Norris");
         customerTwo.setEmail(CUSTOMER_TWO_EMAIL_PREFIX + "@other" + CUSTOMER_EMAIL_SUFFIX);
         
-        final Calendar calendarTwo = (Calendar) calendarOne.clone();
+        Calendar calendarTwo = (Calendar) calendarOne.clone();
         calendarTwo.add(Calendar.DAY_OF_YEAR, -1);
         
-        final Order orderTwo = new Order();
+        Order orderTwo = new Order();
         orderTwo.setCreationDate(calendarTwo.getTime());
         orderTwo.setComplete(true);
         orderTwo.setDescription("two");
         customerTwo.addOrder(orderTwo);
         
-        final Address shippingAddressTwo = new Address();
+        Address shippingAddressTwo = new Address();
         shippingAddressTwo.setStreet("Apple street 10");
         shippingAddressTwo.setCity("Kosice");
         shippingAddressTwo.setZip("01234");
@@ -223,13 +223,13 @@ public abstract class BaseHibernateCoreIntegrationTest extends BaseHibernateInte
         orderTwo.setBillingAddress(billingAddressOne);
         
         for (int i = 0; i < ORDER_ITEM_PER_ORDER_COUNT; i++) {
-            final StockItem stockItem = new StockItem();
+            StockItem stockItem = new StockItem();
             stockItem.setName("Stock item " + stockItem.getOid());
             stockItem.setPrice(i);
             stockItem.setCategory(i % 2 == 0 ? categoryFood : categoryComputers);
             stockItem.setDescription(null);
             
-            final OrderItem orderItem = new OrderItem();
+            OrderItem orderItem = new OrderItem();
             orderItem.setStockItem(stockItem);
             orderItem.setQuantity(i + 1);
             

@@ -37,9 +37,9 @@ public abstract class BaseHibernateDataAccessor {
 	 * 
 	 * The most convenient method implementation pattern is to rely
 	 * on entity manager instance injection via the {@link PersistenceContext}
-	 * annotation (within the JPA persistence context) and returning
-	 * the injected instance. Alternatively, the entity manager instance
-	 * can be created directly via the {@link EntityManagerFactory}.
+	 * annotation within a JPA persistence context. Alternatively,
+	 * the entity manager instance can be created directly via the
+	 * {@link EntityManagerFactory}.
 	 * 
 	 * @return Open {@link HibernateEntityManager} instance.
 	 */
@@ -89,13 +89,14 @@ public abstract class BaseHibernateDataAccessor {
     protected final int rowCount(Criteria criteria) {
         criteria.setProjection(Projections.rowCount());
         
-        final List<?> projectionResults = criteria.list();
+        List<?> projectionResults = criteria.list();
         int rowCount = 0;
         
-        if (projectionResults.size() != 1 || (!(projectionResults.get(0) instanceof Integer))) {
+        Object firstResult = projectionResults.get(0);
+        if (projectionResults.size() != 1 || !Integer.class.isAssignableFrom(firstResult.getClass())) {
             LOG.warn("rowCount projection for the given criteria did not result a single integer value, returning zero - did you add unnecessary paging constraints to the criteria?");
         } else {
-            rowCount = ((Integer) projectionResults.get(0)).intValue();
+            rowCount = Integer.class.cast(firstResult).intValue();
         }
         
         return rowCount;
@@ -113,7 +114,7 @@ public abstract class BaseHibernateDataAccessor {
      * constraints.
      */
     protected Criteria getCriteria(PersistentEntityCriteria entityCriteria, Class<? extends Persistable<? extends Serializable>> entityClass) {
-        final Criteria criteria = getHibernateCriteria(entityClass);
+        Criteria criteria = getHibernateCriteria(entityClass);
         entityCriteria.apply(criteria);
         
         return criteria;

@@ -26,7 +26,7 @@ public abstract class AbstractHibernateEnumerationDaoTest extends BaseHibernateC
      * @return Sample {@link PaymentType} transient instance.
      */
     private PaymentType getSamplePaymentTypeTransient() {
-        final PaymentType paymentTypeTransient = new PaymentType();
+        PaymentType paymentTypeTransient = new PaymentType();
         paymentTypeTransient.setName("Credit card");
         
         assertThat(paymentTypeTransient.getId(), nullValue());
@@ -50,7 +50,7 @@ public abstract class AbstractHibernateEnumerationDaoTest extends BaseHibernateC
      */
     @Test
     public void testGet_retrievingPersistentEnumerationInstance() {
-        final PaymentType paymentTypeDetached = paymentTypeDao.saveOrUpdate(getSamplePaymentTypeTransient());
+        PaymentType paymentTypeDetached = paymentTypeDao.saveOrUpdate(getSamplePaymentTypeTransient());
         
         assertThat(paymentTypeDao.count(new NestedPropertyCriteria(), PaymentType.class), equalTo(1));
         assertThat(paymentTypeDao.getHibernateSession().contains(paymentTypeDetached), equalTo(true));
@@ -59,7 +59,7 @@ public abstract class AbstractHibernateEnumerationDaoTest extends BaseHibernateC
         
         assertThat(paymentTypeDao.getHibernateSession().contains(paymentTypeDetached), equalTo(false));
         
-        final PaymentType paymentTypePersistent = paymentTypeDao.get(paymentTypeDetached.getName(), PaymentType.class);
+        PaymentType paymentTypePersistent = paymentTypeDao.get(paymentTypeDetached.getName(), PaymentType.class);
         
         assertThat(paymentTypePersistent, notNullValue());
         assertThat(paymentTypeDao.getHibernateSession().contains(paymentTypePersistent), equalTo(true));
@@ -73,7 +73,7 @@ public abstract class AbstractHibernateEnumerationDaoTest extends BaseHibernateC
      */
     @Test
     public void testGet_retrievingNonExistingPersistentEnumerationInstance() {
-        final PaymentType paymentTypePersistentNonExisting = paymentTypeDao.get("Non-existing payment type", PaymentType.class);
+        PaymentType paymentTypePersistentNonExisting = paymentTypeDao.get("Non-existing payment type", PaymentType.class);
         
         assertThat(paymentTypePersistentNonExisting, nullValue());
         assertThat(paymentTypeDao.count(new NestedPropertyCriteria(), PaymentType.class), equalTo(0));

@@ -52,9 +52,11 @@ public class CriteriaTransferObjectCountWrapper {
      * instance from the client prior to conversion, for example:
      * 
      * <pre>
-     * PersistentEntityCriteria criteriaForCount = converter.convert(
+     * PersistentEntityCriteria countCriteria = converter.convert(
      *     new CriteriaTransferObjectCountWrapper(transferObject).wrap(),
      *     myMappingGroup);
+     * 
+     * int totalRecords = myDao.count(countCriteria);
      * </pre>
      * 
      * @return {@link CriteriaTransferObject} instance suitable for entity
@@ -62,13 +64,13 @@ public class CriteriaTransferObjectCountWrapper {
      */
     @SuppressWarnings("serial")
     public CriteriaTransferObject wrap() {
-        final CriteriaTransferObject transferObjectForCount = new CriteriaTransferObject() {
+        CriteriaTransferObject transferObjectForCount = new CriteriaTransferObject() {
             
             @Override
-            public FilterAndSortCriteria get(final String propertyId) {
+            public FilterAndSortCriteria get(String propertyId) {
                 final FilterAndSortCriteria transferObjectCriteria = transferObject.get(propertyId);
                 
-                final FilterAndSortCriteria criteriaForCount = new FilterAndSortCriteria(propertyId) {
+                FilterAndSortCriteria criteriaForCount = new FilterAndSortCriteria(propertyId) {
                     
                     @Override
                     public String getPropertyId() {

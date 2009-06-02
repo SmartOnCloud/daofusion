@@ -43,7 +43,7 @@ public interface PropertyFilterCriterionProvider {
 	 * @param directValues Values provided directly by the user.
 	 * @return {@link Criterion} instance for the given property.
 	 */
-	public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues);
+	Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues);
 	
 	/**
 	 * Returns a flag indicating whether to use this provider
@@ -73,6 +73,6 @@ public interface PropertyFilterCriterionProvider {
 	 * the {@link FilterCriterion} instance processing,
 	 * <tt>false</tt> otherwise.
 	 */
-	public boolean enabled(Object[] filterObjectValues, Object[] directValues);
+	boolean enabled(Object[] filterObjectValues, Object[] directValues);
 	
 }

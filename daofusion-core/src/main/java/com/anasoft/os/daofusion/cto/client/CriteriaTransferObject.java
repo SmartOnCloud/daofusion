@@ -39,7 +39,7 @@ import com.anasoft.os.daofusion.cto.server.CriteriaTransferObjectConverter;
  */
 public class CriteriaTransferObject implements Serializable {
 
-    private static final long serialVersionUID = 8442027307110021159L;
+    private static final long serialVersionUID = 8405827510072180355L;
     
     private Integer firstResult;
     private Integer maxResults;
@@ -89,7 +89,9 @@ public class CriteriaTransferObject implements Serializable {
 	 * 
 	 * Note that the <tt>propertyId</tt> of the given
 	 * {@link FilterAndSortCriteria} instance must be unique
-	 * within the transfer object.
+	 * within the transfer object (in other words, existing
+	 * {@link FilterAndSortCriteria} with same <tt>propertyId</tt>
+	 * will be replaced by this method).
 	 * 
 	 * @param criteria {@link FilterAndSortCriteria} instance
 	 * to add.
@@ -105,7 +107,7 @@ public class CriteriaTransferObject implements Serializable {
 	 * <p>
 	 * 
 	 * When not found, the method creates and adds
-	 * the {@link FilterAndSortCriteria} instance
+	 * an empty {@link FilterAndSortCriteria} instance
 	 * to the transfer object automatically.
 	 * 
 	 * @param propertyId Symbolic persistent entity property
@@ -114,9 +116,8 @@ public class CriteriaTransferObject implements Serializable {
 	 * the given <tt>propertyId</tt>.
 	 */
 	public FilterAndSortCriteria get(String propertyId) {
-	    if (!criteriaMap.containsKey(propertyId)) {
+	    if (!criteriaMap.containsKey(propertyId))
 	        add(new FilterAndSortCriteria(propertyId));
-	    }
 	    
 	    return criteriaMap.get(propertyId);
 	}

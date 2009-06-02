@@ -8,10 +8,9 @@ import java.util.Map;
  * Utility class intended to ease the implementation
  * of simple map-based object containers.
  * 
- * @param <K> Type of the object key to be used
- * within the object map.
- * @param <T> Type of the object the container
- * works with.
+ * @param <K> Type of the object key to be used within
+ * the object map.
+ * @param <T> Type of the object the container works with.
  * 
  * @author vojtech.szocs
  */

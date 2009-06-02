@@ -1,7 +1,5 @@
 package com.anasoft.os.daofusion.util;
 
-import java.util.StringTokenizer;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +10,9 @@ import org.slf4j.LoggerFactory;
  */
 public final class ReflectionHelper {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ReflectionHelper.class);
+	private static final String SEPARATOR_REGEX = "\\.";
+	
+    private static final Logger LOG = LoggerFactory.getLogger(ReflectionHelper.class);
 	
     private ReflectionHelper() {}
     
@@ -35,7 +35,7 @@ public final class ReflectionHelper {
      * @return Getter method invocation result.
      */
     public static Object invokeGetterMethod(Object object, String propertyName) {
-        final String getterMethodName = "get" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
+        String getterMethodName = "get" + propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
         
         try {
             return object.getClass().getMethod(getterMethodName, new Class[]{}).invoke(object, new Object[]{});
@@ -66,17 +66,16 @@ public final class ReflectionHelper {
      * @return Property resolution result.
      */
     public static Object resolvePropertyPath(Object object, String propertyPath) {
-        final StringTokenizer propertyPathTokenizer = new StringTokenizer(propertyPath, ".");
+        String[] propertyPathElements = propertyPath.split(SEPARATOR_REGEX);
         Object result = object;
         
-        while (propertyPathTokenizer.hasMoreTokens()) {
-            final String propertyPathElement = propertyPathTokenizer.nextToken();
-            
-            result = invokeGetterMethod(result, propertyPathElement);
+        for (int i = 0; i < propertyPathElements.length; i++) {
+            String pathElement = propertyPathElements[i];
+            result = invokeGetterMethod(result, pathElement);
             
             if (result == null) {
-            	if (propertyPathTokenizer.hasMoreTokens()) {
-            		LOG.warn("Denying a NullPointerException - getter for propertyPathElement '{}' returned null while resolving propertyPath '{}'", propertyPathElement, propertyPath);
+                if (i < propertyPathElements.length - 1) {
+            		LOG.warn("Avoiding NullPointerException - getter for propertyPathElement '{}' returned null while resolving propertyPath '{}'", pathElement, propertyPath);
             	}
             	
                 break;

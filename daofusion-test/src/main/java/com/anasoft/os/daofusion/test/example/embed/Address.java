@@ -72,17 +72,14 @@ public class Address implements Serializable {
     
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null) {
+        if (obj == null)
             return false;
-        }
-        if (!(obj instanceof Address)) {
-        	return false;
-        }
+        if (getClass() != obj.getClass())
+            return false;
         
-        final Address other = (Address) obj;
+        Address other = (Address) obj;
         
         if (city == null) {
             if (other.city != null)

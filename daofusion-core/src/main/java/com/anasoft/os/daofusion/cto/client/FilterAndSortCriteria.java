@@ -24,13 +24,13 @@ import java.util.List;
  * <ul>
  * 	<li>symbolic persistent entity property identifier
  * 		(<tt>propertyId</tt>) into the corresponding
- * 		<tt>propertyPath</tt>
- * 	<li>list of string-based filter values
- * 		(<tt>filterValues</tt>) into appropriate
- * 		typed object representations
+ *      <tt>associationPath</tt> / <tt>targetPropertyName</tt>
+ *      combination
+ * 	<li>array of string-based filter values into
+ *      appropriate typed object representations
  * </ul>
  * 
- * Note that the <tt>propertyId</tt> of each single
+ * Note that the <tt>propertyId</tt> of each
  * {@link FilterAndSortCriteria} instance must be
  * unique within the {@link CriteriaTransferObject}.
  * 
@@ -51,12 +51,7 @@ public class FilterAndSortCriteria implements Serializable {
     
     /**
      * Creates a new persistent entity criteria
-     * without specifying the property identifier.
-     * 
-     * <p>
-     * 
-     * This constructor serves for deserialization
-     * purposes only and should NOT be used explicitly.
+     * (for deserialization purposes only).
      */
     protected FilterAndSortCriteria() {
         // nothing to do here

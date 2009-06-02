@@ -8,8 +8,7 @@ import java.util.List;
  * Utility class intended to ease the implementation
  * of simple list-based object containers.
  * 
- * @param <T> Type of the object the container works
- * with.
+ * @param <T> Type of the object the container works with.
  * 
  * @author vojtech.szocs
  */

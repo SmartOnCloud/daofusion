@@ -10,16 +10,16 @@ import com.anasoft.os.daofusion.entity.Persistable;
 
 /**
  * Persistent entity DAO contract containing the standard set
- * of operations required to be supported by any persistence
- * provider-specific DAO implementation.
+ * of operations supported by any persistence provider-specific
+ * DAO implementation.
  * 
  * <p>
  * 
  * The user is responsible for providing proper transaction
  * support within the context of DAO method calls. The use
  * of a specific transaction strategy based on a transaction
- * model as well as transaction attributes always depend on
- * specific business requirements of your project and should
+ * model as well as proper transaction attributes always depend
+ * on specific business requirements of your project and should
  * be therefore carefully considered in terms of concurrency,
  * performance and data integrity.
  * 
@@ -45,7 +45,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
      * 
      * @return Persistent entity class.
      */
-    public Class<T> getEntityClass();
+    Class<T> getEntityClass();
     
 	/**
 	 * Retrieves a persistent instance.
@@ -55,7 +55,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
 	 * @return Resulting persistent instance or <tt>null</tt>
 	 * in case the requested instance was not found.
 	 */
-	public <S extends T> S get(ID id, Class<S> targetEntityClass);
+	<S extends T> S get(ID id, Class<S> targetEntityClass);
 	
 	/**
 	 * Retrieves a persistent instance, using the implicit
@@ -68,7 +68,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
      * @see #get(Serializable, Class)
      * @see #getEntityClass()
 	 */
-	public T get(ID id);
+	T get(ID id);
 	
 	/**
 	 * Retrieves all persistent instances.
@@ -76,7 +76,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
      * @param targetEntityClass Target persistent entity class.
 	 * @return Resulting list of persistent instances.
 	 */
-	public <S extends T> List<S> getAll(Class<S> targetEntityClass);
+	<S extends T> List<S> getAll(Class<S> targetEntityClass);
 	
 	/**
 	 * Retrieves all persistent instances, using the implicit
@@ -87,7 +87,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
 	 * @see #getAll(Class)
 	 * @see #getEntityClass()
 	 */
-	public List<T> getAll();
+	List<T> getAll();
 	
 	/**
 	 * Persists a transient instance or updates a detached
@@ -103,7 +103,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
 	 * or update.
 	 * @return Resulting persistent instance.
 	 */
-	public <S extends T> S saveOrUpdate(S entity);
+	<S extends T> S saveOrUpdate(S entity);
 	
 	/**
 	 * Deletes a persistent instance.
@@ -115,7 +115,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
 	 * 
 	 * @param entity Persistent instance to delete.
 	 */
-	public void delete(T entity);
+	void delete(T entity);
 	
 	/**
 	 * Deletes a persistent instance.
@@ -128,7 +128,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
 	 * @param id <tt>id</tt> of the persistent instance to delete.
 	 * @param targetEntityClass Target persistent entity class.
 	 */
-	public <S extends T> void delete(ID id, Class<S> targetEntityClass);
+	<S extends T> void delete(ID id, Class<S> targetEntityClass);
 	
 	/**
 	 * Deletes a persistent instance, using the implicit
@@ -144,7 +144,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
 	 * @see #delete(Serializable, Class)
 	 * @see #getEntityClass()
 	 */
-	public void delete(ID id);
+	void delete(ID id);
 	
 	/**
 	 * Deletes all persistent instances.
@@ -157,7 +157,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
 	 * @param targetEntityClass Target persistent entity class.
 	 * @return Number of persistent instances deleted.
 	 */
-	public <S extends T> int deleteAll(Class<S> targetEntityClass);
+	<S extends T> int deleteAll(Class<S> targetEntityClass);
 	
 	/**
 	 * Deletes all persistent instances, using the implicit
@@ -173,7 +173,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
 	 * @see #deleteAll(Class)
 	 * @see #getEntityClass()
 	 */
-	public int deleteAll();
+	int deleteAll();
 	
 	/**
 	 * Refreshes a persistent or a detached instance by
@@ -182,7 +182,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
 	 * @param entity Persistent or detached instance to
 	 * refresh.
 	 */
-	public void refresh(T entity);
+	void refresh(T entity);
 	
 	/**
 	 * Retrieves a list of persistent instances.
@@ -192,7 +192,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
      * @param targetEntityClass Target persistent entity class.
 	 * @return Resulting list of persistent instances.
 	 */
-	public <S extends T> List<S> query(PersistentEntityCriteria entityCriteria, Class<S> targetEntityClass);
+	<S extends T> List<S> query(PersistentEntityCriteria entityCriteria, Class<S> targetEntityClass);
 	
 	/**
 	 * Retrieves a list of persistent instances, using the implicit
@@ -205,7 +205,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
 	 * @see #query(PersistentEntityCriteria, Class)
 	 * @see #getEntityClass()
 	 */
-	public List<T> query(PersistentEntityCriteria entityCriteria);
+	List<T> query(PersistentEntityCriteria entityCriteria);
 	
 	/**
 	 * Returns a single persistent instance (if available).
@@ -219,7 +219,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
 	 * @return Resulting persistent instance or <tt>null</tt>
 	 * in case the requested instance was not found.
 	 */
-	public <S extends T> S uniqueResult(PersistentEntityCriteria entityCriteria, boolean returnNullOnMultipleResults, Class<S> targetEntityClass);
+	<S extends T> S uniqueResult(PersistentEntityCriteria entityCriteria, boolean returnNullOnMultipleResults, Class<S> targetEntityClass);
 	
 	/**
 	 * Returns a single persistent instance (if available),
@@ -236,7 +236,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
      * @see #uniqueResult(PersistentEntityCriteria, boolean, Class)
      * @see #getEntityClass()
 	 */
-	public T uniqueResult(PersistentEntityCriteria entityCriteria, boolean returnNullOnMultipleResults);
+	T uniqueResult(PersistentEntityCriteria entityCriteria, boolean returnNullOnMultipleResults);
 	
 	/**
 	 * Returns the total number of instances persisted
@@ -254,7 +254,7 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
      * @param targetEntityClass Target persistent entity class.
 	 * @return Total instance count.
 	 */
-	public <S extends T> int count(PersistentEntityCriteria entityCriteria, Class<S> targetEntityClass);
+	<S extends T> int count(PersistentEntityCriteria entityCriteria, Class<S> targetEntityClass);
 	
 	/**
 	 * Returns the total number of instances persisted
@@ -275,6 +275,6 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
      * @see #count(PersistentEntityCriteria, Class)
      * @see #getEntityClass()
 	 */
-	public int count(PersistentEntityCriteria entityCriteria);
+	int count(PersistentEntityCriteria entityCriteria);
 	
 }

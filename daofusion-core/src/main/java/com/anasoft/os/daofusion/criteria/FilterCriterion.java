@@ -25,8 +25,8 @@ import org.hibernate.criterion.Criterion;
  *  	provided directly by the user
  * </ul>
  * 
- * It is therefore possible to combine the filter object and direct
- * value concepts together to suit individual filter criterion needs.
+ * This makes it possible to combine both filter data concepts
+ * together to suit individual filter criterion needs.
  * 
  * @see PropertyFilterCriterionProvider
  * @see NestedPropertyCriterion
@@ -43,6 +43,10 @@ public class FilterCriterion extends NestedPropertyCriterion {
     /**
      * Creates a new filter criterion.
      * 
+     * @deprecated <tt>propertyPath</tt> / <tt>associationJoinType</tt> concept
+     * is now deprecated in favor of the <tt>associationPath</tt> / <tt>targetPropertyName</tt>
+     * approach.
+     * 
      * @param propertyPath Dot-separated logical path to the target property.
      * @param associationJoinType Type of join to use in case of a nested
      * (non-direct) persistent entity property (can be <tt>null</tt> otherwise).
@@ -53,8 +57,31 @@ public class FilterCriterion extends NestedPropertyCriterion {
      * @param filterCriterionProvider Custom {@link PropertyFilterCriterionProvider}
      * implementation.
      */
+    @Deprecated
     public FilterCriterion(String propertyPath, NestedPropertyJoinType associationJoinType, String[] filterObjectValuePaths, Object[] directValues, PropertyFilterCriterionProvider filterCriterionProvider) {
         super(propertyPath, associationJoinType);
+        
+        this.filterObjectValuePaths = filterObjectValuePaths;
+        this.directValues = directValues;
+        this.filterCriterionProvider = filterCriterionProvider;
+    }
+    
+    /**
+     * Creates a new filter criterion.
+     * 
+     * @param associationPath {@link AssociationPath} which points
+     * to the given property of the target persistent entity.
+     * @param targetPropertyName Name of the target property of
+     * the given persistent entity.
+     * @param filterObjectValuePaths Array of dot-separated logical paths
+     * pointing to values reachable from the root filter object (can be <tt>null</tt>).
+     * @param directValues Array of filter values provided directly by the user
+     * (can be <tt>null</tt>).
+     * @param filterCriterionProvider Custom {@link PropertyFilterCriterionProvider}
+     * implementation.
+     */
+    public FilterCriterion(AssociationPath associationPath, String targetPropertyName, String[] filterObjectValuePaths, Object[] directValues, PropertyFilterCriterionProvider filterCriterionProvider) {
+        super(associationPath, targetPropertyName);
         
         this.filterObjectValuePaths = filterObjectValuePaths;
         this.directValues = directValues;
@@ -65,6 +92,10 @@ public class FilterCriterion extends NestedPropertyCriterion {
      * Creates a new filter criterion using the default nested persistent entity
      * property join type.
      * 
+     * @deprecated <tt>propertyPath</tt> / <tt>associationJoinType</tt> concept
+     * is now deprecated in favor of the <tt>associationPath</tt> / <tt>targetPropertyName</tt>
+     * approach.
+     * 
      * @param propertyPath Dot-separated logical path to the target property.
      * @param filterObjectValuePaths Array of dot-separated logical paths
      * pointing to values reachable from the root filter object (can be <tt>null</tt>).
@@ -73,6 +104,7 @@ public class FilterCriterion extends NestedPropertyCriterion {
      * @param filterCriterionProvider Custom {@link PropertyFilterCriterionProvider}
      * implementation.
      */
+    @Deprecated
     public FilterCriterion(String propertyPath, String[] filterObjectValuePaths, Object[] directValues, PropertyFilterCriterionProvider filterCriterionProvider) {
     	this(propertyPath, NestedPropertyJoinType.DEFAULT, filterObjectValuePaths, directValues, filterCriterionProvider);
     }
@@ -85,6 +117,10 @@ public class FilterCriterion extends NestedPropertyCriterion {
      * This is a convenience constructor supporting single filter object value path
      * or a single direct value, depending on <tt>useFilterObjectPathResolution</tt>.
      * 
+     * @deprecated <tt>propertyPath</tt> / <tt>associationJoinType</tt> concept
+     * is now deprecated in favor of the <tt>associationPath</tt> / <tt>targetPropertyName</tt>
+     * approach.
+     * 
      * @param propertyPath Dot-separated logical path to the target property.
      * @param associationJoinType Type of join to use in case of a nested
      * (non-direct) persistent entity property (can be <tt>null</tt> otherwise).
@@ -97,8 +133,34 @@ public class FilterCriterion extends NestedPropertyCriterion {
      * @param filterCriterionProvider Custom {@link PropertyFilterCriterionProvider}
      * implementation.
      */
+    @Deprecated
     public FilterCriterion(String propertyPath, NestedPropertyJoinType associationJoinType, Object value, boolean useFilterObjectPathResolution, PropertyFilterCriterionProvider filterCriterionProvider) {
         this(propertyPath, associationJoinType, useFilterObjectPathResolution ? new String[] { (String) value } : null, useFilterObjectPathResolution ? null : new Object[] { value }, filterCriterionProvider);
+    }
+    
+    /**
+     * Creates a new filter criterion.
+     * 
+     * <p>
+     * 
+     * This is a convenience constructor supporting single filter object value path
+     * or a single direct value, depending on <tt>useFilterObjectPathResolution</tt>.
+     * 
+     * @param associationPath {@link AssociationPath} which points
+     * to the given property of the target persistent entity.
+     * @param targetPropertyName Name of the target property of
+     * the given persistent entity.
+     * @param value Dot-separated logical path pointing to a value reachable
+     * from the root filter object OR a direct value provided by the
+     * user.
+     * @param useFilterObjectPathResolution <tt>true</tt> to treat <tt>value</tt>
+     * as a filter object value path, <tt>false</tt> to treat <tt>value</tt> as
+     * a direct value provided by the user.
+     * @param filterCriterionProvider Custom {@link PropertyFilterCriterionProvider}
+     * implementation.
+     */
+    public FilterCriterion(AssociationPath associationPath, String targetPropertyName, Object value, boolean useFilterObjectPathResolution, PropertyFilterCriterionProvider filterCriterionProvider) {
+        this(associationPath, targetPropertyName, useFilterObjectPathResolution ? new String[] { (String) value } : null, useFilterObjectPathResolution ? null : new Object[] { value }, filterCriterionProvider);
     }
     
     /**
@@ -110,6 +172,10 @@ public class FilterCriterion extends NestedPropertyCriterion {
      * This is a convenience constructor supporting single filter object value path
      * or a single direct value, depending on <tt>useFilterObjectPathResolution</tt>.
      * 
+     * @deprecated <tt>propertyPath</tt> / <tt>associationJoinType</tt> concept
+     * is now deprecated in favor of the <tt>associationPath</tt> / <tt>targetPropertyName</tt>
+     * approach.
+     * 
      * @param propertyPath Dot-separated logical path to the target property.
      * @param value Dot-separated logical path pointing to a value reachable
      * from the root filter object OR a direct value provided by the
@@ -120,6 +186,7 @@ public class FilterCriterion extends NestedPropertyCriterion {
      * @param filterCriterionProvider Custom {@link PropertyFilterCriterionProvider}
      * implementation.
      */
+    @Deprecated
     public FilterCriterion(String propertyPath, Object value, boolean useFilterObjectPathResolution, PropertyFilterCriterionProvider filterCriterionProvider) {
         this(propertyPath, NestedPropertyJoinType.DEFAULT, value, useFilterObjectPathResolution, filterCriterionProvider);
     }

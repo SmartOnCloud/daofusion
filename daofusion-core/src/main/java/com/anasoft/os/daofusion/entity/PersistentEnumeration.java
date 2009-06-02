@@ -31,7 +31,7 @@ import org.hibernate.annotations.NaturalId;
 @MappedSuperclass
 public abstract class PersistentEnumeration extends PersistentEntity<Long> {
 
-    private static final long serialVersionUID = -5336677804672833628L;
+    private static final long serialVersionUID = 3309395499860991633L;
     
     public static final String _NAME = "name";
     
@@ -62,17 +62,15 @@ public abstract class PersistentEnumeration extends PersistentEntity<Long> {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (!(obj instanceof PersistentEnumeration)) {
+		// we use instanceof because of Hibernate proxies
+		if (!(obj instanceof PersistentEnumeration))
 			return false;
-		}
 		
-		final PersistentEnumeration other = (PersistentEnumeration) obj;
+		PersistentEnumeration other = (PersistentEnumeration) obj;
 		
 		return name.equals(other.name);
 	}

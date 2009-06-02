@@ -41,12 +41,12 @@ public class InMemoryDatabaseManager {
      * @throws Exception If anything goes wrong.
      */
     public void destroy() throws Exception {
-        final Connection connection = DriverManager.getConnection(
+        Connection connection = DriverManager.getConnection(
         		beanSetupProperties.getProperty(KEY_CONNECTION_URL),
         		beanSetupProperties.getProperty(KEY_USER_NAME),
         		beanSetupProperties.getProperty(KEY_PASSWORD));
         
-        final Statement statement = connection.createStatement();
+        Statement statement = connection.createStatement();
         
         statement.execute("SHUTDOWN");
         connection.close();

@@ -38,6 +38,6 @@ public final class DirectValueCriterionProviders {
 	};
 	
 	private DirectValueCriterionProviders() {
-	}
+    }
 	
 }

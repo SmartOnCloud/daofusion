@@ -24,7 +24,7 @@ public interface PersistentEnumerationDao<T extends PersistentEnumeration> exten
 	 * @return Resulting persistent instance or <tt>null</tt>
 	 * in case the requested instance was not found.
 	 */
-	public <S extends T> S get(String name, Class<S> targetEntityClass);
+	<S extends T> S get(String name, Class<S> targetEntityClass);
 	
 	/**
 	 * Retrieves a persistent enumeration, using the implicit
@@ -37,6 +37,6 @@ public interface PersistentEnumerationDao<T extends PersistentEnumeration> exten
      * @see #get(String, Class)
      * @see #getEntityClass()
 	 */
-	public T get(String name);
+	T get(String name);
 	
 }

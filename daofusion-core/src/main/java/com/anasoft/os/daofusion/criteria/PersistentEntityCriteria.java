@@ -26,6 +26,6 @@ public interface PersistentEntityCriteria {
      * 
      * @param targetCriteria {@link Criteria} instance to update.
      */
-    public void apply(Criteria targetCriteria);
+    void apply(Criteria targetCriteria);
     
 }

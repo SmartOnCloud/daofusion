@@ -29,5 +29,5 @@ import org.hibernate.annotations.Immutable;
 public abstract class ImmutablePersistentEntity extends PersistentEntity<Long> {
 
     private static final long serialVersionUID = -8938621442547726985L;
-	
+    
 }

@@ -59,7 +59,7 @@ public class CriteriaTransferObjectCountWrapperTest {
     
     @Test
     public void testIgnoreSortAndPagingConstraints() throws Exception {
-        final String propertyId = "propertyId";
+        String propertyId = "propertyId";
         when(cto.get(propertyId)).thenReturn(filterAndSortCriteria);
         
         FilterAndSortCriteria criteriaWrapper = testedCtoWrapper.get(propertyId);
@@ -74,7 +74,7 @@ public class CriteriaTransferObjectCountWrapperTest {
     
     @Test
     public void testProperMethodDelegation_criteriaTransferObject() throws Exception {
-        final String propertyId = "propertyId";
+        String propertyId = "propertyId";
         testedCtoWrapper.getPropertyIdSet();
         testedCtoWrapper.get(propertyId);
         testedCtoWrapper.setFirstResult(1);
@@ -92,7 +92,7 @@ public class CriteriaTransferObjectCountWrapperTest {
     
     @Test
     public void testProperMethodDelegation_filterAndSortCriteria() throws Exception {
-        final String propertyId = "propertyId";
+        String propertyId = "propertyId";
         when(cto.get(propertyId)).thenReturn(filterAndSortCriteria);
         
         FilterAndSortCriteria criteriaWrapper = testedCtoWrapper.get(propertyId);

@@ -30,6 +30,6 @@ public interface CriteriaTransferObjectConverter {
 	 * @return Resulting {@link PersistentEntityCriteria}
 	 * instance.
 	 */
-	public PersistentEntityCriteria convert(CriteriaTransferObject transferObject, String mappingGroupName);
+	PersistentEntityCriteria convert(CriteriaTransferObject transferObject, String mappingGroupName);
 	
 }

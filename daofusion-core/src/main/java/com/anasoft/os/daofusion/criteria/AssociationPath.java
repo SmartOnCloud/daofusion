@@ -1,0 +1,187 @@
+package com.anasoft.os.daofusion.criteria;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * Association path which points to the given property
+ * of the target persistent entity.
+ * 
+ * <p>
+ * 
+ * Association path starts at the target persistent entity
+ * as the root object, navigating through associated objects
+ * as necessary. This way, nested property criteria which
+ * operate on associated objects can be easily defined by
+ * the user. Note that the association path does not include
+ * the target property itself.
+ * 
+ * <p>
+ * 
+ * This class is immutable by design so you can safely reuse
+ * its instances across the code.
+ * 
+ * @see AssociationPathElement
+ * @see AssociationPathRegister
+ * 
+ * @author michal.jemala
+ * @author vojtech.szocs
+ */
+public class AssociationPath implements Iterable<AssociationPath> {
+
+	public static final String SEPARATOR = ".";
+	public static final String SEPARATOR_REGEX = "\\.";
+	
+	/**
+	 * Shorthand constant for an empty association path
+	 * which essentially points to target criteria root.
+	 */
+	public static final AssociationPath ROOT = new AssociationPath();
+	
+	private final List<AssociationPathElement> elements = new ArrayList<AssociationPathElement>();
+	
+	/**
+	 * Creates a new association path.
+	 * 
+	 * @param elements Association path elements which form
+	 * a path to the target property.
+	 */
+	public AssociationPath(AssociationPathElement... elements) {
+		if (elements != null) {
+			for (AssociationPathElement pathElement : elements)
+				this.elements.add(pathElement);
+		}
+	}
+	
+	/**
+	 * Returns the last element of this association path
+	 * or <tt>null</tt> in case the association path is
+	 * empty.
+	 * 
+	 * @return Last element of this association path (can
+	 * be <tt>null</tt>).
+	 */
+	public AssociationPathElement getLastElement() {
+	    if (elements.isEmpty()) {
+	        return null;
+	    } else {
+	        return elements.get(elements.size() - 1);
+	    }
+	}
+	
+	/**
+	 * Returns the "super path" for this association path.
+	 * 
+	 * <p>
+	 * 
+	 * Super path includes all path elements except the
+	 * last one.
+	 * 
+	 * @return Super path for this association path.
+	 */
+	public AssociationPath getSuperPath() {
+		AssociationPath superPath = new AssociationPath();
+		
+		for (int i = 0; i < elements.size() - 1; i++) {
+			superPath.elements.add(this.elements.get(i));
+		}
+		
+		return superPath;
+	}
+	
+	/**
+	 * Returns an iterator over {@link AssociationPath} instances
+	 * for this association path.
+	 * 
+	 * <p>
+	 * 
+	 * The resulting iterator follows a custom logic based on the
+	 * order of contained association path elements. For example,
+	 * an iterator over the association path "<tt>a.b.c</tt>" will
+	 * produce following paths:
+	 * 
+	 * <ol>
+	 * <li><tt>a</tt>
+	 * <li><tt>a.b</tt>
+	 * <li><tt>a.b.c</tt>
+	 * </ol>
+	 * 
+	 * Note that the {@link Iterator#remove()} operation is not
+	 * supported.
+	 * 
+	 * @see java.lang.Iterable#iterator()
+	 */
+	public Iterator<AssociationPath> iterator() {
+		final Iterator<AssociationPathElement> internalIterator = elements.iterator();
+		
+		return new Iterator<AssociationPath>() {
+		    
+			private List<AssociationPathElement> elements = new ArrayList<AssociationPathElement>();
+
+			public boolean hasNext() {
+				return internalIterator.hasNext();
+			}
+			
+			public AssociationPath next() {
+			    AssociationPathElement element = internalIterator.next();
+				this.elements.add(element);
+				
+				AssociationPath path = new AssociationPath();
+				for (int i = 0; i < this.elements.size(); i++) {
+					path.elements.add(this.elements.get(i));
+				}
+				
+				return path;
+			}
+			
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
+			
+		};
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((elements == null) ? 0 : elements.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		
+		AssociationPath other = (AssociationPath) obj;
+		
+		if (elements == null) {
+			if (other.elements != null)
+				return false;
+		} else if (!elements.equals(other.elements))
+			return false;
+		
+		return true;
+	}
+	
+	@Override
+	public String toString() {
+        StringBuilder sb = new StringBuilder();
+        
+        for (AssociationPathElement pathElement : this.elements) {
+            if (sb.length() > 0)
+                sb.append(SEPARATOR);
+            
+            sb.append(pathElement.getValue());
+        }
+        
+        return sb.toString();
+	}
+	
+}

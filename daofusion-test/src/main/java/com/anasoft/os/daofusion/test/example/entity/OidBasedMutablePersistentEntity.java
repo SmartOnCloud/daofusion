@@ -19,7 +19,7 @@ public abstract class OidBasedMutablePersistentEntity extends MutablePersistentE
 	private String oid;
 	
 	public OidBasedMutablePersistentEntity() {
-		oid = UUID.randomUUID().toString();
+		oid = generateOid();
 	}
 	
 	public String getOid() {
@@ -50,9 +50,20 @@ public abstract class OidBasedMutablePersistentEntity extends MutablePersistentE
 			return false;
 		}
 		
-		final OidBasedMutablePersistentEntity other = (OidBasedMutablePersistentEntity) obj;
+		OidBasedMutablePersistentEntity other = (OidBasedMutablePersistentEntity) obj;
 		
-		return oid.equals(other.oid);
+		return (oid == null) ? false : oid.equals(other.oid);
 	}
+	
+	@Override
+    protected Object clone() throws CloneNotSupportedException {
+        OidBasedMutablePersistentEntity clone = OidBasedMutablePersistentEntity.class.cast(super.clone());
+        clone.oid = generateOid();
+        return clone;
+    }
+    
+    protected String generateOid() {
+        return UUID.randomUUID().toString();
+    }
 	
 }
