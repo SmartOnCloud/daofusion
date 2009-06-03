@@ -20,7 +20,7 @@ import com.anasoft.os.daofusion.util.SimpleListContainer;
  * 
  * This class implements the query constraint application
  * logic regarding specific {@link NestedPropertyCriterion}
- * subclasses via a default {@link NestedPropertyCriterionVisitor}
+ * subclasses via default {@link NestedPropertyCriterionVisitor}
  * implementation. The {@link PersistentEntityCriteria#apply(Criteria)}
  * method implementation contains code that visits all
  * {@link NestedPropertyCriterion} instances, updating the given

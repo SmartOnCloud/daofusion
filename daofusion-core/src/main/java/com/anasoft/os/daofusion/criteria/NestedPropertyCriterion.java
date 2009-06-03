@@ -6,24 +6,22 @@ package com.anasoft.os.daofusion.criteria;
  * 
  * <p>
  * 
- * Logic regarding query constraint application for specific
- * {@link NestedPropertyCriterion} subclasses is provided via
- * the {@link NestedPropertyCriterionVisitor}.
- * 
- * <p>
- * 
  * The nested property criterion is essentially a combination
  * of two factors:
  * 
  * <ul>
- * <li>{@link AssociationPath} which points to the given
+ * <li><tt>associationPath</tt> which points to the given
  * property of the target persistent entity
  * <li><tt>targetPropertyName</tt> denoting target property
  * of the given persistent entity
  * </ul>
  * 
+ * This class is immutable by design. Subclasses should remain
+ * immutable as well in order to be safely reused across the
+ * code.
+ * 
  * @param <V> Type of the criterion visitor applicable
- * for this property criterion.
+ * for this criterion.
  * 
  * @see NestedPropertyCriteria
  * @see NestedPropertyCriterionVisitor
@@ -31,7 +29,7 @@ package com.anasoft.os.daofusion.criteria;
  * 
  * @author vojtech.szocs
  */
-public abstract class NestedPropertyCriterion<V extends NestedPropertyCriterionVisitor> {
+public abstract class NestedPropertyCriterion<V extends NestedPropertyCriterionVisitor> implements PersistentEntityCriterion<V> {
 
     private final AssociationPath associationPath;
     private final String targetPropertyName;
@@ -98,15 +96,6 @@ public abstract class NestedPropertyCriterion<V extends NestedPropertyCriterionV
         return associationPath;
     }
     
-	/**
-	 * Accepts the given <tt>visitor</tt> to visit this
-	 * property criterion.
-	 * 
-	 * @param visitor {@link NestedPropertyCriterionVisitor}
-	 * to visit this property criterion.
-	 */
-	public abstract void accept(V visitor);
-	
     @Override
     public int hashCode() {
         final int prime = 31;

@@ -1,6 +1,5 @@
 package com.anasoft.os.daofusion.criteria;
 
-
 /**
  * Sort criterion for a single property of the target
  * persistent entity.
@@ -127,12 +126,11 @@ public class SortCriterion extends NestedPropertyCriterion<NestedPropertyCriteri
         return ignoreCase;
     }
     
-	/**
-	 * @see com.anasoft.os.daofusion.criteria.NestedPropertyCriterion#accept(com.anasoft.os.daofusion.criteria.NestedPropertyCriterionVisitor)
-	 */
-	@Override
-	public void accept(NestedPropertyCriterionVisitor visitor) {
-		visitor.visit(this);
-	}
+    /**
+     * @see com.anasoft.os.daofusion.criteria.PersistentEntityCriterion#accept(java.lang.Object)
+     */
+    public void accept(NestedPropertyCriterionVisitor visitor) {
+        visitor.visit(this);
+    }
     
 }

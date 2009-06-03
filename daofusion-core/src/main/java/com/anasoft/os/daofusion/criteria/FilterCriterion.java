@@ -236,12 +236,11 @@ public class FilterCriterion extends NestedPropertyCriterion<NestedPropertyCrite
         return filterCriterionProvider;
     }
     
-	/**
-	 * @see com.anasoft.os.daofusion.criteria.NestedPropertyCriterion#accept(com.anasoft.os.daofusion.criteria.NestedPropertyCriterionVisitor)
-	 */
-	@Override
-	public void accept(NestedPropertyCriterionVisitor visitor) {
-		visitor.visit(this);
-	}
+    /**
+     * @see com.anasoft.os.daofusion.criteria.PersistentEntityCriterion#accept(java.lang.Object)
+     */
+    public void accept(NestedPropertyCriterionVisitor visitor) {
+        visitor.visit(this);
+    }
     
 }
