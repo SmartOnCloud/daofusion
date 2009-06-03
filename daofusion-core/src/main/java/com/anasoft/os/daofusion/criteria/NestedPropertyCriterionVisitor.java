@@ -4,8 +4,8 @@ import org.hibernate.Criteria;
 
 /**
  * Visitor for specific {@link NestedPropertyCriterion} subclasses
- * that groups the query constraint application logic operating on
- * the root {@link Criteria} instance.
+ * that groups query constraint application logic operating on the
+ * root {@link Criteria} instance.
  * 
  * @see NestedPropertyCriterion
  * @see NestedPropertyCriteria

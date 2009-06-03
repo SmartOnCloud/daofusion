@@ -1,5 +1,6 @@
 package com.anasoft.os.daofusion.criteria;
 
+
 /**
  * Sort criterion for a single property of the target
  * persistent entity.
@@ -8,7 +9,7 @@ package com.anasoft.os.daofusion.criteria;
  * 
  * @author vojtech.szocs
  */
-public class SortCriterion extends NestedPropertyCriterion {
+public class SortCriterion extends NestedPropertyCriterion<NestedPropertyCriterionVisitor> {
 
     private final boolean sortAscending;
     private final boolean ignoreCase;

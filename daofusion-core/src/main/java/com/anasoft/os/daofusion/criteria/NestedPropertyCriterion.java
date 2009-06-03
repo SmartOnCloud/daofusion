@@ -6,7 +6,7 @@ package com.anasoft.os.daofusion.criteria;
  * 
  * <p>
  * 
- * Logic regarding the query constraint application for specific
+ * Logic regarding query constraint application for specific
  * {@link NestedPropertyCriterion} subclasses is provided via
  * the {@link NestedPropertyCriterionVisitor}.
  * 
@@ -22,13 +22,16 @@ package com.anasoft.os.daofusion.criteria;
  * of the given persistent entity
  * </ul>
  * 
+ * @param <V> Type of the criterion visitor applicable
+ * for this property criterion.
+ * 
  * @see NestedPropertyCriteria
  * @see NestedPropertyCriterionVisitor
  * @see AssociationPath
  * 
  * @author vojtech.szocs
  */
-public abstract class NestedPropertyCriterion {
+public abstract class NestedPropertyCriterion<V extends NestedPropertyCriterionVisitor> {
 
     private final AssociationPath associationPath;
     private final String targetPropertyName;
@@ -102,7 +105,7 @@ public abstract class NestedPropertyCriterion {
 	 * @param visitor {@link NestedPropertyCriterionVisitor}
 	 * to visit this property criterion.
 	 */
-	public abstract void accept(NestedPropertyCriterionVisitor visitor);
+	public abstract void accept(V visitor);
 	
     @Override
     public int hashCode() {
@@ -122,7 +125,7 @@ public abstract class NestedPropertyCriterion {
         if (getClass() != obj.getClass())
             return false;
         
-        NestedPropertyCriterion other = (NestedPropertyCriterion) obj;
+        NestedPropertyCriterion<?> other = (NestedPropertyCriterion<?>) obj;
         
         if (associationPath == null) {
             if (other.associationPath != null)

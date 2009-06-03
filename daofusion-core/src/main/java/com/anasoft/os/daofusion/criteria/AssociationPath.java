@@ -60,7 +60,8 @@ public class AssociationPath implements Iterable<AssociationPath> {
 	 * @param elements Association path elements.
 	 */
 	public AssociationPath(AssociationPath prefix, AssociationPathElement... elements) {
-	    this.elements.addAll(prefix.elements);
+	    if (prefix != null)
+	        this.elements.addAll(prefix.elements);
 	    
         if (elements != null) {
             for (AssociationPathElement pathElement : elements)

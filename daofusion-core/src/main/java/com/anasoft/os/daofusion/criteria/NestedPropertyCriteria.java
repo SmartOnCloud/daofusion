@@ -49,7 +49,7 @@ import com.anasoft.os.daofusion.util.SimpleListContainer;
  * 
  * @author vojtech.szocs
  */
-public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCriterion> implements PersistentEntityCriteria {
+public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCriterion<NestedPropertyCriterionVisitor>> implements PersistentEntityCriteria {
 
 	private static final Logger LOG = LoggerFactory.getLogger(NestedPropertyCriteria.class);
 	
@@ -131,14 +131,14 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 	 * @see com.anasoft.os.daofusion.criteria.PersistentEntityCriteria#apply(org.hibernate.Criteria)
 	 */
 	public final void apply(Criteria targetCriteria) {
-		List<NestedPropertyCriterion> criterionList = getObjectList();
-		
+		List<NestedPropertyCriterion<NestedPropertyCriterionVisitor>> criterionList = getObjectList();
+	    
 		NestedPropertyCriterionVisitor visitor = getCriterionVisitor(
 				targetCriteria,
 				new AssociationPathRegister(targetCriteria),
 				filterObject);
 		
-		for (NestedPropertyCriterion criterion : criterionList) {
+		for (NestedPropertyCriterion<NestedPropertyCriterionVisitor> criterion : criterionList) {
 			criterion.accept(visitor);
 		}
 		

@@ -34,7 +34,7 @@ import org.hibernate.criterion.Criterion;
  * 
  * @author vojtech.szocs
  */
-public class FilterCriterion extends NestedPropertyCriterion {
+public class FilterCriterion extends NestedPropertyCriterion<NestedPropertyCriterionVisitor> {
 
     private final String[] filterObjectValuePaths;
     private final Object[] directValues;
