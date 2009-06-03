@@ -14,8 +14,9 @@ import org.hibernate.criterion.Criterion;
  * 
  * <p>
  * 
- * There are basically two ways to pass data (filter values)
- * to the {@link PropertyFilterCriterionProvider} instance:
+ * There are basically two ways to pass filter data the
+ * {@link PropertyFilterCriterionProvider} instance (both of which
+ * are optional):
  * 
  * <ul>
  *  <li>by specifying <tt>filterObjectValuePaths</tt> - array of
@@ -151,7 +152,7 @@ public class FilterCriterion extends NestedPropertyCriterion {
      * @param targetPropertyName Name of the target property of
      * the given persistent entity.
      * @param value Dot-separated logical path pointing to a value reachable
-     * from the root filter object OR a direct value provided by the
+     * from the root filter object <em>OR</em> a direct value provided by the
      * user.
      * @param useFilterObjectPathResolution <tt>true</tt> to treat <tt>value</tt>
      * as a filter object value path, <tt>false</tt> to treat <tt>value</tt> as
@@ -161,6 +162,26 @@ public class FilterCriterion extends NestedPropertyCriterion {
      */
     public FilterCriterion(AssociationPath associationPath, String targetPropertyName, Object value, boolean useFilterObjectPathResolution, PropertyFilterCriterionProvider filterCriterionProvider) {
         this(associationPath, targetPropertyName, useFilterObjectPathResolution ? new String[] { (String) value } : null, useFilterObjectPathResolution ? null : new Object[] { value }, filterCriterionProvider);
+    }
+    
+    /**
+     * Creates a new filter criterion.
+     * 
+     * <p>
+     * 
+     * This is a convenience constructor for bypassing filter data definition
+     * ({@link PropertyFilterCriterionProvider} will have to specify {@link Criterion}
+     * filter data on its own).
+     * 
+     * @param associationPath {@link AssociationPath} which points
+     * to the given property of the target persistent entity.
+     * @param targetPropertyName Name of the target property of
+     * the given persistent entity.
+     * @param filterCriterionProvider Custom {@link PropertyFilterCriterionProvider}
+     * implementation.
+     */
+    public FilterCriterion(AssociationPath associationPath, String targetPropertyName, PropertyFilterCriterionProvider filterCriterionProvider) {
+        this(associationPath, targetPropertyName, null, null, filterCriterionProvider);
     }
     
     /**
