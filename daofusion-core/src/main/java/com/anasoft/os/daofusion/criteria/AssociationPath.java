@@ -44,14 +44,28 @@ public class AssociationPath implements Iterable<AssociationPath> {
 	/**
 	 * Creates a new association path.
 	 * 
-	 * @param elements Association path elements which form
-	 * a path to the target property.
+	 * @param elements Association path elements.
 	 */
 	public AssociationPath(AssociationPathElement... elements) {
-		if (elements != null) {
-			for (AssociationPathElement pathElement : elements)
-				this.elements.add(pathElement);
-		}
+	    this(ROOT, elements);
+	}
+	
+	/**
+	 * Creates a new association path with <tt>rootPath</tt>
+	 * elements placed at the beginning, followed by
+	 * <tt>elements</tt> in consequence.
+	 * 
+	 * @param prefix Association path prefix (elements to be
+	 * placed at the beginning of this association path).
+	 * @param elements Association path elements.
+	 */
+	public AssociationPath(AssociationPath prefix, AssociationPathElement... elements) {
+	    this.elements.addAll(prefix.elements);
+	    
+        if (elements != null) {
+            for (AssociationPathElement pathElement : elements)
+                this.elements.add(pathElement);
+        }
 	}
 	
 	/**
