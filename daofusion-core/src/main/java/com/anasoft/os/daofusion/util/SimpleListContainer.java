@@ -20,9 +20,11 @@ public abstract class SimpleListContainer<T> {
      * Adds the given object to this container.
      * 
      * @param object Object to add.
+     * @return <tt>this</tt> for method chaining.
      */
-    public void add(T object) {
+    public SimpleListContainer<T> add(T object) {
         objectList.add(object);
+        return this;
     }
     
     /**

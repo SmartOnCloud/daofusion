@@ -32,9 +32,11 @@ public abstract class SimpleMapContainer<K, T> {
 	 * Adds the given object to this container.
 	 * 
 	 * @param object Object to add.
+	 * @return <tt>this</tt> for method chaining.
 	 */
-	public void add(T object) {
+	public SimpleMapContainer<K, T> add(T object) {
 		objectMap.put(getKey(object), object);
+		return this;
 	}
 	
 	/**
