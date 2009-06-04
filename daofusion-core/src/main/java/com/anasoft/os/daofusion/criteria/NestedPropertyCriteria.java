@@ -1,7 +1,5 @@
 package com.anasoft.os.daofusion.criteria;
 
-import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
@@ -67,41 +65,14 @@ public class NestedPropertyCriteria extends AbstractCriterionGroup<NestedPropert
 	}
 	
 	/**
-	 * Returns a {@link NestedPropertyCriterionVisitor} instance
-     * to be used within the {@link #apply(Criteria)} method.
-     * 
-     * <p>
-     * 
-     * Override this method if you want to plug in your custom
-     * {@link NestedPropertyCriterionVisitor} implementation.
-     * 
-     * @param targetCriteria {@link Criteria} instance to update.
-     * @param associationPathRegister {@link AssociationPathRegister}
-     * initialized with Hibernate {@link Criteria} mappings.
-     * @param filterObject Filter object (can be <tt>null</tt>).
-     * @return {@link NestedPropertyCriterionVisitor} instance operating
-     * on the <tt>targetCriteria</tt>.
+	 * @see com.anasoft.os.daofusion.criteria.AbstractCriterionGroup#getCriterionVisitor(org.hibernate.Criteria, com.anasoft.os.daofusion.criteria.AssociationPathRegister)
 	 */
-	protected NestedPropertyCriterionVisitor getCriterionVisitor(Criteria targetCriteria, AssociationPathRegister associationPathRegister, Object filterObject) {
-	    return new DefaultNestedPropertyCriterionVisitor(targetCriteria, associationPathRegister, filterObject);
-	}
-	
-	/**
-	 * @see com.anasoft.os.daofusion.criteria.PersistentEntityCriteria#apply(org.hibernate.Criteria)
-	 */
-	public final void apply(Criteria targetCriteria) {
-		List<NestedPropertyCriterion<NestedPropertyCriterionVisitor>> criterionList = getObjectList();
-	    
-		NestedPropertyCriterionVisitor visitor = getCriterionVisitor(
-				targetCriteria,
-				new AssociationPathRegister(targetCriteria),
-				filterObject);
-		
-		for (NestedPropertyCriterion<NestedPropertyCriterionVisitor> criterion : criterionList) {
-			criterion.accept(visitor);
-		}
-		
-		applyPagingCriteria(targetCriteria);
+	@Override
+	protected NestedPropertyCriterionVisitor getCriterionVisitor(Criteria targetCriteria) {
+	    return new DefaultNestedPropertyCriterionVisitor(
+	            targetCriteria,
+	            new AssociationPathRegister(targetCriteria),
+	            filterObject);
 	}
 	
 	/**

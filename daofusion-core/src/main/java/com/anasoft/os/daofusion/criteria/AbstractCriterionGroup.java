@@ -1,5 +1,7 @@
 package com.anasoft.os.daofusion.criteria;
 
+import java.util.List;
+
 import org.hibernate.Criteria;
 
 import com.anasoft.os.daofusion.util.SimpleListContainer;
@@ -78,5 +80,31 @@ public abstract class AbstractCriterionGroup<T extends PersistentEntityCriterion
             targetCriteria.setMaxResults(maxResults);
         }
     }
+    
+    /**
+     * @see com.anasoft.os.daofusion.criteria.PersistentEntityCriteria#apply(org.hibernate.Criteria)
+     */
+    public void apply(Criteria targetCriteria) {
+        List<T> criterionList = getObjectList();
+        
+        V visitor = getCriterionVisitor(targetCriteria);
+        
+        for (T criterion : criterionList) {
+            criterion.accept(visitor);
+        }
+        
+        applyPagingCriteria(targetCriteria);
+    }
+    
+    /**
+     * Returns the criterion visitor instance to be used
+     * within the {@link #apply(Criteria)} method.
+     * 
+     * @param targetCriteria Root {@link Criteria}
+     * instance for visitor to work with.
+     * @return Criterion visitor instance operating
+     * on the <tt>targetCriteria</tt>.
+     */
+    protected abstract V getCriterionVisitor(Criteria targetCriteria);
     
 }

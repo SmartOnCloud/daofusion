@@ -56,8 +56,8 @@ public class NestedPropertyCriteriaBasedConverterTest {
 		
 		assertThat(instanceOne.getObjectList().size(), equalTo(instanceTwo.getObjectList().size()));
 		
-		Set<NestedPropertyCriterion> propertyCriterionSetOne = new HashSet<NestedPropertyCriterion>(instanceOne.getObjectList());
-		Set<NestedPropertyCriterion> propertyCriterionSetTwo = new HashSet<NestedPropertyCriterion>(instanceTwo.getObjectList());
+		Set<NestedPropertyCriterion<?>> propertyCriterionSetOne = new HashSet<NestedPropertyCriterion<?>>(instanceOne.getObjectList());
+		Set<NestedPropertyCriterion<?>> propertyCriterionSetTwo = new HashSet<NestedPropertyCriterion<?>>(instanceTwo.getObjectList());
 		
 		assertThat(propertyCriterionSetOne, equalTo(propertyCriterionSetTwo));
 	}
