@@ -19,8 +19,9 @@
 		<junit-springtestcontext.version>4.4</junit-springtestcontext.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
 		
-		<h2.version>1.0.79</h2.version>
+		<h2.version>1.1.114</h2.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
+		
 		<mysql-connector-java.version>5.1.7</mysql-connector-java.version> <!-- MySQL 5.1.30 -->
 		<postgresql.version>8.3-603.jdbc3</postgresql.version> <!-- PostgreSQL 8.3.5 -->
 		<ojdbc14.version>10.2.0.3.0</ojdbc14.version> <!-- Oracle 10g 10.2.0.3.0 -->
