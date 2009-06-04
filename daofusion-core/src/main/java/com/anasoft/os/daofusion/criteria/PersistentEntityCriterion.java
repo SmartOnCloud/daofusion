@@ -8,13 +8,16 @@ package com.anasoft.os.daofusion.criteria;
  * <p>
  * 
  * Implement this interface if you want to plug
- * in your custom criterion implementations.
+ * in your custom criterion implementations
+ * in conjunction with an appropriate
+ * {@link AbstractCriterionGroup}.
  * 
  * @param <V> Type of the criterion visitor applicable
  * for this criterion.
  * 
  * @see NestedPropertyCriterion
  * @see NestedPropertyCriteria
+ * @see AbstractCriterionGroup
  * 
  * @author vojtech.szocs
  */

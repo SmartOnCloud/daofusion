@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anasoft.os.daofusion.util.ReflectionHelper;
-import com.anasoft.os.daofusion.util.SimpleListContainer;
 
 /**
  * General purpose persistent entity criteria implementation
@@ -33,8 +32,6 @@ import com.anasoft.os.daofusion.util.SimpleListContainer;
  * {@link NestedPropertyCriterion} instances:
  * 
  * <ul>
- * 	<li>paging criteria definition (<tt>firstResult</tt> and
- * 		<tt>maxResults</tt>)
  * 	<li>filter object as an <em>optional</em> source of filter values
  *      (see {@link FilterCriterion} for more information about
  *      the filter object and direct filter value concepts)
@@ -45,53 +42,15 @@ import com.anasoft.os.daofusion.util.SimpleListContainer;
  * 
  * @see NestedPropertyCriterion
  * @see NestedPropertyCriterionVisitor
- * @see PersistentEntityCriteria
+ * @see AbstractCriterionGroup
  * 
  * @author vojtech.szocs
  */
-public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCriterion<NestedPropertyCriterionVisitor>> implements PersistentEntityCriteria {
+public class NestedPropertyCriteria extends AbstractCriterionGroup<NestedPropertyCriterion<NestedPropertyCriterionVisitor>, NestedPropertyCriterionVisitor> {
 
 	private static final Logger LOG = LoggerFactory.getLogger(NestedPropertyCriteria.class);
 	
-	private Integer firstResult;
-    private Integer maxResults;
-	
 	private Object filterObject;
-	
-	/**
-	 * @return Index of the starting element or <tt>null</tt>
-	 * representing no constraints on this paging parameter.
-	 */
-	public Integer getFirstResult() {
-		return firstResult;
-	}
-	
-	/**
-	 * @param firstResult Index of the starting element or
-	 * <tt>null</tt> representing no constraints on this
-	 * paging parameter.
-	 */
-	public void setFirstResult(Integer firstResult) {
-		this.firstResult = firstResult;
-	}
-	
-	/**
-	 * @return Maximum number of elements to return or
-	 * <tt>null</tt> representing no constraints on this
-	 * paging parameter.
-	 */
-	public Integer getMaxResults() {
-		return maxResults;
-	}
-	
-	/**
-	 * @param maxResults Maximum number of elements to return
-	 * or <tt>null</tt> representing no constraints on this
-	 * paging parameter.
-	 */
-	public void setMaxResults(Integer maxResults) {
-		this.maxResults = maxResults;
-	}
 	
 	/**
 	 * @return Filter object (can be <tt>null</tt>).
@@ -143,21 +102,6 @@ public class NestedPropertyCriteria extends SimpleListContainer<NestedPropertyCr
 		}
 		
 		applyPagingCriteria(targetCriteria);
-	}
-	
-	/**
-	 * Applies paging criteria to the <tt>targetCriteria</tt>.
-	 * 
-	 * @param targetCriteria {@link Criteria} instance to update.
-	 */
-	private void applyPagingCriteria(Criteria targetCriteria) {
-		if (firstResult != null) {
-			targetCriteria.setFirstResult(firstResult);
-		}
-		
-		if (maxResults != null) {
-			targetCriteria.setMaxResults(maxResults);
-		}
 	}
 	
 	/**
