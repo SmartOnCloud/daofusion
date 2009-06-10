@@ -219,12 +219,15 @@ public class AssociationPath implements Iterable<AssociationPath> {
      */
     private String getNativePath(String separator) {
         StringBuilder sb = new StringBuilder();
-        for (AssociationPathElement pathElement : this.elements) {
+        
+        for (AssociationPathElement pathElement : elements) {
             if (sb.length() > 0) {
                 sb.append(separator);
             }
+            
             sb.append(pathElement.getValue());
         }
+        
         return sb.toString();
     }
     
