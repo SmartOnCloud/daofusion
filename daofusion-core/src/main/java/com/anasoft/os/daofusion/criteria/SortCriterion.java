@@ -133,4 +133,54 @@ public class SortCriterion extends NestedPropertyCriterion<NestedPropertyCriteri
         visitor.visit(this);
     }
     
+    /**
+     * Builder for {@link SortCriterion} instances.
+     * 
+     * @see NestedPropertyCriterionBuilder
+     * 
+     * @author vojtech.szocs
+     */
+    public static class SortCriterionBuilder extends NestedPropertyCriterionBuilder<SortCriterion, NestedPropertyCriterionVisitor> {
+        
+        private final boolean sortAscending;
+        
+        private boolean ignoreCase = false;
+        
+        /**
+         * Creates a new criterion builder.
+         * 
+         * @param associationPath {@link AssociationPath} which points
+         * to the given property of the target persistent entity.
+         * @param targetPropertyName Name of the target property of
+         * the given persistent entity.
+         * @param sortAscending <tt>true</tt> for ascending, <tt>false</tt>
+         * for descending sort order.
+         */
+        public SortCriterionBuilder(AssociationPath associationPath, String targetPropertyName, boolean sortAscending) {
+            super(associationPath, targetPropertyName);
+            this.sortAscending = sortAscending;
+        }
+        
+        /**
+         * Sets the <tt>ignoreCase</tt> parameter.
+         * 
+         * @param value <tt>true</tt> for case-insensitive sorting,
+         * <tt>false</tt> for case-sensitive sorting.
+         * @return <tt>this</tt> for method chaining.
+         */
+        public SortCriterionBuilder ignoreCase(boolean value) {
+            ignoreCase = value;
+            return this;
+        }
+        
+        /**
+         * @see com.anasoft.os.daofusion.criteria.NestedPropertyCriterion.NestedPropertyCriterionBuilder#build()
+         */
+        @Override
+        public SortCriterion build() {
+            return new SortCriterion(associationPath, targetPropertyName, sortAscending, ignoreCase);
+        }
+        
+    }
+    
 }

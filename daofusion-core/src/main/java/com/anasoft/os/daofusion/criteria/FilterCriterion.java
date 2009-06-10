@@ -1,5 +1,9 @@
 package com.anasoft.os.daofusion.criteria;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.hibernate.criterion.Criterion;
 
 /**
@@ -241,6 +245,69 @@ public class FilterCriterion extends NestedPropertyCriterion<NestedPropertyCrite
      */
     public void accept(NestedPropertyCriterionVisitor visitor) {
         visitor.visit(this);
+    }
+    
+    /**
+     * Builder for {@link FilterCriterion} instances.
+     * 
+     * @see NestedPropertyCriterionBuilder
+     * 
+     * @author vojtech.szocs
+     */
+    public static class FilterCriterionBuilder extends NestedPropertyCriterionBuilder<FilterCriterion, NestedPropertyCriterionVisitor> {
+        
+        private final PropertyFilterCriterionProvider filterCriterionProvider;
+        
+        private final List<String> filterObjectValuePaths = new ArrayList<String>();
+        private final List<Object> directValues = new ArrayList<Object>();
+        
+        /**
+         * Creates a new criterion builder.
+         * 
+         * @param associationPath {@link AssociationPath} which points
+         * to the given property of the target persistent entity.
+         * @param targetPropertyName Name of the target property of
+         * the given persistent entity.
+         * @param filterCriterionProvider Custom {@link PropertyFilterCriterionProvider}
+         * implementation.
+         */
+        public FilterCriterionBuilder(AssociationPath associationPath, String targetPropertyName, PropertyFilterCriterionProvider filterCriterionProvider) {
+            super(associationPath, targetPropertyName);
+            this.filterCriterionProvider = filterCriterionProvider;
+        }
+        
+        /**
+         * Appends given paths to <tt>filterObjectValuePaths</tt>.
+         * 
+         * @param paths Dot-separated logical paths pointing to values
+         * reachable from the root filter object.
+         * @return <tt>this</tt> for method chaining.
+         */
+        public FilterCriterionBuilder filterObjectValuePaths(String... paths) {
+            filterObjectValuePaths.addAll(Arrays.asList(paths));
+            return this;
+        }
+        
+        /**
+         * Appends given values to <tt>directValues</tt>.
+         * 
+         * @param values Filter values provided directly by the user.
+         * @return <tt>this</tt> for method chaining.
+         */
+        public FilterCriterionBuilder directValues(Object... values) {
+            directValues.addAll(Arrays.asList(values));
+            return this;
+        }
+        
+        /**
+         * @see com.anasoft.os.daofusion.criteria.NestedPropertyCriterion.NestedPropertyCriterionBuilder#build()
+         */
+        @Override
+        public FilterCriterion build() {
+            return new FilterCriterion(associationPath, targetPropertyName,
+                    filterObjectValuePaths.toArray(new String[0]), directValues.toArray(), filterCriterionProvider);
+        }
+        
     }
     
 }

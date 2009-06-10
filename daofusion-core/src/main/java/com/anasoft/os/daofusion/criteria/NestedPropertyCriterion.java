@@ -130,4 +130,37 @@ public abstract class NestedPropertyCriterion<V extends NestedPropertyCriterionV
         return true;
     }
     
+    /**
+     * Base class for specific {@link NestedPropertyCriterion} builders.
+     * 
+     * @author vojtech.szocs
+     */
+    protected static abstract class NestedPropertyCriterionBuilder<T extends NestedPropertyCriterion<V>, V extends NestedPropertyCriterionVisitor> {
+        
+        protected final AssociationPath associationPath;
+        protected final String targetPropertyName;
+        
+        /**
+         * Creates a new criterion builder.
+         * 
+         * @param associationPath {@link AssociationPath} which points
+         * to the given property of the target persistent entity.
+         * @param targetPropertyName Name of the target property of
+         * the given persistent entity.
+         */
+        public NestedPropertyCriterionBuilder(AssociationPath associationPath, String targetPropertyName) {
+            this.associationPath = associationPath;
+            this.targetPropertyName = targetPropertyName;
+        }
+        
+        /**
+         * Builds a {@link NestedPropertyCriterion} instance according
+         * to the state of this builder.
+         * 
+         * @return Resulting {@link NestedPropertyCriterion} instance.
+         */
+        public abstract T build();
+        
+    }
+    
 }
