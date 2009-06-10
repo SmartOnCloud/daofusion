@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.Criteria;
+
 /**
  * Association path which points to the given property
  * of the target persistent entity.
@@ -32,6 +34,8 @@ public class AssociationPath implements Iterable<AssociationPath> {
 
 	public static final String SEPARATOR = ".";
 	public static final String SEPARATOR_REGEX = "\\.";
+	
+	private static final String ALIAS_SEPARATOR = "_";
 	
 	/**
 	 * Shorthand constant for an empty association path
@@ -104,6 +108,21 @@ public class AssociationPath implements Iterable<AssociationPath> {
 		
 		return superPath;
 	}
+	
+    /**
+     * Returns the alias for this association path.
+     * 
+     * <p>
+     * 
+     * This method is used by {@link AssociationPathRegister} when
+     * creating {@link Criteria} instances so that these instances
+     * can be reused by referencing their aliases.
+     * 
+     * @return Alias for this association path.
+     */
+    public String getAlias() {
+        return getNativePath(ALIAS_SEPARATOR);
+    }
 	
 	/**
 	 * Returns an iterator over {@link AssociationPath} instances
@@ -184,17 +203,21 @@ public class AssociationPath implements Iterable<AssociationPath> {
 		
 		return true;
 	}
-
-    public String getAlias() {
-        return createNativePath("_");
-    }
-
+	
     @Override
     public String toString() {
-        return createNativePath(SEPARATOR);
+        return getNativePath(SEPARATOR);
     }
-
-    private String createNativePath(String separator) {
+    
+    /**
+     * Concatenates association path element values using
+     * the given <tt>separator</tt> into a "native path".
+     * 
+     * @param separator Element value separator.
+     * @return Native path of association path elements
+     * concatenated with the given <tt>separator</tt>.
+     */
+    private String getNativePath(String separator) {
         StringBuilder sb = new StringBuilder();
         for (AssociationPathElement pathElement : this.elements) {
             if (sb.length() > 0) {
@@ -204,4 +227,5 @@ public class AssociationPath implements Iterable<AssociationPath> {
         }
         return sb.toString();
     }
+    
 }

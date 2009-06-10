@@ -111,16 +111,34 @@ public class AssociationPathRegister {
 	 * 
 	 * This method ensures that Hibernate {@link Criteria}
 	 * mappings are lazily initialized (with existing criteria
-	 * being reused) prior to returning the target
+	 * instances being reused) prior to returning the target
 	 * {@link Criteria}.
 	 * 
 	 * <p>
 	 * 
+	 * Resulting {@link Criteria} instances have unique aliases
+	 * (based on their association paths) so that they can be
+	 * referenced in complex Hibernate queries like this:
+	 * 
+	 * <pre>
+	 * Criteria criteria1 = apRegister.get(associationPath1);
+	 * String alias1 = criteria1.getAlias();
+	 * 
+	 * Criteria criteria2 = apRegister.get(associationPath2);
+	 * String alias2 = criteria2.getAlias();
+	 * 
+	 * rootCriteria.add(
+	 *     Restrictions.or(
+	 *         Restrictions.eq(alias1 + "." + targetPropertyName1, value1),
+	 *         Restrictions.eq(alias2 + "." + targetPropertyName2, value2)
+	 *     ));
+	 * </pre>
+	 * 
 	 * You can safely call this method multiple times with
-     * same association path argument. Note that <em>unused
+     * same association path argument. Note that unused
      * association path criteria instances might break your
-     * query behavior</em> (don't call this method if you
-     * do nothing with its result).
+     * query behavior when using certain join types (e.g.
+     * {@link NestedPropertyJoinType#INNER_JOIN inner join}).
      * 
 	 * @param associationPath Association path for which
 	 * to obtain the {@link Criteria} instance.
