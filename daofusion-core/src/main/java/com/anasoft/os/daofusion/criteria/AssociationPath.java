@@ -184,19 +184,24 @@ public class AssociationPath implements Iterable<AssociationPath> {
 		
 		return true;
 	}
-	
-	@Override
-	public String toString() {
+
+    public String getAlias() {
+        return createNativePath("_");
+    }
+
+    @Override
+    public String toString() {
+        return createNativePath(SEPARATOR);
+    }
+
+    private String createNativePath(String separator) {
         StringBuilder sb = new StringBuilder();
-        
         for (AssociationPathElement pathElement : this.elements) {
-            if (sb.length() > 0)
-                sb.append(SEPARATOR);
-            
+            if (sb.length() > 0) {
+                sb.append(separator);
+            }
             sb.append(pathElement.getValue());
         }
-        
         return sb.toString();
-	}
-	
+    }
 }

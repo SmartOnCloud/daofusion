@@ -136,7 +136,7 @@ public class AssociationPathRegister {
                     
                     Criteria parentCriteria = pathToCriteriaMap.get(superPath);
                     Criteria criteria = parentCriteria.createCriteria(
-                            lastElement.getValue(),
+                            lastElement.getValue(), partialPath.getAlias(),
                             lastElement.getJoinType().getHibernateJoinType());
                     
                     pathToCriteriaMap.put(partialPath, criteria);
