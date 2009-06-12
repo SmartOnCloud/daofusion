@@ -152,4 +152,9 @@ public class NestedPropertyCriteria extends AbstractCriterionGroup<NestedPropert
 	    
 	}
 	
+	@Override
+	public String toString() {
+	    return getObjectList().toString();
+	}
+	
 }

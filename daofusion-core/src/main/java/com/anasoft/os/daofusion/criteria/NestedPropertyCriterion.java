@@ -130,6 +130,14 @@ public abstract class NestedPropertyCriterion<V extends NestedPropertyCriterionV
         return true;
     }
     
+    @Override
+    public String toString() {
+        return new StringBuilder(associationPath.toString())
+            .append(":")
+            .append(targetPropertyName)
+            .toString();
+    }
+    
     /**
      * Base class for specific {@link NestedPropertyCriterion} builders.
      * 

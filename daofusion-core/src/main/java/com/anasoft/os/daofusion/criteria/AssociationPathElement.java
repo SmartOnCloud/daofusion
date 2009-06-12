@@ -97,4 +97,13 @@ public class AssociationPathElement {
         return true;
     }
     
+    @Override
+    public String toString() {
+        return new StringBuilder(value)
+            .append(" [")
+            .append(joinType.toString())
+            .append("]")
+            .toString();
+    }
+    
 }
