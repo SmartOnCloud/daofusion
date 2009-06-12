@@ -16,7 +16,7 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import com.anasoft.os.daofusion.criteria.FilterCriterion;
 import com.anasoft.os.daofusion.criteria.NestedPropertyCriteria;
 import com.anasoft.os.daofusion.criteria.NestedPropertyCriterion;
-import com.anasoft.os.daofusion.criteria.PropertyFilterCriterionProvider;
+import com.anasoft.os.daofusion.criteria.FilterCriterionProvider;
 import com.anasoft.os.daofusion.criteria.SortCriterion;
 import com.anasoft.os.daofusion.cto.client.CriteriaTransferObject;
 import com.anasoft.os.daofusion.cto.client.FilterAndSortCriteria;
@@ -100,7 +100,7 @@ public class NestedPropertyCriteriaBasedConverterTest {
 	 * 
 	 * <p>
 	 * 
-	 * {@link PropertyFilterCriterionProvider} instances are
+	 * {@link FilterCriterionProvider} instances are
 	 * set to <tt>null</tt> in this case because they don't
 	 * affect the structure of a nested property criterion.
 	 */

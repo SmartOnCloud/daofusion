@@ -116,7 +116,7 @@ public class NestedPropertyCriteria extends AbstractCriterionGroup<NestedPropert
 	        }
 	        
 	        // apply query constraints to the Criteria instance
-	        PropertyFilterCriterionProvider criterionProvider = criterion.getFilterCriterionProvider();
+	        FilterCriterionProvider criterionProvider = criterion.getFilterCriterionProvider();
             Object[] directValues = criterion.getDirectValues();
             
 	        if (criterionProvider.enabled(filterObjectValues, directValues)) {

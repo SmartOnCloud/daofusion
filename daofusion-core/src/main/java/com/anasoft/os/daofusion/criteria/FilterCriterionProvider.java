@@ -3,7 +3,7 @@ package com.anasoft.os.daofusion.criteria;
 import org.hibernate.criterion.Criterion;
 
 /**
- * Custom {@link Criterion} instance provider
+ * Generic {@link Criterion} instance provider
  * contract used by the {@link FilterCriterion}.
  * 
  * <p>
@@ -17,7 +17,7 @@ import org.hibernate.criterion.Criterion;
  * 
  * @author vojtech.szocs
  */
-public interface PropertyFilterCriterionProvider {
+public interface FilterCriterionProvider {
 
 	/**
 	 * Returns a {@link Criterion} instance corresponding
@@ -57,7 +57,7 @@ public interface PropertyFilterCriterionProvider {
 	 * <ul>
 	 *     <li>filter value inconsistency (the provider is
 	 *         unable to build the corresponding {@link Criterion}
-	 *         instance)
+	 *         instance due to missing or incorrect filter data)
 	 *     <li>manual filter switch (the user wants to have
 	 *         control over when this provider should be active)
 	 * </ul>

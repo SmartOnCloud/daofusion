@@ -23,8 +23,9 @@ import com.anasoft.os.daofusion.criteria.AssociationPathElement;
 import com.anasoft.os.daofusion.criteria.FilterCriterion;
 import com.anasoft.os.daofusion.criteria.NestedPropertyCriteria;
 import com.anasoft.os.daofusion.criteria.PersistentEntityCriteria;
-import com.anasoft.os.daofusion.criteria.PropertyFilterCriterionProvider;
+import com.anasoft.os.daofusion.criteria.SimpleFilterCriterionProvider;
 import com.anasoft.os.daofusion.criteria.SortCriterion;
+import com.anasoft.os.daofusion.criteria.SimpleFilterCriterionProvider.FilterDataStrategy;
 import com.anasoft.os.daofusion.entity.MutablePersistentEntity;
 import com.anasoft.os.daofusion.entity.Persistable;
 import com.anasoft.os.daofusion.test.example.entity.Customer;
@@ -164,14 +165,12 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
     private PersistentEntityCriteria getEmptyResultSetCustomerCriteria() {
     	NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
     	
-    	entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "email", "nobody@non-existing-provider.net", false, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.eq(targetPropertyName, directValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+    	entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "email", "nobody@non-existing-provider.net", false,
+    	        new SimpleFilterCriterionProvider(FilterDataStrategy.DIRECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.eq(targetPropertyName, directValues[0]);
+                    }
+                }));
         
         return entityCriteria;
     }
@@ -468,41 +467,33 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
         entityCriteria.setFilterObject(filterObject);
         
-        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "firstName", "firstName", true, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "firstName", "firstName", true,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.FILTER_OBJECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
+                    }
+                }));
         
-        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "lastName", "lastName", true, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.like(targetPropertyName, filterObjectValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "lastName", "lastName", true,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.FILTER_OBJECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.like(targetPropertyName, filterObjectValues[0]);
+                    }
+                }));
         
-        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "email", "email", true, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.like(targetPropertyName, filterObjectValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "email", "email", true,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.FILTER_OBJECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.like(targetPropertyName, filterObjectValues[0]);
+                    }
+                }));
         
-        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "orders", orderCount, false, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.sizeEq(targetPropertyName, (Integer) directValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "orders", orderCount, false,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.DIRECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.sizeEq(targetPropertyName, (Integer) directValues[0]);
+                    }
+                }));
         
         List<Customer> customerList = customerDao.query(entityCriteria, Customer.class);
         
@@ -557,59 +548,47 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         AssociationPathElement stockItemElement = new AssociationPathElement("stockItem");
         AssociationPathElement categoryElement = new AssociationPathElement("category");
         
-        entityCriteria.add(new FilterCriterion(new AssociationPath(orderElement), "shippingAddress", "order.shippingAddress", true, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(new AssociationPath(orderElement), "shippingAddress", "order.shippingAddress", true,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.FILTER_OBJECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
+                    }
+                }));
         
-        entityCriteria.add(new FilterCriterion(new AssociationPath(orderElement), "complete", "order.complete", true, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(new AssociationPath(orderElement), "complete", "order.complete", true,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.FILTER_OBJECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
+                    }
+                }));
         
-        entityCriteria.add(new FilterCriterion(new AssociationPath(orderElement, customerElement), "firstName", "order.customer.firstName", true, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(new AssociationPath(orderElement, customerElement), "firstName", "order.customer.firstName", true,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.FILTER_OBJECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
+                    }
+                }));
         
-        entityCriteria.add(new FilterCriterion(new AssociationPath(orderElement, customerElement), "email", "order.customer.email", true, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.like(targetPropertyName, filterObjectValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(new AssociationPath(orderElement, customerElement), "email", "order.customer.email", true,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.FILTER_OBJECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.like(targetPropertyName, filterObjectValues[0]);
+                    }
+                }));
         
-        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement), "price", "stockItem.price", true, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.gt(targetPropertyName, filterObjectValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement), "price", "stockItem.price", true,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.FILTER_OBJECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.gt(targetPropertyName, filterObjectValues[0]);
+                    }
+            }));
         
-        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", "stockItem.category.name", true, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", "stockItem.category.name", true,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.FILTER_OBJECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.eq(targetPropertyName, filterObjectValues[0]);
+                    }
+                }));
         
         List<OrderItem> orderItemList = orderItemDao.query(entityCriteria, OrderItem.class);
         
@@ -769,14 +748,12 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         
     	NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
     	
-    	entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.eq(targetPropertyName, directValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+    	entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_COMPUTERS, false,
+    	        new SimpleFilterCriterionProvider(FilterDataStrategy.DIRECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.eq(targetPropertyName, directValues[0]);
+                    }
+                }));
         
         entityCriteria.add(new SortCriterion(new AssociationPath(stockItemElement), "price", false));
         
@@ -813,14 +790,12 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
     @Test
     public void testUniqueResult_singleInstanceResultSet() {
     	NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
-        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "email", customerOneEmail, false, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.eq(targetPropertyName, directValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "email", customerOneEmail, false,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.DIRECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.eq(targetPropertyName, directValues[0]);
+                    }
+                }));
         
         Customer uniqueCustomer = customerDao.uniqueResult(entityCriteria, false, Customer.class);
         
@@ -895,23 +870,19 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         
         NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
         
-        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.eq(targetPropertyName, directValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_COMPUTERS, false,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.DIRECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.eq(targetPropertyName, directValues[0]);
+                    }
+                }));
         
-        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "quantity", Integer.valueOf(2), false, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.gt(targetPropertyName, directValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(AssociationPath.ROOT, "quantity", Integer.valueOf(2), false,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.DIRECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.gt(targetPropertyName, directValues[0]);
+                    }
+                }));
         
         int count = orderItemDao.count(entityCriteria, OrderItem.class);
         
@@ -929,23 +900,19 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         
         NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
         
-        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.eq(targetPropertyName, directValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_COMPUTERS, false,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.DIRECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.eq(targetPropertyName, directValues[0]);
+                    }
+                }));
         
-        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "description", STOCK_ITEM_CATEGORY_COMPUTERS_DESC, false, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.eq(targetPropertyName, directValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "description", STOCK_ITEM_CATEGORY_COMPUTERS_DESC, false,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.DIRECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.eq(targetPropertyName, directValues[0]);
+                    }
+                }));
         
         List<OrderItem> orderItemList = orderItemDao.query(entityCriteria, OrderItem.class);
         
@@ -962,32 +929,26 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         AssociationPathElement stockItemElement = new AssociationPathElement("stockItem");
         AssociationPathElement categoryElement = new AssociationPathElement("category");
         
-        FilterCriterion criterion1 = new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.eq(targetPropertyName, directValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        });
+        FilterCriterion criterion1 = new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_COMPUTERS, false,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.DIRECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.eq(targetPropertyName, directValues[0]);
+                    }
+                });
         
-        FilterCriterion criterion2 = new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_COMPUTERS, false, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.eq(targetPropertyName, directValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        });
+        FilterCriterion criterion2 = new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_COMPUTERS, false,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.DIRECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.eq(targetPropertyName, directValues[0]);
+                    }
+                });
         
-        FilterCriterion criterion3 = new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_FOOD, false, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.eq(targetPropertyName, directValues[0]);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        });
+        FilterCriterion criterion3 = new FilterCriterion(new AssociationPath(stockItemElement, categoryElement), "name", STOCK_ITEM_CATEGORY_FOOD, false,
+                new SimpleFilterCriterionProvider(FilterDataStrategy.DIRECT, 1) {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.eq(targetPropertyName, directValues[0]);
+                    }
+                });
         
         NestedPropertyCriteria cr1 = new NestedPropertyCriteria();
         cr1.add(criterion1);
@@ -1011,23 +972,19 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         
         NestedPropertyCriteria entityCriteria = new NestedPropertyCriteria();
         
-        entityCriteria.add(new FilterCriterion(new AssociationPath(orderElement), "description", null, false, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.isNotNull(targetPropertyName);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(new AssociationPath(orderElement), "description", null, false,
+                new SimpleFilterCriterionProvider() {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.isNotNull(targetPropertyName);
+                    }
+                }));
         
-        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement), "description", null, false, new PropertyFilterCriterionProvider() {
-            public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
-                return Restrictions.isNull(targetPropertyName);
-            }
-            public boolean enabled(Object[] filterObjectValues, Object[] directValues) {
-                return true;
-            }
-        }));
+        entityCriteria.add(new FilterCriterion(new AssociationPath(stockItemElement), "description", null, false,
+                new SimpleFilterCriterionProvider() {
+                    public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
+                        return Restrictions.isNull(targetPropertyName);
+                    }
+                }));
         
         List<OrderItem> orderItemList = orderItemDao.query(entityCriteria, OrderItem.class);
         

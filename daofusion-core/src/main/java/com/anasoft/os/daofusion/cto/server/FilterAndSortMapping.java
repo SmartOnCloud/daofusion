@@ -1,10 +1,12 @@
 package com.anasoft.os.daofusion.cto.server;
 
+import org.hibernate.criterion.Criterion;
+
 import com.anasoft.os.daofusion.criteria.AssociationPath;
 import com.anasoft.os.daofusion.criteria.FilterCriterion;
 import com.anasoft.os.daofusion.criteria.NestedPropertyCriteria;
 import com.anasoft.os.daofusion.criteria.NestedPropertyJoinType;
-import com.anasoft.os.daofusion.criteria.PropertyFilterCriterionProvider;
+import com.anasoft.os.daofusion.criteria.FilterCriterionProvider;
 import com.anasoft.os.daofusion.criteria.SortCriterion;
 import com.anasoft.os.daofusion.cto.client.FilterAndSortCriteria;
 
@@ -14,24 +16,27 @@ import com.anasoft.os.daofusion.cto.client.FilterAndSortCriteria;
  * 
  * <p>
  * 
- * This mapping uses a {@link FilterValueObjectProvider} instance
- * to construct typed object representations of string-based filter
- * values received from the {@link FilterAndSortCriteria} (these
- * objects will be passed as <tt>directValues</tt> to the underlying
- * {@link FilterCriterion} instances in case the <tt>filterCriterionProvider</tt>
- * is not <tt>null</tt>, indicating that the filtering functionality
- * is enabled).
+ * This mapping uses a {@link FilterValueConverter} to convert
+ * string-based filter values received from the {@link FilterAndSortCriteria}
+ * into their typed object representations (resulting  objects will be passed
+ * as <tt>directValues</tt> to the underlying {@link FilterCriterion} instances
+ * in case the <tt>filterCriterionProvider</tt> is not <tt>null</tt>).
  * 
- * @see FilterValueObjectProvider
- * @see PropertyFilterCriterionProvider
+ * <p>
+ * 
+ * Note that the filtering functionality can be disabled by setting
+ * <tt>filterCriterionProvider</tt> to <tt>null</tt>.
+ * 
+ * @see FilterCriterionProvider
+ * @see FilterValueConverter
  * @see NestedPropertyMapping
  * 
  * @author vojtech.szocs
  */
 public class FilterAndSortMapping extends NestedPropertyMapping {
 
-	private final PropertyFilterCriterionProvider filterCriterionProvider;
-	private final FilterValueObjectProvider filterValueObjectProvider;
+	private final FilterCriterionProvider filterCriterionProvider;
+	private final FilterValueConverter filterValueConverter;
 	
 	/**
 	 * Creates a new property mapping.
@@ -44,18 +49,18 @@ public class FilterAndSortMapping extends NestedPropertyMapping {
 	 * @param propertyPath Dot-separated logical path to the target property.
 	 * @param associationJoinType Type of join to use in case of a nested
      * (non-direct) persistent entity property (can be <tt>null</tt> otherwise).
-	 * @param filterCriterionProvider Custom {@link PropertyFilterCriterionProvider}
-     * implementation or <tt>null</tt> to disable the filtering functionality.
-     * @param filterValueObjectProvider Custom {@link FilterValueObjectProvider}
-     * implementation (applicable only when the <tt>filterCriterionProvider</tt>
-     * is not <tt>null</tt>).
+	 * @param filterCriterionProvider {@link Criterion} instance provider used
+     * for filtering or <tt>null</tt> to disable the filtering functionality.
+     * @param filterValueConverter {@link FilterValueConverter} implementation
+     * applicable to corresponding filter values (effective only only when the
+     * <tt>filterCriterionProvider</tt> is not <tt>null</tt>).
 	 */
 	@Deprecated
-	public FilterAndSortMapping(String propertyId, String propertyPath, NestedPropertyJoinType associationJoinType, PropertyFilterCriterionProvider filterCriterionProvider, FilterValueObjectProvider filterValueObjectProvider) {
+	public FilterAndSortMapping(String propertyId, String propertyPath, NestedPropertyJoinType associationJoinType, FilterCriterionProvider filterCriterionProvider, FilterValueConverter filterValueConverter) {
 		super(propertyId, propertyPath, associationJoinType);
 		
 		this.filterCriterionProvider = filterCriterionProvider;
-		this.filterValueObjectProvider = filterValueObjectProvider;
+		this.filterValueConverter = filterValueConverter;
 	}
 	
 	/**
@@ -66,17 +71,17 @@ public class FilterAndSortMapping extends NestedPropertyMapping {
      * to the given property of the target persistent entity.
      * @param targetPropertyName Name of the target property of
      * the given persistent entity.
-     * @param filterCriterionProvider Custom {@link PropertyFilterCriterionProvider}
-     * implementation or <tt>null</tt> to disable the filtering functionality.
-     * @param filterValueObjectProvider Custom {@link FilterValueObjectProvider}
-     * implementation (applicable only when the <tt>filterCriterionProvider</tt>
-     * is not <tt>null</tt>).
+     * @param filterCriterionProvider {@link Criterion} instance provider used
+     * for filtering or <tt>null</tt> to disable the filtering functionality.
+     * @param filterValueConverter {@link FilterValueConverter} implementation
+     * applicable to corresponding filter values (effective only only when the
+     * <tt>filterCriterionProvider</tt> is not <tt>null</tt>).
 	 */
-	public FilterAndSortMapping(String propertyId, AssociationPath associationPath, String targetPropertyName, PropertyFilterCriterionProvider filterCriterionProvider, FilterValueObjectProvider filterValueObjectProvider) {
+	public FilterAndSortMapping(String propertyId, AssociationPath associationPath, String targetPropertyName, FilterCriterionProvider filterCriterionProvider, FilterValueConverter filterValueConverter) {
 	    super(propertyId, associationPath, targetPropertyName);
 	    
         this.filterCriterionProvider = filterCriterionProvider;
-        this.filterValueObjectProvider = filterValueObjectProvider;
+        this.filterValueConverter = filterValueConverter;
 	}
 	
 	/**
@@ -89,15 +94,15 @@ public class FilterAndSortMapping extends NestedPropertyMapping {
 	 * 
 	 * @param propertyId Symbolic persistent entity property identifier.
 	 * @param propertyPath Dot-separated logical path to the target property.
-	 * @param filterCriterionProvider Custom {@link PropertyFilterCriterionProvider}
-     * implementation or <tt>null</tt> to disable the filtering functionality.
-     * @param filterValueObjectProvider Custom {@link FilterValueObjectProvider}
-     * implementation (applicable only when the <tt>filterCriterionProvider</tt>
-     * is not <tt>null</tt>).
+	 * @param filterCriterionProvider {@link Criterion} instance provider used
+     * for filtering or <tt>null</tt> to disable the filtering functionality.
+     * @param filterValueConverter {@link FilterValueConverter} implementation
+     * applicable to corresponding filter values (effective only only when the
+     * <tt>filterCriterionProvider</tt> is not <tt>null</tt>).
 	 */
 	@Deprecated
-	public FilterAndSortMapping(String propertyId, String propertyPath, PropertyFilterCriterionProvider filterCriterionProvider, FilterValueObjectProvider filterValueObjectProvider) {
-		this(propertyId, propertyPath, NestedPropertyJoinType.DEFAULT, filterCriterionProvider, filterValueObjectProvider);
+	public FilterAndSortMapping(String propertyId, String propertyPath, FilterCriterionProvider filterCriterionProvider, FilterValueConverter filterValueConverter) {
+		this(propertyId, propertyPath, NestedPropertyJoinType.DEFAULT, filterCriterionProvider, filterValueConverter);
 	}
 	
 	/**
@@ -162,20 +167,20 @@ public class FilterAndSortMapping extends NestedPropertyMapping {
 	}
 	
 	/**
-	 * @return Custom {@link PropertyFilterCriterionProvider} implementation
+	 * @return {@link Criterion} instance provider used for filtering
 	 * or <tt>null</tt> to disable the filtering functionality.
 	 */
-	public PropertyFilterCriterionProvider getFilterCriterionProvider() {
+	public FilterCriterionProvider getFilterCriterionProvider() {
 		return filterCriterionProvider;
 	}
 	
 	/**
-	 * @return Custom {@link FilterValueObjectProvider} implementation
-	 * (applicable only when the <tt>filterCriterionProvider</tt> is not
-	 * <tt>null</tt>).
+	 * @return {@link FilterValueConverter} implementation applicable
+	 * to corresponding filter values (effective only only when the
+     * <tt>filterCriterionProvider</tt> is not <tt>null</tt>).
 	 */
-	public FilterValueObjectProvider getFilterValueObjectProvider() {
-		return filterValueObjectProvider;
+	public FilterValueConverter getFilterValueConverter() {
+		return filterValueConverter;
 	}
 	
 	/**
@@ -206,7 +211,7 @@ public class FilterAndSortMapping extends NestedPropertyMapping {
 		
 		// convert string-based filter values into their typed representations
 		for (int i = 0; i < stringFilterValues.length; i++) {
-			typedFilterValues[i] = filterValueObjectProvider.getObject(stringFilterValues[i]);
+			typedFilterValues[i] = filterValueConverter.convert(stringFilterValues[i]);
 		}
 		
 		return new FilterCriterion(getAssociationPath(),
