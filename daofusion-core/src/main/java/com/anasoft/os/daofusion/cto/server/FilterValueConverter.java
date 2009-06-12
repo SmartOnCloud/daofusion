@@ -1,5 +1,6 @@
 package com.anasoft.os.daofusion.cto.server;
 
+import com.anasoft.os.daofusion.criteria.FilterCriterionProvider;
 import com.anasoft.os.daofusion.cto.client.FilterAndSortCriteria;
 
 /**
@@ -7,11 +8,14 @@ import com.anasoft.os.daofusion.cto.client.FilterAndSortCriteria;
  * received from the {@link FilterAndSortCriteria} into
  * their typed object representations.
  * 
+ * @param <T> Type of filter values the underlying
+ * {@link FilterCriterionProvider} works with.
+ * 
  * @see FilterAndSortMapping
  * 
  * @author vojtech.szocs
  */
-public interface FilterValueConverter {
+public interface FilterValueConverter<T> {
 
 	/**
 	 * Converts the given <tt>stringValue</tt>
@@ -33,6 +37,6 @@ public interface FilterValueConverter {
      * received from the {@link FilterAndSortCriteria}.
      * @return Filter value object representation.
      */
-	Object convert(String stringValue);
+	T convert(String stringValue);
 	
 }

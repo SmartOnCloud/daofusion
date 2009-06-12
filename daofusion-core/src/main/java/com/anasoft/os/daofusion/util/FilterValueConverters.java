@@ -25,7 +25,7 @@ public final class FilterValueConverters {
      * 
      * @author vojtech.szocs
      */
-    public static class DateConverter implements FilterValueConverter {
+    public static class DateConverter implements FilterValueConverter<Date> {
         
         private final String dateFormatPattern;
         
@@ -48,7 +48,7 @@ public final class FilterValueConverters {
         /**
          * @see com.anasoft.os.daofusion.cto.server.FilterValueConverter#convert(java.lang.String)
          */
-        public Object convert(String stringValue) {
+        public Date convert(String stringValue) {
             return parseDate(stringValue, dateFormatPattern);
         }
         
@@ -62,26 +62,26 @@ public final class FilterValueConverters {
         
     }
     
-    public static final FilterValueConverter STRING = new FilterValueConverter() {
-        public Object convert(String stringValue) {
+    public static final FilterValueConverter<String> STRING = new FilterValueConverter<String>() {
+        public String convert(String stringValue) {
             return stringValue;
         }
     };
     
-    public static final FilterValueConverter INTEGER = new FilterValueConverter() {
-        public Object convert(String stringValue) {
+    public static final FilterValueConverter<Integer> INTEGER = new FilterValueConverter<Integer>() {
+        public Integer convert(String stringValue) {
             return Integer.valueOf(stringValue);
         }
     };
     
-    public static final FilterValueConverter LONG = new FilterValueConverter() {
-        public Object convert(String stringValue) {
+    public static final FilterValueConverter<Long> LONG = new FilterValueConverter<Long>() {
+        public Long convert(String stringValue) {
             return Long.valueOf(stringValue);
         }
     };
     
-    public static final FilterValueConverter BOOLEAN = new FilterValueConverter() {
-        public Object convert(String stringValue) {
+    public static final FilterValueConverter<Boolean> BOOLEAN = new FilterValueConverter<Boolean>() {
+        public Boolean convert(String stringValue) {
             return Boolean.valueOf(stringValue);
         }
     };

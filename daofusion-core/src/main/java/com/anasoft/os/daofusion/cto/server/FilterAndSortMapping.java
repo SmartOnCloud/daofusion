@@ -1,12 +1,15 @@
 package com.anasoft.os.daofusion.cto.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.criterion.Criterion;
 
 import com.anasoft.os.daofusion.criteria.AssociationPath;
 import com.anasoft.os.daofusion.criteria.FilterCriterion;
+import com.anasoft.os.daofusion.criteria.FilterCriterionProvider;
 import com.anasoft.os.daofusion.criteria.NestedPropertyCriteria;
 import com.anasoft.os.daofusion.criteria.NestedPropertyJoinType;
-import com.anasoft.os.daofusion.criteria.FilterCriterionProvider;
 import com.anasoft.os.daofusion.criteria.SortCriterion;
 import com.anasoft.os.daofusion.cto.client.FilterAndSortCriteria;
 
@@ -27,16 +30,19 @@ import com.anasoft.os.daofusion.cto.client.FilterAndSortCriteria;
  * Note that the filtering functionality can be disabled by setting
  * <tt>filterCriterionProvider</tt> to <tt>null</tt>.
  * 
+ * @param <T> Type of filter values the underlying
+ * {@link FilterCriterionProvider} works with.
+ * 
  * @see FilterCriterionProvider
  * @see FilterValueConverter
  * @see NestedPropertyMapping
  * 
  * @author vojtech.szocs
  */
-public class FilterAndSortMapping extends NestedPropertyMapping {
+public class FilterAndSortMapping<T> extends NestedPropertyMapping {
 
 	private final FilterCriterionProvider filterCriterionProvider;
-	private final FilterValueConverter filterValueConverter;
+	private final FilterValueConverter<T> filterValueConverter;
 	
 	/**
 	 * Creates a new property mapping.
@@ -56,7 +62,7 @@ public class FilterAndSortMapping extends NestedPropertyMapping {
      * <tt>filterCriterionProvider</tt> is not <tt>null</tt>).
 	 */
 	@Deprecated
-	public FilterAndSortMapping(String propertyId, String propertyPath, NestedPropertyJoinType associationJoinType, FilterCriterionProvider filterCriterionProvider, FilterValueConverter filterValueConverter) {
+	public FilterAndSortMapping(String propertyId, String propertyPath, NestedPropertyJoinType associationJoinType, FilterCriterionProvider filterCriterionProvider, FilterValueConverter<T> filterValueConverter) {
 		super(propertyId, propertyPath, associationJoinType);
 		
 		this.filterCriterionProvider = filterCriterionProvider;
@@ -77,7 +83,7 @@ public class FilterAndSortMapping extends NestedPropertyMapping {
      * applicable to corresponding filter values (effective only only when the
      * <tt>filterCriterionProvider</tt> is not <tt>null</tt>).
 	 */
-	public FilterAndSortMapping(String propertyId, AssociationPath associationPath, String targetPropertyName, FilterCriterionProvider filterCriterionProvider, FilterValueConverter filterValueConverter) {
+	public FilterAndSortMapping(String propertyId, AssociationPath associationPath, String targetPropertyName, FilterCriterionProvider filterCriterionProvider, FilterValueConverter<T> filterValueConverter) {
 	    super(propertyId, associationPath, targetPropertyName);
 	    
         this.filterCriterionProvider = filterCriterionProvider;
@@ -101,7 +107,7 @@ public class FilterAndSortMapping extends NestedPropertyMapping {
      * <tt>filterCriterionProvider</tt> is not <tt>null</tt>).
 	 */
 	@Deprecated
-	public FilterAndSortMapping(String propertyId, String propertyPath, FilterCriterionProvider filterCriterionProvider, FilterValueConverter filterValueConverter) {
+	public FilterAndSortMapping(String propertyId, String propertyPath, FilterCriterionProvider filterCriterionProvider, FilterValueConverter<T> filterValueConverter) {
 		this(propertyId, propertyPath, NestedPropertyJoinType.DEFAULT, filterCriterionProvider, filterValueConverter);
 	}
 	
@@ -179,7 +185,7 @@ public class FilterAndSortMapping extends NestedPropertyMapping {
 	 * to corresponding filter values (effective only only when the
      * <tt>filterCriterionProvider</tt> is not <tt>null</tt>).
 	 */
-	public FilterValueConverter getFilterValueConverter() {
+	public FilterValueConverter<T> getFilterValueConverter() {
 		return filterValueConverter;
 	}
 	
@@ -207,17 +213,17 @@ public class FilterAndSortMapping extends NestedPropertyMapping {
 	 */
 	private FilterCriterion getFilterCriterion(FilterAndSortCriteria clientSideCriteria) {
 		String[] stringFilterValues = clientSideCriteria.getFilterValues();
-		Object[] typedFilterValues = new Object[stringFilterValues.length];
+		List<T> typedFilterValues = new ArrayList<T>();
 		
 		// convert string-based filter values into their typed representations
 		for (int i = 0; i < stringFilterValues.length; i++) {
-			typedFilterValues[i] = filterValueConverter.convert(stringFilterValues[i]);
+		    typedFilterValues.add(filterValueConverter.convert(stringFilterValues[i]));
 		}
 		
 		return new FilterCriterion(getAssociationPath(),
 				getTargetPropertyName(),
 				null,
-				typedFilterValues,
+				typedFilterValues.toArray(),
 				filterCriterionProvider);
 	}
 	
