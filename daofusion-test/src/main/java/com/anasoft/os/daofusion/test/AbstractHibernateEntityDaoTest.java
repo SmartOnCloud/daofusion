@@ -33,6 +33,8 @@ import com.anasoft.os.daofusion.test.example.entity.Order;
 import com.anasoft.os.daofusion.test.example.entity.OrderItem;
 import com.anasoft.os.daofusion.test.example.entity.PromotedStockItem;
 import com.anasoft.os.daofusion.test.example.entity.StockItem;
+import com.anasoft.os.daofusion.test.example.enums.Country;
+import com.anasoft.os.daofusion.test.example.enums.PaymentType;
 import com.anasoft.os.daofusion.test.example.enums.StockItemCategory;
 
 /**
@@ -180,7 +182,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Before
     public void verifyTestData() {
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(0));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(0));
         
         stockItemDao.getHibernateSession().clear();
     }
@@ -202,7 +204,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         PromotedStockItem stockItemTransient = getSampleStockItemTransient();
         PromotedStockItem stockItemPersistent = stockItemDao.saveOrUpdate(stockItemTransient);
         
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistent), equalTo(true));
         assertThat(stockItemPersistent.getId(), notNullValue());
         
@@ -217,7 +219,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
     public void testSaveOrUpdate_updatingDetachedInstance() {
         PromotedStockItem stockItemDetached = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
         
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemDetached), equalTo(true));
         assertThat(stockItemDetached.getId(), notNullValue());
         
@@ -255,12 +257,12 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
     public void testDeleteByInstance_deletingPersistentInstance() {
         PromotedStockItem stockItemPersistent = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
         
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistent), equalTo(true));
         
         stockItemDao.delete(stockItemPersistent);
         
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(0));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(0));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistent), equalTo(false));
         
         assertThat(stockItemDao.get(stockItemPersistent.getId(), PromotedStockItem.class), nullValue());
@@ -274,12 +276,12 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
     public void testDeleteById_deletingPersistentInstance() {
         PromotedStockItem stockItemPersistent = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
         
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistent), equalTo(true));
         
         stockItemDao.delete(stockItemPersistent.getId(), PromotedStockItem.class);
         
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(0));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(0));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistent), equalTo(false));
         
         assertThat(stockItemDao.get(stockItemPersistent.getId(), PromotedStockItem.class), nullValue());
@@ -294,7 +296,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         PromotedStockItem stockItemPersistentOne = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
         PromotedStockItem stockItemPersistentTwo = stockItemDao.saveOrUpdate(getModifiedSampleStockItemTransient());
         
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(2));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(2));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistentOne), equalTo(true));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistentTwo), equalTo(true));
         
@@ -302,7 +304,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         
         assertThat(instanceDeleteCount, equalTo(2));
         
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(0));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(0));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistentOne), equalTo(false));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistentTwo), equalTo(false));
         
@@ -318,14 +320,14 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
     public void testRefresh_refreshingPersistentInstance() {
         PromotedStockItem stockItemPersistent = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
         
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistent), equalTo(true));
         
         PromotedStockItem stockItemPersistentModified = stockItemDao.get(stockItemPersistent.getId(), PromotedStockItem.class);
         modifySampleStockItem(stockItemPersistentModified);
         stockItemPersistentModified = stockItemDao.saveOrUpdate(stockItemPersistentModified);
         
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistentModified), equalTo(true));
         
         stockItemDao.refresh(stockItemPersistent);
@@ -343,7 +345,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
     public void testRefresh_refreshingDetachedInstance() {
         PromotedStockItem stockItemDetached = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
         
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemDetached), equalTo(true));
         
         stockItemDao.getHibernateSession().evict(stockItemDetached);
@@ -354,7 +356,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         modifySampleStockItem(stockItemPersistentModified);
         stockItemPersistentModified = stockItemDao.saveOrUpdate(stockItemPersistentModified);
         
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistentModified), equalTo(true));
         
         stockItemDao.getHibernateSession().evict(stockItemPersistentModified);
@@ -375,7 +377,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
     public void testGet_retrievingPersistentInstance() {
         PromotedStockItem stockItemDetached = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
         
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(1));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(1));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemDetached), equalTo(true));
         
         stockItemDao.getHibernateSession().evict(stockItemDetached);
@@ -400,7 +402,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         PromotedStockItem stockItemPersistentNonExisting = stockItemDao.get(1L, PromotedStockItem.class);
         
         assertThat(stockItemPersistentNonExisting, nullValue());
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(0));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(0));
     }
     
     /**
@@ -412,7 +414,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         PromotedStockItem stockItemPersistentOne = stockItemDao.saveOrUpdate(getSampleStockItemTransient());
         PromotedStockItem stockItemPersistentTwo = stockItemDao.saveOrUpdate(getModifiedSampleStockItemTransient());
         
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), PromotedStockItem.class), equalTo(2));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(2));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistentOne), equalTo(true));
         assertThat(stockItemDao.getHibernateSession().contains(stockItemPersistentTwo), equalTo(true));
         
@@ -853,7 +855,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      */
     @Test
     public void testCount_multiInstanceResultSet() {
-        int count = customerDao.count(new NestedPropertyCriteria(), Customer.class);
+        int count = customerDao.countAll(Customer.class);
         
         assertThat(count, equalTo(2));
     }
@@ -887,6 +889,22 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
         int count = orderItemDao.count(entityCriteria, OrderItem.class);
         
         assertThat(count, equalTo(2));
+    }
+    
+    /**
+     * Test for {@link PersistentEntityDao#countAll(Class)}:
+     * performing total instance count.
+     */
+    @Test
+    public void testCountAll() {
+        assertThat(customerDao.countAll(Customer.class), equalTo(TOTAL_CUSTOMER_COUNT));
+        assertThat(orderDao.countAll(Order.class), equalTo(TOTAL_ORDER_COUNT));
+        assertThat(orderItemDao.countAll(OrderItem.class), equalTo(TOTAL_ORDER_ITEM_COUNT));
+        assertThat(stockItemDao.countAll(StockItem.class), equalTo(TOTAL_ORDER_ITEM_COUNT));
+        assertThat(stockItemDao.countAll(PromotedStockItem.class), equalTo(0));
+        assertThat(countryDao.countAll(Country.class), equalTo(TOTAL_COUNTRY_COUNT));
+        assertThat(stockItemCategoryDao.countAll(StockItemCategory.class), equalTo(TOTAL_STOCK_ITEM_CATEGORY_COUNT));
+        assertThat(paymentTypeDao.countAll(PaymentType.class), equalTo(0));
     }
     
     /**

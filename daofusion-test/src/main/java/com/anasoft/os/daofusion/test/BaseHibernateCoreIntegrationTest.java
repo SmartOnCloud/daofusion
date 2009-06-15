@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
-import com.anasoft.os.daofusion.criteria.NestedPropertyCriteria;
 import com.anasoft.os.daofusion.test.example.dao.CountryDao;
 import com.anasoft.os.daofusion.test.example.dao.CustomerDao;
 import com.anasoft.os.daofusion.test.example.dao.OrderDao;
@@ -80,6 +79,8 @@ public abstract class BaseHibernateCoreIntegrationTest extends BaseHibernateInte
     protected static final String STOCK_ITEM_CATEGORY_COMPUTERS = "Computers";
     protected static final String STOCK_ITEM_CATEGORY_COMPUTERS_DESC = "IT stuff";
     
+    protected static final int TOTAL_COUNTRY_COUNT = 2;
+    protected static final int TOTAL_STOCK_ITEM_CATEGORY_COUNT = 2;
     protected static final int TOTAL_CUSTOMER_COUNT = 2;
     protected static final int TOTAL_ORDER_COUNT = TOTAL_CUSTOMER_COUNT;
     protected static final int ORDER_PER_CUSTOMER_COUNT = 1;
@@ -130,8 +131,8 @@ public abstract class BaseHibernateCoreIntegrationTest extends BaseHibernateInte
         stockItemCategory.setDescription(STOCK_ITEM_CATEGORY_COMPUTERS_DESC);
         stockItemCategoryDao.saveOrUpdate(stockItemCategory);
         
-        assertThat(countryDao.count(new NestedPropertyCriteria(), Country.class), equalTo(2));
-        assertThat(stockItemCategoryDao.count(new NestedPropertyCriteria(), StockItemCategory.class), equalTo(2));
+        assertThat(countryDao.countAll(Country.class), equalTo(TOTAL_COUNTRY_COUNT));
+        assertThat(stockItemCategoryDao.countAll(StockItemCategory.class), equalTo(TOTAL_STOCK_ITEM_CATEGORY_COUNT));
     }
     
     /**
@@ -238,10 +239,10 @@ public abstract class BaseHibernateCoreIntegrationTest extends BaseHibernateInte
         
         customerTwoId = customerDao.saveOrUpdate(customerTwo).getId();
         
-        assertThat(customerDao.count(new NestedPropertyCriteria(), Customer.class), equalTo(TOTAL_CUSTOMER_COUNT));
-        assertThat(orderDao.count(new NestedPropertyCriteria(), Order.class), equalTo(TOTAL_ORDER_COUNT));
-        assertThat(orderItemDao.count(new NestedPropertyCriteria(), OrderItem.class), equalTo(TOTAL_ORDER_ITEM_COUNT));
-        assertThat(stockItemDao.count(new NestedPropertyCriteria(), StockItem.class), equalTo(TOTAL_ORDER_ITEM_COUNT));
+        assertThat(customerDao.countAll(Customer.class), equalTo(TOTAL_CUSTOMER_COUNT));
+        assertThat(orderDao.countAll(Order.class), equalTo(TOTAL_ORDER_COUNT));
+        assertThat(orderItemDao.countAll(OrderItem.class), equalTo(TOTAL_ORDER_ITEM_COUNT));
+        assertThat(stockItemDao.countAll(StockItem.class), equalTo(TOTAL_ORDER_ITEM_COUNT));
     }
     
 }

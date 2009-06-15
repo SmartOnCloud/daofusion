@@ -168,4 +168,18 @@ public abstract class AbstractHibernateEntityDao<T extends Persistable<ID>, ID e
         return count(entityCriteria, getEntityClass());
     }
 	
+	/**
+	 * @see com.anasoft.os.daofusion.PersistentEntityDao#countAll(java.lang.Class)
+	 */
+	public <S extends T> int countAll(Class<S> targetEntityClass) {
+	    return count(new NestedPropertyCriteria(), targetEntityClass);
+	}
+	
+    /**
+     * @see com.anasoft.os.daofusion.PersistentEntityDao#countAll()
+     */
+    public int countAll() {
+        return countAll(getEntityClass());
+    }
+	
 }

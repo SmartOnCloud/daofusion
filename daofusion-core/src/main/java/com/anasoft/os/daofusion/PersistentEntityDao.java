@@ -30,6 +30,13 @@ import com.anasoft.os.daofusion.entity.Persistable;
  * a general persistent entity DAO working with a parent entity which
  * is able to query for individual entity subclasses as well.
  * 
+ * <p>
+ * 
+ * <tt>count</tt> / <tt>countAll</tt> methods rely on specific row count
+ * technique implementation - the user has to adapt the {@link PersistentEntityCriteria}
+ * accordingly prior to calling these methods (for example, it doesn't make
+ * sense to add paging constraints when performing a row count in general).
+ * 
  * @param <T> Type of the persistent entity the DAO works with.
  * @param <ID> Java type of persistent entity's primary key column.
  * 
@@ -176,8 +183,8 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
 	int deleteAll();
 	
 	/**
-	 * Refreshes a persistent or a detached instance by
-	 * synchronizing its state with the database.
+	 * Refreshes a persistent or a detached instance
+	 * by synchronizing its state with the database.
 	 * 
 	 * @param entity Persistent or detached instance to
 	 * refresh.
@@ -242,13 +249,6 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
 	 * Returns the total number of instances persisted
 	 * within the database.
 	 * 
-	 * <p>
-	 * 
-	 * The user should be aware of the specific row count technique
-	 * implementation and adapt the <tt>entityCriteria</tt> accordingly
-	 * prior to calling this method (for example, it doesn't make sense
-	 * to add paging constraints when performing a row count in general).
-	 * 
      * @param entityCriteria {@link PersistentEntityCriteria}
      * instance defining persistent entity query constraints.
      * @param targetEntityClass Target persistent entity class.
@@ -261,13 +261,6 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
      * within the database, using the implicit persistent
      * entity class.
 	 * 
-	 * <p>
-     * 
-     * The user should be aware of the specific row count technique
-     * implementation and adapt the <tt>entityCriteria</tt> accordingly
-     * prior to calling this method (for example, it doesn't make sense
-     * to add paging constraints when performing a row count in general).
-	 * 
      * @param entityCriteria {@link PersistentEntityCriteria}
      * instance defining persistent entity query constraints.
      * @return Total instance count.
@@ -276,5 +269,26 @@ public interface PersistentEntityDao<T extends Persistable<ID>, ID extends Seria
      * @see #getEntityClass()
 	 */
 	int count(PersistentEntityCriteria entityCriteria);
+	
+	/**
+	 * Returns the total number of all instances persisted
+     * within the database.
+	 * 
+	 * @param targetEntityClass Target persistent entity class.
+	 * @return Total instance count.
+	 */
+	<S extends T> int countAll(Class<S> targetEntityClass);
+	
+	/**
+	 * Returns the total number of all instances persisted
+     * within the database, using the implicit persistent
+     * entity class.
+	 * 
+	 * @return Total instance count.
+	 * 
+	 * @see #countAll(Class)
+	 * @see #getEntityClass()
+	 */
+	int countAll();
 	
 }
