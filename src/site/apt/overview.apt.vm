@@ -1,0 +1,45 @@
+ ----
+ ${df} overview
+ ----
+ Vojtech Szocs
+ ----
+ 16 June 2009
+ ----
+
+${df} overview
+  
+  Building, testing and maintaining {{{http://java.sun.com/blueprints/corej2eepatterns/Patterns/DataAccessObject.html} Data Access Object}} layers in applications can be basically
+  done in two ways:
+  
+  * let the developers build up all the boilerplate code and configuration (which is, hopefully, easy to maintain in the long run) along with proper integration tests
+  
+  * use a comprehensive and well-tested library that handles all these tasks for you, saving you time and resources and letting you focus on the actual business logic
+  
+  []
+  
+* Choose your way
+  
+  ${df} aims to help Java developers build their server-side DAO layers with ease, doing most of the usual heavy lifting and providing support for common DAO-related tasks.
+  
+[images/overview.png] Overview
+  
+  ${df} introduces conventions and best practices into DAO layer development in terms of a consistent and extensible {{{./reference/entity-model.html} persistent entity model}}
+  and standard persistent entity {{{./reference/core-dao-classes.html} DAO interfaces / abstract implementations}} which already provide most of the usual DAO functionality.
+  ${df} defines an abstract {{{./reference/entity-criteria-api.html} entity criteria API}} that covers the most typical use cases while taking care of {{{http://www.hibernate.org/} Hibernate}}
+  specific issues at the same time. ${df} introduces the {{{./reference/cto-pattern.html} criteria transfer object pattern}} which proves to be useful for application scenarios with loose
+  coupling between the client and the server. Last but not least, ${df} provides an out-of-the-box {{{./reference/integration-tests.html} integration test support}} that ensures
+  proper test coverage of core DAO functionality and enables you to write your own custom integration tests for the chosen database at the same time.
+  
+* How it all started
+  
+  ${df} results from an effort to unify the concept of a DAO layer across projects based on Java platform. ${df} evolved from a simple DAO library to its present state thanks
+  to people who realized the benefits of such solution in long-term horizon. Should we decide to stick with plain-old JPA / Hibernate together with some simple DAO abstractions,
+  we would most probably end up with code that is hard to change and test later, bound to Hibernate specifics and quirks, not even mentioning that other Java projects did the same
+  thing while repeating the same old pattern. For developers, adopting ${df} might be an overhead since they can go straight with JPA / Hibernate in their applications anyway.
+  However, <in the long run>, it's a different story.
+  
+* Open source - why not?
+  
+  The fact that ${df} went {{{http://en.wikipedia.org/wiki/Open_source_software} open source}} after its initial release was a natural step in its evolution. After all, what's the real
+  benefit of having such library hidden inside a company with a couple of people responsible for its maintenance and further development? <Open source projects involve many people
+  collaborating together to build a software that is useful to each and every community member>, and that's the value ${df} aims to achieve.

@@ -3,10 +3,12 @@
  ----
  Vojtech Szocs
  ----
- 19 March 2009
+ 16 June 2009
  ----
 
 Download ${df}
+  
+* Stable releases
   
   Latest stable release: <<${df-latestStableVersion}>>
   
@@ -21,3 +23,17 @@ Download ${df}
   See the {{{./changes-report.html} changelog}} for more information about changes in this release.
   
   We also recommend checking out the {{{./dependencies.html} dependencies}} page which lists libraries and APIs required by specific ${df} projects.
+  
+* Milestone releases
+  
+  Latest milestone release: <<${df-latestMilestoneVersion}>>
+  
+*------------+--------+---------+---------*
+||           ||Binary ||Sources ||Javadoc |
+*------------+--------+---------+---------*
+| <<${df-core}>> | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-core}/${df-latestMilestoneVersion}/${df-core}-${df-latestMilestoneVersion}.jar} ${df-core}-${df-latestMilestoneVersion}.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-core}/${df-latestMilestoneVersion}/${df-core}-${df-latestMilestoneVersion}-sources.jar} ${df-core}-${df-latestMilestoneVersion}-sources.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-core}/${df-latestMilestoneVersion}/${df-core}-${df-latestMilestoneVersion}-javadoc.jar} ${df-core}-${df-latestMilestoneVersion}-javadoc.jar}} |
+*------------+--------+---------+---------*
+| <<${df-test}>> | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-test}/${df-latestMilestoneVersion}/${df-test}-${df-latestMilestoneVersion}.jar} ${df-test}-${df-latestMilestoneVersion}.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-test}/${df-latestMilestoneVersion}/${df-test}-${df-latestMilestoneVersion}-sources.jar} ${df-test}-${df-latestMilestoneVersion}-sources.jar}} | {{{http://anasoft-os-repo.googlecode.com/svn/repository/releases/${df-groupIdPath}/${df-test}/${df-latestMilestoneVersion}/${df-test}-${df-latestMilestoneVersion}-javadoc.jar} ${df-test}-${df-latestMilestoneVersion}-javadoc.jar}} |
+*------------+--------+---------+---------*
+  
+  See the {{{./roadmap.html} roadmap}} for more information about project milestones and their progress.

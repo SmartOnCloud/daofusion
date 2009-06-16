@@ -3,7 +3,7 @@
  ----
  Vojtech Szocs
  ----
- 18 March 2009
+ 27 May 2009
  ----
 
 Persistent entity model
@@ -73,7 +73,8 @@ External resources
   <<<PersistentEntity>>> is an abstract implementation of the <<<Persistable>>> interface for an entity managed within the JPA persistence context. It defines an automatically-generated id field
   of the given type using the <<<Id>>> and <<<GeneratedValue>>> annotations. Note that the <<<PersistentEntity>>> does NOT provide any special <hashCode> / <equals> method implementation - this is a task
   left to be done by the user, depending on the chosen method implementation pattern. See the <<<Persistable>>> Javadoc for more information about the two basic implementation patterns and
-  their comparison (business key versus synthetic generated value approach).
+  their comparison (business key versus synthetic generated value approach). On the other hand, <<<PersistentEntity>>> implicitly supports the <clone> operation without implementing the <<<Cloneable>>>
+  interface on its own. Subclasses can therefore implement the <<<Cloneable>>> interface to indicate explicit <clone> support.
   
   There are two specialized abstract classes derived from <<<PersistentEntity>>> which use <<<Long>>> as the primary key column type: <<<MutablePersistentEntity>>> and <<<ImmutablePersistentEntity>>>.
   

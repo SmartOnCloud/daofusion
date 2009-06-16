@@ -3,18 +3,18 @@
  ----
  Vojtech Szocs
  ----
- 25 May 2009
+ 16 June 2009
  ----
 
 Hello, DAO! tutorial
   
-  We have prepared a sample application to help developers get familiar with ${df} concepts using popular web application technologies and tools:
+  We have prepared a sample application to help developers get familiar with ${df} concepts using popular web technologies and tools:
   
   * {{{http://java.sun.com/javaee/5/docs/tutorial/doc/bnafd.html} Java Servlet API}} (Java EE)
   
   * {{{http://code.google.com/webtoolkit/} Google Web Toolkit}} (presentation logic and RPC support) / {{{http://code.google.com/p/smartgwt/} SmartGWT}} (fancy UI widgets)
   
-  * {{{http://maven.apache.org/} Maven}} (overall project build) / {{{http://ant.apache.org/} Ant}} (GWT module compilation)
+  * {{{http://maven.apache.org/} Maven}} (managing the project build) / {{{http://ant.apache.org/} Ant}} (GWT module compilation)
   
   []
   
@@ -50,4 +50,4 @@ http://localhost:8080/hellodao/init
   
 Step-by-step tutorial
   
-  We are currently working on a step-by-step tutorial for <Hello, DAO!> which should demonstrate basic steps when building DAO layers with ${df}.
+  We are currently working on a step-by-step tutorial for <Hello, DAO!> which will demonstrate basic steps when building DAO layers with ${df}.

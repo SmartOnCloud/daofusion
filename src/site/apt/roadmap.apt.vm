@@ -3,7 +3,7 @@
  ----
  Michal Jemala
  ----
- 25 May 2009
+ 16 June 2009
  ----
 
 ${df} roadmap
@@ -14,15 +14,17 @@ ${df} roadmap
   
   * {{{./roadmap.html#Milestone_1} Milestone 1}}: <<complete>>
   
-  * {{{./roadmap.html#Milestone_2} Milestone 2}}: beginning of June 2009
+  * {{{./roadmap.html#Milestone_2} Milestone 2}}: Mid July 2009
   
-  * {{{./roadmap.html#Milestone_3} Milestone 3}}: July 2009
+  * {{{./roadmap.html#Milestone_3} Milestone 3}}: Late July 2009
   
   []
   
 * {Milestone 1}
   
-  * project roadmap
+  * code review and refactoring based on open issues
+  
+  * project roadmap and overview
   
   * <Hello, DAO!> sample application
   
@@ -30,18 +32,20 @@ ${df} roadmap
   
 * {Milestone 2}
   
-  * step-by-step tutorial for <Hello, DAO!>
+  * {{{http://code.google.com/p/daofusion/issues/detail?id=9} bitemporal pattern}} support
   
-  * project overview (main concepts, usage benefits, etc.)
+  * revision of reference documentation
+  
+  * step-by-step tutorial for <Hello, DAO!>
   
   []
   
 * {Milestone 3}
   
-  * {{{http://groups.google.com/group/dao-fusion/t/e1ece1641af9c970} Bitemporal pattern support}} including corresponding reference documentation
+  * documentation final touches
   
-  * any issues that come up until release
+  * any issues that come up until release (code base stabilization)
   
-  * <<release>>
+  * release of <<${df} 1.2.0>>
   
   []

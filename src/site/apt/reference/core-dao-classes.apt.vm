@@ -109,7 +109,7 @@ Related tech notes
   
   Standard persistent entity DAO implementations don't care about transactions - but should they? What if someone wants to handle transactions manually using the <programmatic transaction model>
   or create transactional AOP proxies using the <declarative transaction model>? To maintain the generic nature of the DAO concept, ${df} lets its users handle transactions within the context
-  of DAO method calls completely on their own. The use of a specific transaction strategy based on a transaction model as well as transaction attributes always depend on specific business
+  of DAO method calls completely on their own. The use of a specific transaction strategy based on a transaction model as well as proper transaction attributes always depend on specific business
   requirements of your project and should be therefore carefully considered in terms of concurrency, performance and data integrity.
   
 * {Sample persistent entity DAO}

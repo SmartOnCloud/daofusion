@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <document xmlns="http://maven.apache.org/changes/1.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
@@ -7,15 +8,53 @@
 	</properties>
 	
 	<body>
-		<release version="SNAPSHOT" date="N/A" description="Current development (trunk)">
+		<release version="1.2 M1" date="2009-06-16" description="Milestone 1 of the 1.2.x branch">
+      <action dev="vojtech.szocs" type="fix" issue="5" system="GoogleCode">
+        Fixed issue "Add countAll() methods to PersistentEntityDao".
+      </action>
+      <action dev="vojtech.szocs" type="fix" issue="6" system="GoogleCode">
+        Fixed issue "CriteriaTransferObject#add() Javadoc update".
+      </action>
+      <action dev="vojtech.szocs" type="fix" issue="7" system="GoogleCode">
+        Fixed issue "Utility class for commonly used PropertyFilterCriterionProvider instances".
+      </action>
+      <action dev="vojtech.szocs" type="fix" issue="8" system="GoogleCode">
+        Fixed issue "Property path refactoring". Original methods working with the propertyPath / associationJoinType
+        concept are now marked as deprecated in favor of the associationPath / targetPropertyName approach.
+      </action>
+      <action dev="vojtech.szocs" type="update">
+        Major code review and refactoring of daofusion-core.
+      </action>
+      <action dev="vojtech.szocs" type="add">
+        NestedPropertyCriterion subclasses can now be constructed via specific builders as an alternative
+        to using constructors.
+      </action>
+      <action dev="vojtech.szocs" type="add">
+        Added SimpleFilterCriterionProvider as a convenience base class for simple FilterCriterionProvider
+        (former PropertyFilterCriterionProvider) implementations.
+      </action>
+      <action dev="vojtech.szocs" type="add">
+        Added FilterValueConverters utility class for most common FilterValueConverter (former FilterValueObjectProvider)
+        implementations.
+      </action>
+      <action dev="vojtech.szocs" type="update">
+        FilterValueConverter (former FilterValueObjectProvider) and FilterAndSortMapping are now parametrized to ensure
+        type safety when working with CTO mappings.
+      </action>
 			<action dev="vojtech.szocs" type="add">
 				Added implicit clone operation support for PersistentEntity and MutablePersistentEntity.
-				See the Reference documentation FAQ for more information.
 			</action>
+      <action dev="vojtech.szocs" type="remove">
+        Removed HibernateHelper from daofusion-core. Hibernate Criteria instance modifications
+        should now be performed via AssociationPathRegister.
+      </action>
 			<action dev="vojtech.szocs" type="fix">
 				Corrected cascade type definitions on Customer and Order entities within daofusion-test.
 				This could potentionally cause ConstraintViolationExceptions when deleting related entities.
 			</action>
+      <action dev="vojtech.szocs" type="update">
+        GPL license as well as the LGPL one are now placed under src/main/resources.
+      </action>
 		</release>
 		
 		<release version="1.1.1" date="2009-04-24" description="Maintenance release of the 1.1.x branch">

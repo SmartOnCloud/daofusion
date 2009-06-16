@@ -3,15 +3,34 @@
  ----
  Vojtech Szocs
  ----
- 25 May 2009
+ 16 June 2009
  ----
 
 ${df} news
   
+* 2009-06-16
+  
+  <<${df} milestone 1>> has been released. M1 picked up all open issues except the {{{http://code.google.com/p/daofusion/issues/detail?id=9} bitemporal pattern}} support.
+  See the {{{./changes-report.html} changelog}} for more information about this milestone release. {{{./tutorial/hellodao.html} Hello, DAO!}} tutorial has been migrated
+  to M1 as well.
+  
+  Please note that the reference documentation is still applicable for <<1.1.1>> with minor enhancements introduced by M1 (anything that breaks the old API is not included).
+  Complete revision of the reference documentation is scheduled for M2 - see the updated {{{./roadmap.html} roadmap}} for details.
+  
+* 2009-06-04
+  
+  Major code review and refactoring taking place all over ${df}. {{{./reference/entity-criteria-api.html} Persistent entity criteria API}} was revised from the ground up
+  to allow even more flexibility and the ability to plug in your custom criterion implementations which seamlessly integrate with <<<NestedPropertyCriteria>>>.
+  
+* 2009-06-01
+  
+  We are progressing towards next feature release with first API changes introduced by {{{http://code.google.com/p/daofusion/issues/detail?id=8} Property path refactoring}}
+  issue. <<${df} 1.2.0>> should pick up any issues that come up until the final release.
+  
 * 2009-05-25
   
   ${df} team is happy to announce the availability of {{{./tutorial/hellodao.html} Hello, DAO!}} tutorial. <Hello, DAO!> aims to help developers get familiar with ${df}
-  concepts using popular web application technologies and tools.
+  concepts using popular web technologies and tools.
   
   We are currently preparing for a new feature release - see the {{{./roadmap.html} roadmap}} for more information about project milestones and their progress. Stay tuned,
   <<${df} 1.2.0>> is on its way!
