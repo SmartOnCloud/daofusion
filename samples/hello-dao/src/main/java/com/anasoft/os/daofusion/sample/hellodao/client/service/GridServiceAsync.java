@@ -10,8 +10,11 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public interface GridServiceAsync<DTO extends IsSerializable> {
     
     void fetch(CriteriaTransferObject cto, AsyncCallback<ResultSet<DTO>> cb);
+    
     void add(DTO dto, AsyncCallback<DTO> cb);
+    
     void update(DTO dto, AsyncCallback<DTO> cb);
+    
     void remove(DTO dto, AsyncCallback<Void> cb);
     
 }

@@ -10,8 +10,11 @@ import com.google.gwt.user.client.rpc.RemoteService;
 public interface GridService<DTO extends IsSerializable> extends RemoteService {
     
     ResultSet<DTO> fetch(CriteriaTransferObject cto) throws ServiceException;
+    
     DTO add(DTO dto) throws ServiceException;
+    
     DTO update(DTO dto) throws ServiceException;
+    
     void remove(DTO dto) throws ServiceException;
     
 }
