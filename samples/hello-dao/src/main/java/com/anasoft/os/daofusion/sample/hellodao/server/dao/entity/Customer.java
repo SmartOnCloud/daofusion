@@ -14,6 +14,9 @@ import javax.persistence.UniqueConstraint;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.anasoft.os.daofusion.criteria.AssociationPath;
+import com.anasoft.os.daofusion.criteria.AssociationPathElement;
+
 @Entity
 @Table(name = "customers", uniqueConstraints = {@UniqueConstraint(columnNames = {"firstName", "lastName"})})
 public class Customer extends OidBasedMutablePersistentEntity {
@@ -24,6 +27,9 @@ public class Customer extends OidBasedMutablePersistentEntity {
     public static final String _LAST_NAME = "lastName";
     public static final String _ORDERS = "orders";
     public static final String _CONTACT_DETAILS = "contactDetails";
+    
+    public static final AssociationPath CONTACT_DETAILS = new AssociationPath(
+            new AssociationPathElement(_CONTACT_DETAILS));
     
     @Column(nullable = false, length = 16)
     private String firstName;
