@@ -3,13 +3,17 @@
  ----
  Vojtech Szocs
  ----
- 25 May 2009
+ 17 June 2009
  ----
 
 Welcome to ${df}
   
   <${df}> is a lightweight yet comprehensive and extensible Java based {{{http://java.sun.com/blueprints/corej2eepatterns/Patterns/DataAccessObject.html} Data Access Object}}
   (DAO) pattern implementation built on top of {{{http://java.sun.com/developer/technicalArticles/J2EE/jpa/} Java Persistence API}} (JPA) and {{{http://www.hibernate.org/} Hibernate}}.
+  
+[images/dataaccess.png] Data access with ${df}
+  
+* Features
   
   You could think of ${df} as a solid foundation for your own DAO layers, doing most of the usual heavy lifting for you and providing support for common DAO-related tasks,
   such as:
@@ -33,19 +37,23 @@ Welcome to ${df}
   
   []
   
+* Integration tests
+  
   In addition to all of that, ${df} provides an out-of-the-box {{{./reference/integration-tests.html} integration test support}} based on {{{http://www.junit.org/} JUnit}} and
   {{{http://static.springframework.org/spring/docs/2.5.x/reference/index.html} Spring}}'s {{{http://static.springframework.org/spring/docs/2.5.x/reference/testing.html#testcontext-framework} TestContext framework}}.
+  
+[images/dbsupport.png] ${df} database support
   
   Integration tests interact with the chosen database instance and make sure that all standard DAO implementations are properly and thoroughly tested using a non-trivial sample
   domain model. Note that ${df} is integration-tested against most popular databases, including {{{http://www.mysql.com/} MySQL}}, {{{http://www.postgresql.org/} PostgreSQL}},
   {{{http://www.ibm.com/db2} DB2}}, {{{http://www.oracle.com/technology/products/database/oracle10g/index.html} Oracle 10g}} and {{{http://en.wikipedia.org/wiki/Microsoft_SQL_Server} MS SQL Server 2000}}.
   
-Getting started
+* Getting started
   
   Check out our {{{./tutorial/hellodao.html} Hello, DAO!}} tutorial to get up and running with ${df}. Post your questions, ideas or comments on our {{{http://groups.google.com/group/dao-fusion} discussion group}}
   or use our {{{./issue-tracking.html} issue tracker}} for reporting issues.
   
-Get involved
+* Get involved
   
   ${df} team is currently preparing for a new feature release (see the {{{./roadmap.html} roadmap}} for more information about project milestones and their progress). Everyone is welcome
   to join the community and contribute with his or her ideas (e.g. what you would like to see in the next feature release).
