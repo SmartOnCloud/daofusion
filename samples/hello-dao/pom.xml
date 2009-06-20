@@ -101,6 +101,13 @@
 			<url>http://anasoft-os-repo.googlecode.com/svn/repository/releases</url>
 		</repository>
 		<repository>
+			<id>com.anasoft.os.repository.snapshots</id>
+			<name>ANASOFT OpenSource snapshots</name>
+			<url>
+				http://anasoft-os-repo.googlecode.com/svn/repository/snapshots
+			</url>
+		</repository>
+		<repository>
 			<id>smartgwt-rorschach-repo</id>
 			<url>http://smartgwtsnap.rorschach.de</url>
 		</repository>
