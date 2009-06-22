@@ -121,12 +121,12 @@
 			<version>${slf4j.version}</version>
 			<scope>test</scope>
 		</dependency>
-    <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-      <version>${joda.version}</version>
-      <optional>true</optional>
-    </dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${joda.version}</version>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 	
 	<build>
