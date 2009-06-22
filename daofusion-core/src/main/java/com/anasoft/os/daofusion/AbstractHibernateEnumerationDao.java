@@ -1,5 +1,8 @@
 package com.anasoft.os.daofusion;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -34,5 +37,16 @@ public abstract class AbstractHibernateEnumerationDao<T extends PersistentEnumer
     public T get(String name) {
         return get(name, getEntityClass());
     }
-	
+
+    /**
+     *  @see com.anasoft.os.daofusion.PersistentEnumerationDao#getByNames(Class, String...)
+     */
+    @SuppressWarnings("unchecked")
+    public <S extends T> List<S> getByNames(Class<S> targetEntityClass, String... names) {
+        Criteria criteria =  getHibernateCriteria(targetEntityClass);
+        criteria.add(Restrictions.in(PersistentEnumeration._NAME, Arrays.asList(names)));
+        
+        return criteria.list();
+    }
+    
 }

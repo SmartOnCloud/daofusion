@@ -1,5 +1,7 @@
 package com.anasoft.os.daofusion;
 
+import java.util.List;
+
 import com.anasoft.os.daofusion.entity.PersistentEnumeration;
 
 /**
@@ -25,6 +27,16 @@ public interface PersistentEnumerationDao<T extends PersistentEnumeration> exten
 	 * in case the requested instance was not found.
 	 */
 	<S extends T> S get(String name, Class<S> targetEntityClass);
+	
+	/**
+	 * 
+	 * 
+	 * @param <S>
+	 * @param targetEntityClass
+	 * @param names
+	 * @return
+	 */
+	<S extends T> List<S> getByNames(Class<S> targetEntityClass, String... names);
 	
 	/**
 	 * Retrieves a persistent enumeration, using the implicit
