@@ -22,9 +22,9 @@ import com.anasoft.os.daofusion.entity.PersistentEnumeration;
 public abstract class AbstractHibernateEnumerationDao<T extends PersistentEnumeration> extends AbstractHibernateEntityDao<T, Long> implements PersistentEnumerationDao<T> {
 
 	/**
-	 * @see com.anasoft.os.daofusion.PersistentEnumerationDao#get(java.lang.String, java.lang.Class)
+	 * @see com.anasoft.os.daofusion.PersistentEnumerationDao#getByName(java.lang.String, java.lang.Class)
 	 */
-	public <S extends T> S get(String name, Class<S> targetEntityClass) {
+	public <S extends T> S getByName(String name, Class<S> targetEntityClass) {
 		Criteria criteria = getHibernateCriteria(targetEntityClass);
 		criteria.add(Restrictions.eq(PersistentEnumeration._NAME, name));
 		
@@ -32,14 +32,14 @@ public abstract class AbstractHibernateEnumerationDao<T extends PersistentEnumer
 	}
 	
     /**
-     * @see com.anasoft.os.daofusion.PersistentEnumerationDao#get(java.lang.String)
+     * @see com.anasoft.os.daofusion.PersistentEnumerationDao#getByName(java.lang.String)
      */
-    public T get(String name) {
-        return get(name, getEntityClass());
+    public T getByName(String name) {
+        return getByName(name, getEntityClass());
     }
-
+    
     /**
-     *  @see com.anasoft.os.daofusion.PersistentEnumerationDao#getByNames(Class, String...)
+     * @see com.anasoft.os.daofusion.PersistentEnumerationDao#getByNames(java.lang.Class, java.lang.String[])
      */
     @SuppressWarnings("unchecked")
     public <S extends T> List<S> getByNames(Class<S> targetEntityClass, String... names) {
@@ -47,6 +47,13 @@ public abstract class AbstractHibernateEnumerationDao<T extends PersistentEnumer
         criteria.add(Restrictions.in(PersistentEnumeration._NAME, Arrays.asList(names)));
         
         return criteria.list();
+    }
+    
+    /**
+     * @see com.anasoft.os.daofusion.PersistentEnumerationDao#getByNames(java.lang.String[])
+     */
+    public List<T> getByNames(String... names) {
+        return getByNames(getEntityClass(), names);
     }
     
 }
