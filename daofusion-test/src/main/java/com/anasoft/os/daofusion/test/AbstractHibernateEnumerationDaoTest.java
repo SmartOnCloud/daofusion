@@ -59,7 +59,7 @@ public abstract class AbstractHibernateEnumerationDaoTest extends BaseHibernateC
         
         assertThat(paymentTypeDao.getHibernateSession().contains(paymentTypeDetached), equalTo(false));
         
-        PaymentType paymentTypePersistent = paymentTypeDao.get(paymentTypeDetached.getName(), PaymentType.class);
+        PaymentType paymentTypePersistent = paymentTypeDao.getByName(paymentTypeDetached.getName(), PaymentType.class);
         
         assertThat(paymentTypePersistent, notNullValue());
         assertThat(paymentTypeDao.getHibernateSession().contains(paymentTypePersistent), equalTo(true));
@@ -73,7 +73,7 @@ public abstract class AbstractHibernateEnumerationDaoTest extends BaseHibernateC
      */
     @Test
     public void testGet_retrievingNonExistingPersistentEnumerationInstance() {
-        PaymentType paymentTypePersistentNonExisting = paymentTypeDao.get("Non-existing payment type", PaymentType.class);
+        PaymentType paymentTypePersistentNonExisting = paymentTypeDao.getByName("Non-existing payment type", PaymentType.class);
         
         assertThat(paymentTypePersistentNonExisting, nullValue());
         assertThat(paymentTypeDao.count(new NestedPropertyCriteria(), PaymentType.class), equalTo(0));

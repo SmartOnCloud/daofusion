@@ -50,7 +50,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      * @return Sample {@link PromotedStockItem} transient instance.
      */
     private PromotedStockItem getSampleStockItemTransient() {
-        StockItemCategory foodCategory = stockItemCategoryDao.get(STOCK_ITEM_CATEGORY_FOOD, StockItemCategory.class);
+        StockItemCategory foodCategory = stockItemCategoryDao.getByName(STOCK_ITEM_CATEGORY_FOOD, StockItemCategory.class);
         
         PromotedStockItem stockItemTransient = new PromotedStockItem();
         stockItemTransient.setName("Milk");
@@ -68,7 +68,7 @@ public abstract class AbstractHibernateEntityDaoTest extends BaseHibernateCoreIn
      * @param instance {@link PromotedStockItem} instance to modify.
      */
     private void modifySampleStockItem(PromotedStockItem instance) {
-        StockItemCategory computerCategory = stockItemCategoryDao.get(STOCK_ITEM_CATEGORY_COMPUTERS, StockItemCategory.class);
+        StockItemCategory computerCategory = stockItemCategoryDao.getByName(STOCK_ITEM_CATEGORY_COMPUTERS, StockItemCategory.class);
         
         instance.setName("MacBook");
         instance.setDescription("Portable computer.");

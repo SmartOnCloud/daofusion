@@ -146,11 +146,11 @@ public abstract class BaseHibernateCoreIntegrationTest extends BaseHibernateInte
      * instance.
      */
     private void createEntityTestData() {
-        Country countrySlovakia = countryDao.get(COUNTRY_SLOVAKIA, Country.class);
-        Country countryJapan = countryDao.get(COUNTRY_JAPAN, Country.class);
+        Country countrySlovakia = countryDao.getByName(COUNTRY_SLOVAKIA, Country.class);
+        Country countryJapan = countryDao.getByName(COUNTRY_JAPAN, Country.class);
         
-        StockItemCategory categoryFood = stockItemCategoryDao.get(STOCK_ITEM_CATEGORY_FOOD, StockItemCategory.class);
-        StockItemCategory categoryComputers = stockItemCategoryDao.get(STOCK_ITEM_CATEGORY_COMPUTERS, StockItemCategory.class);
+        StockItemCategory categoryFood = stockItemCategoryDao.getByName(STOCK_ITEM_CATEGORY_FOOD, StockItemCategory.class);
+        StockItemCategory categoryComputers = stockItemCategoryDao.getByName(STOCK_ITEM_CATEGORY_COMPUTERS, StockItemCategory.class);
         
         // Customer #1
         Customer customerOne = new Customer();
