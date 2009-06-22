@@ -117,7 +117,7 @@ public class DatabaseInitializer {
     
     protected Country getCountry() {
         String name = COUNTRIES[C_RND.nextInt(COUNTRIES.length)];
-        return countryDao.get(name);
+        return countryDao.getByName(name);
     }
     
     protected String getFirstName() {
