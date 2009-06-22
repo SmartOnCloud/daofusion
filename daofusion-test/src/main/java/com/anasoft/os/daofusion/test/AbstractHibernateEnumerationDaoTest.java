@@ -5,6 +5,8 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,12 +24,16 @@ import com.anasoft.os.daofusion.test.example.enums.PaymentType;
  */
 public abstract class AbstractHibernateEnumerationDaoTest extends BaseHibernateCoreIntegrationTest {
 
+    protected static final String PAYMENT_TYPE_CREDIT_CARD = "Credit card";
+    protected static final String PAYMENT_TYPE_CHECK = "Check";
+    protected static final String PAYMENT_TYPE_CASH = "Cash";
+    
     /**
      * @return Sample {@link PaymentType} transient instance.
      */
-    private PaymentType getSamplePaymentTypeTransient() {
+    private PaymentType getSamplePaymentTypeTransient(String name) {
         PaymentType paymentTypeTransient = new PaymentType();
-        paymentTypeTransient.setName("Credit card");
+        paymentTypeTransient.setName(name);
         
         assertThat(paymentTypeTransient.getId(), nullValue());
         
@@ -45,12 +51,12 @@ public abstract class AbstractHibernateEnumerationDaoTest extends BaseHibernateC
     }
     
     /**
-     * Test for {@link PersistentEnumerationDao#get(String, Class)}:
+     * Test for {@link PersistentEnumerationDao#getByName(String, Class)}:
      * retrieving a persistent enumeration instance.
      */
     @Test
-    public void testGet_retrievingPersistentEnumerationInstance() {
-        PaymentType paymentTypeDetached = paymentTypeDao.saveOrUpdate(getSamplePaymentTypeTransient());
+    public void testGetByName_retrievingPersistentEnumerationInstance() {
+        PaymentType paymentTypeDetached = paymentTypeDao.saveOrUpdate(getSamplePaymentTypeTransient(PAYMENT_TYPE_CREDIT_CARD));
         
         assertThat(paymentTypeDao.count(new NestedPropertyCriteria(), PaymentType.class), equalTo(1));
         assertThat(paymentTypeDao.getHibernateSession().contains(paymentTypeDetached), equalTo(true));
@@ -68,15 +74,46 @@ public abstract class AbstractHibernateEnumerationDaoTest extends BaseHibernateC
     }
     
     /**
-     * Test for {@link PersistentEnumerationDao#get(String, Class)}:
+     * Test for {@link PersistentEnumerationDao#getByName(String, Class)}:
      * trying to retrieve a non-existing persistent enumeration instance.
      */
     @Test
-    public void testGet_retrievingNonExistingPersistentEnumerationInstance() {
+    public void testGetByName_retrievingNonExistingPersistentEnumerationInstance() {
         PaymentType paymentTypePersistentNonExisting = paymentTypeDao.getByName("Non-existing payment type", PaymentType.class);
         
         assertThat(paymentTypePersistentNonExisting, nullValue());
         assertThat(paymentTypeDao.count(new NestedPropertyCriteria(), PaymentType.class), equalTo(0));
+    }
+    
+    /**
+     * Test for {@link PersistentEnumerationDao#getByNames(Class, String...)}:
+     * retrieving multiple persistent enumeration instances.
+     */
+    @Test
+    public void testGetByNames_retrievingPersistentEnumerationInstances() {
+        PaymentType paymentTypeOne = paymentTypeDao.saveOrUpdate(getSamplePaymentTypeTransient(PAYMENT_TYPE_CREDIT_CARD));
+        PaymentType paymentTypeTwo = paymentTypeDao.saveOrUpdate(getSamplePaymentTypeTransient(PAYMENT_TYPE_CHECK));
+        PaymentType paymentTypeThree = paymentTypeDao.saveOrUpdate(getSamplePaymentTypeTransient(PAYMENT_TYPE_CASH));
+        
+        assertThat(paymentTypeDao.count(new NestedPropertyCriteria(), PaymentType.class), equalTo(3));
+        assertThat(paymentTypeDao.getHibernateSession().contains(paymentTypeOne), equalTo(true));
+        assertThat(paymentTypeDao.getHibernateSession().contains(paymentTypeTwo), equalTo(true));
+        assertThat(paymentTypeDao.getHibernateSession().contains(paymentTypeThree), equalTo(true));
+        
+        paymentTypeDao.getHibernateSession().evict(paymentTypeOne);
+        paymentTypeDao.getHibernateSession().evict(paymentTypeTwo);
+        paymentTypeDao.getHibernateSession().evict(paymentTypeThree);
+        
+        assertThat(paymentTypeDao.getHibernateSession().contains(paymentTypeOne), equalTo(false));
+        assertThat(paymentTypeDao.getHibernateSession().contains(paymentTypeTwo), equalTo(false));
+        assertThat(paymentTypeDao.getHibernateSession().contains(paymentTypeThree), equalTo(false));
+        
+        List<PaymentType> paymentTypeList = paymentTypeDao.getByNames(PaymentType.class, PAYMENT_TYPE_CHECK, PAYMENT_TYPE_CASH);
+        
+        assertThat(paymentTypeList.size(), equalTo(2));
+        
+        assertThat(paymentTypeList.contains(paymentTypeTwo), equalTo(true));
+        assertThat(paymentTypeList.contains(paymentTypeThree), equalTo(true));
     }
     
 }
