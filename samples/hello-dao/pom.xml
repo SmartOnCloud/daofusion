@@ -108,7 +108,7 @@
 			</url>
 		</repository>
 		<repository>
-			<id>smartgwt-rorschach-repo</id>
+			<id>smartgwt.rorschach.repo</id>
 			<url>http://smartgwtsnap.rorschach.de</url>
 		</repository>
 	</repositories>
