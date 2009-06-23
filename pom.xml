@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.anasoft.os</groupId>
 	<artifactId>daofusion-site</artifactId>
-	<version>1.1.x</version>
+	<version>1.2.x</version>
 	<packaging>pom</packaging>
 	<name>DAO Fusion project site</name>
 	
@@ -51,7 +51,7 @@
 					<dependency>
 						<groupId>m2st</groupId>
 						<artifactId>doxia-macros</artifactId>
-						<version>SNAPSHOT</version>
+						<version>1.2b</version>
 					</dependency>
 				</dependencies>
 			</plugin>
