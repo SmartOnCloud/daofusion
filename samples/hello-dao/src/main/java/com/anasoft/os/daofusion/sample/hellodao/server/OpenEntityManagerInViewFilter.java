@@ -21,10 +21,11 @@ import com.anasoft.os.daofusion.sample.hellodao.server.dao.impl.EntityManagerHol
 
 /**
  * Simple implementation of the <em>Open EntityManager In View</em>
- * pattern.
+ * pattern that supports multiple persistence units.
  * <p>
  * We recommend using Spring's <tt>OpenEntityManagerInViewFilter</tt>
- * in serious applications.
+ * in serious applications, assuming they don't need to switch between
+ * multiple persistence units (entity manager factories) dynamically.
  * <p>
  * <b>Important notice:</b> This filter provides a single transaction
  * for the entire request processing ({@link FilterChain#doFilter(ServletRequest, ServletResponse, FilterChain)
@@ -42,39 +43,42 @@ public class OpenEntityManagerInViewFilter implements Filter {
     private static final Logger log = LoggerFactory.getLogger(OpenEntityManagerInViewFilter.class);
     
     private EntityManagerFactory[] entityManagerFactories;
-    
     private String[] persistenceUnitNames;
     
     /**
-     * Initializes filter while creating instances of {@link EntityManagerFactory}
-     * for specified persistence unit names.
+     * Initializes the filter by creating {@link EntityManagerFactory}
+     * instances for required persistence units.
      * <p>
-     * You can set persistence unit names by providing <tt>persistenceUnitNames</tt>
-     * init parameter which should contain a comma-separated list of persistence unit
-     * names (if this list is not provided, only a single persistence unit with default name
+     * You can specify persistence unit names by providing <tt>persistenceUnitNames</tt>
+     * init parameter containing a comma-separated list of persistence unit names
+     * (if not specified, a single persistence unit with the default name
      * <tt>persistence-unit</tt> is created).
      */
     public void init(FilterConfig filterConfig) throws ServletException {
-    	String parameter = filterConfig.getInitParameter(FILTER_PARAM_PERSISTENCE_UNIT_NAMES);
-    	if(parameter == null) {
-    		this.persistenceUnitNames = new String[] {DEFAULT_PERSISTENCE_UNIT_NAME};
+    	String unitNames = filterConfig.getInitParameter(FILTER_PARAM_PERSISTENCE_UNIT_NAMES);
+    	
+    	if(unitNames == null) {
+    		persistenceUnitNames = new String[] {DEFAULT_PERSISTENCE_UNIT_NAME};
     	} else {
-    		this.persistenceUnitNames = parameter.split(SEPARATOR);
+    		persistenceUnitNames = unitNames.split(SEPARATOR);
     	}
     	
-    	this.entityManagerFactories = new EntityManagerFactory[this.persistenceUnitNames.length];
-    	for(int i = 0; i< this.persistenceUnitNames.length; i++) {
-    		String persistenceUnitName = this.persistenceUnitNames[i];
+    	entityManagerFactories = new EntityManagerFactory[persistenceUnitNames.length];
+    	
+    	for (int i = 0; i< persistenceUnitNames.length; i++) {
+    		String persistenceUnitName = persistenceUnitNames[i];
+    		
     		log.debug("Creating EntityManagerFactory for persistence unit [" + persistenceUnitName + "]");
-			this.entityManagerFactories[i] = Persistence.createEntityManagerFactory(persistenceUnitName);
+			entityManagerFactories[i] = Persistence.createEntityManagerFactory(persistenceUnitName);
 			log.debug("EntityManagerFactory for [" + persistenceUnitName + "] has been created");
     	}
     }
     
     /**
-     * Based on request parameter retrieve appropriate {@link EntityManagerFactory} 
-     * instance and creates an instance of {@link EntityManager}. This is set in to
-     * the {@link EntityManagerHolder} and begins a transaction.
+     * Retrieves appropriate {@link EntityManagerFactory} (based on the request)
+     * and creates an {@link EntityManager} to be used by the current thread.
+     * The {@link EntityManager} is set into {@link EntityManagerHolder} and
+     * a transaction is started.
      * <p>
      * After the filter chain has completed, transaction is committed,
      * the {@link EntityManager} is closed and its reference held by
@@ -119,14 +123,25 @@ public class OpenEntityManagerInViewFilter implements Filter {
         }
     }
     
+    /**
+     * Selects an appropriate {@link EntityManagerFactory} based on the request.
+     * <p>
+     * Default implementation always selects the first entity manager factory
+     * corresponding to the first persistence unit declared in filter configuration.
+     * <p>
+     * Override this method if you need to switch between multiple persistence units
+     * dynamically.
+     */
     protected EntityManagerFactory getEntityManagerFactory(ServletRequest request) {
-		return this.entityManagerFactories[0];
+		return entityManagerFactories[0];
 	}
-
+    
 	/**
      * Default implementation invokes the
      * {@link FilterChain#doFilter(ServletRequest, ServletResponse, FilterChain)
      * doFilter} method.
+     * <p>
+     * Override this method if you need to extend this default behavior.
      */
     protected void doFilterInternal(ServletRequest request,
             ServletResponse response, FilterChain chain) throws IOException,
@@ -135,13 +150,15 @@ public class OpenEntityManagerInViewFilter implements Filter {
     }
     
     /**
-     * Clean up logic.
+     * Destroys the filter by closing all {@link EntityManagerFactory}
+     * instances managed by this filter.
      */
     public void destroy() {
-    	for(int i = 0; i < this.entityManagerFactories.length; i++) {
-    		String persistenceUnitName = this.persistenceUnitNames[i];
+    	for (int i = 0; i < entityManagerFactories.length; i++) {
+    		String persistenceUnitName = persistenceUnitNames[i];
+    		
     		log.debug("Closing EntityManagerFactory for [" + persistenceUnitName + "]");
-    		this.entityManagerFactories[i].close();
+    		entityManagerFactories[i].close();
     		log.debug("EntityManagerFactory for [" + persistenceUnitName + "] closed");
     	}
     }

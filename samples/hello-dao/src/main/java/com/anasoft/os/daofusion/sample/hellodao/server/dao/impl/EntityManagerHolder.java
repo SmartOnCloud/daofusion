@@ -8,7 +8,7 @@ import com.anasoft.os.daofusion.sample.hellodao.server.OpenEntityManagerInViewFi
 /**
  * {@link OpenEntityManagerInViewFilter} sets an open Hibernate
  * <tt>EntityManager</tt> instance to this class for each thread
- * associated with the user request.
+ * associated with the request.
  * <p>
  * DAO implementations use this class when implementing
  * {@link BaseHibernateDataAccessor}'s <tt>getHibernateEntityManager</tt>
