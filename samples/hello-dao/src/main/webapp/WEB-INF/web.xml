@@ -9,7 +9,7 @@
 		<filter-name>oemivFilter</filter-name>
 		<filter-class>com.anasoft.os.daofusion.sample.hellodao.server.OpenEntityManagerInViewFilter</filter-class>
 		<init-param>
-			<param-name>persistenceUnitName</param-name>
+			<param-name>persistenceUnitNames</param-name>
 			<param-value>default-pu</param-value>
 		</init-param>
 	</filter>
