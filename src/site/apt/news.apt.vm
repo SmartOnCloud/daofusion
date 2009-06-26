@@ -3,14 +3,21 @@
  ----
  Vojtech Szocs
  ----
- 22 June 2009
+ 26 June 2009
  ----
 
 ${df} news
   
+* 2009-06-26
+  
+  Bitemporal classes begin to appear in <${df-core}> as Igor progresses with his bitemporal quest. We try to keep the <Hello, DAO!> sample application up to date with
+  our changes for consistency. A good place to see the list of recent changes between milestones is the {{{./changes-report.html} changelog}}.
+  
+  We also updated some versions of libraries ${df} depends on as well as adding one new dependency - see the {{{./dependencies.html} dependencies}} page for more details.
+  
 * 2009-06-19
   
-  We introduced ${df} to new {{{http://groups.adobe.com/posts/d917e57cbc} Slovakia FUG}} members along with other topics.
+  We introduced ${df} to new {{{http://groups.adobe.com/posts/d917e57cbc} Slovakia FUG}} members during our quick Friday meeting.
   
 * 2009-06-16
   

@@ -16,6 +16,13 @@
         Added extra lookup methods into PersistentEnumerationDao along with AbstractHibernateEnumerationDaoTest
         update.
       </action>
+      <action dev="igor.mihalik" type="add">
+        Added bitemporal pattern support that extends the standard persistent entity model along with corresponding
+        test cases.
+      </action>
+      <action dev="igor.mihalik" type="add">
+        Added compile-scoped Joda Time dependency to daofusion-core POM.
+      </action>
 		</release>
 		
 		<release version="1.2 M1" date="2009-06-16" description="Milestone 1 of the 1.2.x branch">
