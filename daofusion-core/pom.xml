@@ -17,6 +17,7 @@
 	<properties>
 		<hibernate-entitymanager.version>3.4.0.GA</hibernate-entitymanager.version>
 		<cglib.version>2.1_3</cglib.version>
+		<joda.version>1.6</joda.version>
 	</properties>
 	
 	<dependencies>
@@ -38,12 +39,18 @@
 			<version>${cglib.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${joda.version}</version>
+			<scope>compile</scope>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 	
