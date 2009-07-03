@@ -47,13 +47,14 @@
 			<email>igor.mihalik@anasoft.com</email>
 			<organization>ANASOFT</organization>
 		</developer>
-	</developers>
-	<contributors>
-		<contributor>
+		<developer>
+			<id>michal.jemala</id>
 			<name>Michal Jemala</name>
 			<email>michal.jemala@anasoft.com</email>
 			<organization>ANASOFT</organization>
-		</contributor>
+		</developer>
+	</developers>
+	<contributors>
 		<contributor>
 			<name>Jan Pastor</name>
 			<email>jan.pastor@anasoft.com</email>
