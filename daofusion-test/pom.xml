@@ -19,7 +19,7 @@
 		<junit-springtestcontext.version>4.4</junit-springtestcontext.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
 		
-		<h2.version>1.1.114</h2.version>
+		<h2.version>1.1.115</h2.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
 		
 		<mysql-connector-java.version>5.1.7</mysql-connector-java.version> <!-- MySQL 5.1.30 -->
