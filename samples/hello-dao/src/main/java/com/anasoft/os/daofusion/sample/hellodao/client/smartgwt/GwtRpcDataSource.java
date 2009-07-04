@@ -63,10 +63,14 @@ public abstract class GwtRpcDataSource
      */
     @Override
     protected Object transformRequest (DSRequest request) {
+        // use simple HTTP request without SmartGWT-specific request encoding
+        request.setUseSimpleHttp(true);
+        
         String requestId = request.getRequestId ();
         DSResponse response = new DSResponse ();
         response.setAttribute ("clientContext", request.getAttributeAsObject ("clientContext"));
-        // Asume success
+        
+        // assume success
         response.setStatus (0);
         switch (request.getOperationType ()) {
             case FETCH:
@@ -82,7 +86,7 @@ public abstract class GwtRpcDataSource
                 executeRemove (requestId, request, response);
                 break;
             default:
-                // Operation not implemented.
+                // operation not implemented
                 break;
         }
         return request.getData ();
