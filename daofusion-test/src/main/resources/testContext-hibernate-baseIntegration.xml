@@ -42,25 +42,13 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
-	<!-- AOP transaction interceptor for declarative transaction management -->
-	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="transactionAttributeSource">
-			<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
-		</property>
-	</bean>
 	
 	<!-- general Spring / AOP annotation support -->
 	<context:annotation-config />
-	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
 	
 	<!-- JPA resource injection support -->
-	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 	
 	<!-- AOP transaction support -->
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
-	<bean class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
-		<property name="transactionInterceptor" ref="transactionInterceptor" />
-	</bean>
 	
 </beans>
