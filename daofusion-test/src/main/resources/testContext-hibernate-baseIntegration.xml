@@ -42,13 +42,10 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
-	
 	<!-- general Spring / AOP annotation support -->
 	<context:annotation-config />
 	
-	<!-- JPA resource injection support -->
-	
-	<!-- AOP transaction support -->
+	<!-- AOP transaction support using cglib proxies -->
 	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 	
 </beans>
