@@ -5,7 +5,6 @@
 
 package com.anasoft.os.daofusion.bitemporal;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -39,8 +38,8 @@ import com.anasoft.os.daofusion.entity.MutablePersistentEntity;
  * @author Igor Mihalik
  */
 @MappedSuperclass
-public abstract class BitemporalWrapper<V> extends MutablePersistentEntity implements Bitemporal,
-        Serializable {
+public abstract class BitemporalWrapper<V> extends MutablePersistentEntity implements Bitemporal {
+
     public static final String _VALUE = "value";
 
     public static final String _VALID_FROM = "validityInterval.start";
