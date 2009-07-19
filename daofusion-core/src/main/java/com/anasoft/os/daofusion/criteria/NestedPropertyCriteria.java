@@ -18,10 +18,7 @@ import com.anasoft.os.daofusion.util.ReflectionHelper;
  * This class implements the query constraint application
  * logic regarding specific {@link NestedPropertyCriterion}
  * subclasses via default {@link NestedPropertyCriterionVisitor}
- * implementation. The {@link PersistentEntityCriteria#apply(Criteria)}
- * method implementation contains code that visits all
- * {@link NestedPropertyCriterion} instances, updating the given
- * root {@link Criteria} instance within the visitor class.
+ * implementation.
  * 
  * <p>
  * 

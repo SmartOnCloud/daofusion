@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Register of {@link AssociationPath} instances and corresponding
- * Hibernate {@link Criteria} to be used when modifying the root
+ * Hibernate {@link Criteria} to be reused when modifying the root
  * {@link Criteria} instance.
  * 
  * <p>
