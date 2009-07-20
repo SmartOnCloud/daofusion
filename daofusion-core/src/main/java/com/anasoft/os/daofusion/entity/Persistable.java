@@ -70,7 +70,7 @@ import com.anasoft.os.daofusion.PersistentEntityDao;
  * 		entity as a whole (this attribute combination is
  * 		unique for each persistent entity instance). However,
  * 		this imposes certain limitations on attributes within
- * 		the set which could potentionally compromise the
+ * 		the set which could potentionally break the
  * 		{@link Object#hashCode()} and {@link Object#equals(Object)}
  * 		method contract (for example, uniqueness might be
  * 		broken if any of the "semi"-unique attributes change,

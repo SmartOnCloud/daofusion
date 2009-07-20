@@ -24,7 +24,8 @@ import org.hibernate.criterion.Criterion;
  * <ul>
  *  <li>by specifying <tt>filterObjectValuePaths</tt> - array of
  *  	dot-separated logical paths pointing to values reachable
- *  	from the root filter object
+ *  	from the root filter object (these paths are resolved
+ *      against the filter object via Java reflection)
  *  <li>by specifying <tt>directValues</tt> - array of objects
  *  	provided directly by the user
  * </ul>
