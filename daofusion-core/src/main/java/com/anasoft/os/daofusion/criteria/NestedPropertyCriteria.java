@@ -62,7 +62,7 @@ public class NestedPropertyCriteria extends AbstractCriterionGroup<NestedPropert
 	}
 	
 	/**
-	 * @see com.anasoft.os.daofusion.criteria.AbstractCriterionGroup#getCriterionVisitor(org.hibernate.Criteria, com.anasoft.os.daofusion.criteria.AssociationPathRegister)
+	 * @see com.anasoft.os.daofusion.criteria.AbstractCriterionGroup#getCriterionVisitor(org.hibernate.Criteria)
 	 */
 	@Override
 	protected NestedPropertyCriterionVisitor getCriterionVisitor(Criteria targetCriteria) {
