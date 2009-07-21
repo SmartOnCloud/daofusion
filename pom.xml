@@ -13,6 +13,7 @@
 	
 	<organization>
 		<name>ANASOFT and contributors</name>
+		<url>http://www.anasoft.com/</url>
 	</organization>
 	
 	<issueManagement>
@@ -74,21 +75,20 @@
 		
 		<h2.version>1.1.114</h2.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
-		
-		<mysql-db.version>5.1.30</mysql-db.version>
 		<mysql-connector-java.version>5.1.7</mysql-connector-java.version>
-		
-		<postgresql-db.version>8.3.5</postgresql-db.version>
 		<postgresql.version>8.3-603.jdbc3</postgresql.version>
-		
-		<db2-db.version>9.5</db2-db.version>
 		<db2-expressc-jcc.version>3.5</db2-expressc-jcc.version>
-		
-		<oracle10g-db.version>10.2.0.3.0</oracle10g-db.version>
 		<ojdbc14.version>10.2.0.3.0</ojdbc14.version>
-		
-		<mssql2000-db.version>8.00.760</mssql2000-db.version>
 		<jtds.version>1.2.2</jtds.version>
+		
+		<!-- used by daofusion-site -->
+		<db-h2>${h2.version}</db-h2>
+		<db-hsql>${hsqldb.version}</db-hsql>
+		<db-mysql>5.1.30</db-mysql>
+		<db-postgresql>8.3.5</db-postgresql>
+		<db-db2>9.5</db-db2>
+		<db-oracle10g>10.2.0.3.0</db-oracle10g>
+		<db-mssql2000>8.00.760</db-mssql2000>
 	</properties>
 	
 	<distributionManagement>
