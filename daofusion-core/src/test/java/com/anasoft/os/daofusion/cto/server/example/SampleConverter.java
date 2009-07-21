@@ -40,19 +40,19 @@ public class SampleConverter extends NestedPropertyCriteriaBasedConverter {
 	private void addStringMapping(String mappingGroupName, String propertyId, AssociationPath associationPath, String targetPropertyName) {
 		addMapping(mappingGroupName, new FilterAndSortMapping<String>(
 				propertyId, associationPath, targetPropertyName,
-				DirectValueCriterionProviders.LIKE, FilterValueConverters.STRING));
+				CtoFilterCriterionProviders.LIKE, FilterValueConverters.STRING));
 	}
 	
 	private void addIntegerMapping(String mappingGroupName, String propertyId, AssociationPath associationPath, String targetPropertyName) {
 		addMapping(mappingGroupName, new FilterAndSortMapping<Integer>(
                 propertyId, associationPath, targetPropertyName,
-				DirectValueCriterionProviders.EQ, FilterValueConverters.INTEGER));
+				CtoFilterCriterionProviders.EQ, FilterValueConverters.INTEGER));
 	}
 	
 	private void addDateMapping(String mappingGroupName, String propertyId, AssociationPath associationPath, String targetPropertyName) {
 		addMapping(mappingGroupName, new FilterAndSortMapping<Date>(
                 propertyId, associationPath, targetPropertyName,
-				DirectValueCriterionProviders.BETWEEN, DATE_CONVERTER));
+				CtoFilterCriterionProviders.BETWEEN, DATE_CONVERTER));
 	}
 	
 }

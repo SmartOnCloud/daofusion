@@ -7,7 +7,7 @@ import com.anasoft.os.daofusion.cto.client.CriteriaTransferObject;
  * Persistent entity criteria transfer object converter
  * contract defining conversion pattern between client-side
  * {@link CriteriaTransferObject} instances and their
- * corresponding (server-side) {@link PersistentEntityCriteria}
+ * corresponding server-side {@link PersistentEntityCriteria}
  * counterparts.
  * 
  * @see CriteriaTransferObject

@@ -28,6 +28,7 @@ import java.util.List;
  *      combination
  * 	<li>array of string-based filter values into
  *      appropriate typed object representations
+ *      (integers, dates, etc.)
  * </ul>
  * 
  * Note that the <tt>propertyId</tt> of each

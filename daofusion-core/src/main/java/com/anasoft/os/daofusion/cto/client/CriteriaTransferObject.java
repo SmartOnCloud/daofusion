@@ -28,8 +28,7 @@ import com.anasoft.os.daofusion.cto.server.CriteriaTransferObjectConverter;
  * 
  * This class essentially acts as map-based container for
  * {@link FilterAndSortCriteria} instances, defining basic
- * client-side persistent entity criteria for target entity
- * properties.
+ * entity criteria for target entity properties on the client.
  * 
  * @see FilterAndSortCriteria
  * @see CriteriaTransferObjectConverter

@@ -7,26 +7,28 @@ import com.anasoft.os.daofusion.criteria.FilterCriterionProvider;
 import com.anasoft.os.daofusion.criteria.SimpleFilterCriterionProvider;
 import com.anasoft.os.daofusion.criteria.SimpleFilterCriterionProvider.FilterDataStrategy;
 
-public final class DirectValueCriterionProviders {
+public final class CtoFilterCriterionProviders {
 
-    private DirectValueCriterionProviders() {}
+    private static final FilterDataStrategy STRATEGY = FilterDataStrategy.DIRECT;
     
-	public static final FilterCriterionProvider LIKE = new SimpleFilterCriterionProvider(FilterDataStrategy.DIRECT, 1) {
+	public static final FilterCriterionProvider LIKE = new SimpleFilterCriterionProvider(STRATEGY, 1) {
 		public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
 			return Restrictions.like(targetPropertyName, directValues[0]);
 		}
 	};
 	
-	public static final FilterCriterionProvider EQ = new SimpleFilterCriterionProvider(FilterDataStrategy.DIRECT, 1) {
+	public static final FilterCriterionProvider EQ = new SimpleFilterCriterionProvider(STRATEGY, 1) {
 		public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
 			return Restrictions.eq(targetPropertyName, directValues[0]);
 		}
 	};
 	
-	public static final FilterCriterionProvider BETWEEN = new SimpleFilterCriterionProvider(FilterDataStrategy.DIRECT, 2) {
+	public static final FilterCriterionProvider BETWEEN = new SimpleFilterCriterionProvider(STRATEGY, 2) {
 		public Criterion getCriterion(String targetPropertyName, Object[] filterObjectValues, Object[] directValues) {
 			return Restrictions.between(targetPropertyName, directValues[0], directValues[1]);
 		}
 	};
+	
+	private CtoFilterCriterionProviders() {}
 	
 }
