@@ -71,6 +71,24 @@
 		<junit.version>4.6</junit.version>
 		<mockito.version>1.7</mockito.version>
 		<slf4j.version>1.5.8</slf4j.version>
+		
+		<h2.version>1.1.114</h2.version>
+		<hsqldb.version>1.8.0.10</hsqldb.version>
+		
+		<mysql-db.version>5.1.30</mysql-db.version>
+		<mysql-connector-java.version>5.1.7</mysql-connector-java.version>
+		
+		<postgresql-db.version>8.3.5</postgresql-db.version>
+		<postgresql.version>8.3-603.jdbc3</postgresql.version>
+		
+		<db2-db.version>9.5</db2-db.version>
+		<db2-expressc-jcc.version>3.5</db2-expressc-jcc.version>
+		
+		<oracle10g-db.version>10.2.0.3.0</oracle10g-db.version>
+		<ojdbc14.version>10.2.0.3.0</ojdbc14.version>
+		
+		<mssql2000-db.version>8.00.760</mssql2000-db.version>
+		<jtds.version>1.2.2</jtds.version>
 	</properties>
 	
 	<distributionManagement>
@@ -121,6 +139,53 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>${h2.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>hsqldb</groupId>
+				<artifactId>hsqldb</artifactId>
+				<version>${hsqldb.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql-connector-java.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${postgresql.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.ibm.db2</groupId>
+				<artifactId>db2-expressc-jcc</artifactId>
+				<version>${db2-expressc-jcc.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.oracle</groupId>
+				<artifactId>ojdbc14</artifactId>
+				<version>${ojdbc14.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>net.sourceforge.jtds</groupId>
+				<artifactId>jtds</artifactId>
+				<version>${jtds.version}</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	
 	<build>
 		<plugins>
