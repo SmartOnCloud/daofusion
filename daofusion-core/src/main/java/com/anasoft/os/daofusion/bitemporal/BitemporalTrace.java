@@ -11,6 +11,7 @@ import java.io.StringWriter;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
@@ -156,5 +157,17 @@ public class BitemporalTrace implements Serializable {
             bufWriter.println(bitemporal);
         }
         return buf.toString();
+    }
+
+    public void revert(DateTime knownOn) {
+        Set<Bitemporal> itemsToBeRemoved = new HashSet<Bitemporal>();
+        for (Bitemporal bitemporal : data) {
+            if (bitemporal.getRecordInterval().isAfter(knownOn))
+                itemsToBeRemoved.add(bitemporal);
+            if (bitemporal.getRecordInterval().contains(knownOn)) {
+                bitemporal.resurrect();
+            }
+        }
+        data.removeAll(itemsToBeRemoved);
     }
 }
