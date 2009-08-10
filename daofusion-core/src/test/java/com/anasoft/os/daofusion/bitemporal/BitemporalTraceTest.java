@@ -1,13 +1,11 @@
 package com.anasoft.os.daofusion.bitemporal;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
@@ -92,36 +90,6 @@ public class BitemporalTraceTest {
         assertThat(itemsThatNeedsToBeEnded2.contains(c_2), is(true));
         assertThat(itemsThatNeedsToBeEnded2.contains(b_2), is(true));
         assertThat(itemsThatNeedsToBeEnded2.contains(a_2), is(true));
-    }
-
-    @Test
-    public void testRevertToC1() throws Exception {
-        ArrayList<Bitemporal> data2 = new ArrayList<Bitemporal>();
-        Bitemporal a_1 = bitemporalMock(0, INF, 0, 10);
-        Bitemporal a_2 = bitemporalMock(0, 15, 10, INF);
-        Bitemporal b_1 = bitemporalMock(15, INF, 10, 20);
-        Bitemporal b_2 = bitemporalMock(15, 30, 20, INF);
-        Bitemporal c_1 = bitemporalMock(30, INF, 20, INF);
-        data2.addAll(Arrays.asList(new Bitemporal[] { a_1, a_2, b_1, b_2, c_1 }));
-
-        tested.revert(new DateTime(25));
-        Collection<Bitemporal> data3 = tested.getData();
-        assertThat(new HashSet<Bitemporal>(data3), equalTo(new HashSet<Bitemporal>(data2)));
-    }
-
-    @Test
-    public void testRevertToA1() throws Exception {
-        ArrayList<Bitemporal> data2 = new ArrayList<Bitemporal>();
-        Bitemporal a_1 = bitemporalMock(0, INF, 0, INF);
-        data2.addAll(Arrays.asList(new Bitemporal[] { a_1 }));
-        tested.revert(new DateTime(0));
-        Collection<Bitemporal> data3 = tested.getData();
-        assertThat(new HashSet<Bitemporal>(data3), equalTo(new HashSet<Bitemporal>(data2)));
-        
-        tested.revert(new DateTime(10));
-        Collection<Bitemporal> data4 = tested.getData();
-        assertThat(new HashSet<Bitemporal>(data4), equalTo(new HashSet<Bitemporal>(data2)));
-
     }
 
     private Bitemporal bitemporalMock(long validFrom, long validTo, long recordFrom, long recordTo) {

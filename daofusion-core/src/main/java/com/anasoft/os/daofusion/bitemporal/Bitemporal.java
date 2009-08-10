@@ -42,11 +42,6 @@ public interface Bitemporal {
 	 * or is deemed as no longer relevant (i.e. because it was faulty knowledge) and should be 'forgotten'.
 	 */
 	public void end();
-	
-	/**
-	 * Invert operation to {@link #end()}. Sets recordTo to {@link TimeUtils#ACTUAL_END_OF_TIME}
-	 */
-	public void resurrect();
 
 	/**
 	 * Create and return a new bitemporal object representing the same value as this object, but with specified

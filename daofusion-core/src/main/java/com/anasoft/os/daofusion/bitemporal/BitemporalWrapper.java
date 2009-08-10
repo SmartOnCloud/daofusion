@@ -92,10 +92,6 @@ public abstract class BitemporalWrapper<V> extends MutablePersistentEntity imple
     public void end() {
         this.recordInterval = TimeUtils.interval(getRecordInterval().getStart(), TimeUtils.now());
     }
-    
-    public void resurrect() {
-        this.recordInterval = TimeUtils.from(getRecordInterval().getStart());
-    }
 
     public abstract Bitemporal copyWith(Interval validityInterval);
 

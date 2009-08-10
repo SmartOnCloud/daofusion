@@ -132,6 +132,8 @@ public class BitemporalTrace implements Serializable {
 
         for (Bitemporal needsToEnd : toEnd) {
             needsToEnd.end();
+//            if (needsToEnd.getRecordInterval().toPeriod().getMillis() == 0)
+//                data.remove(needsToEnd);
         }
         for (Bitemporal toBeAdded : toAdd) {
             data.add(toBeAdded);
@@ -159,15 +161,4 @@ public class BitemporalTrace implements Serializable {
         return buf.toString();
     }
 
-    public void revert(DateTime knownOn) {
-        Set<Bitemporal> itemsToBeRemoved = new HashSet<Bitemporal>();
-        for (Bitemporal bitemporal : data) {
-            if (bitemporal.getRecordInterval().isAfter(knownOn))
-                itemsToBeRemoved.add(bitemporal);
-            if (bitemporal.getRecordInterval().contains(knownOn)) {
-                bitemporal.resurrect();
-            }
-        }
-        data.removeAll(itemsToBeRemoved);
-    }
 }
