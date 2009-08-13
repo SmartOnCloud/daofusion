@@ -80,6 +80,11 @@
 		<db2-expressc-jcc.version>3.5</db2-expressc-jcc.version>
 		<ojdbc14.version>10.2.0.3.0</ojdbc14.version>
 		<jtds.version>1.2.2</jtds.version>
+
+		<hibernate-entitymanager.version>3.4.0.GA</hibernate-entitymanager.version>
+		<cglib.version>2.1_3</cglib.version>
+		<joda.version>1.6</joda.version>
+
 		
 		<!-- used by daofusion-site -->
 		<db-h2>${h2.version}</db-h2>
@@ -136,8 +141,29 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 			<version>${slf4j.version}</version>
-			<scope>test</scope>
+			<scope>compile</scope>
+			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate-entitymanager.version}</version>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>${cglib.version}</version>
+			<scope>compile</scope>
+			<optional>true</optional>
+		</dependency>		
 	</dependencies>
 	
 	<dependencyManagement>

@@ -43,6 +43,7 @@
 					<artifactId>junit</artifactId>
 				</exclusion>
 			</exclusions>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -55,12 +56,14 @@
 					<artifactId>commons-logging</artifactId>
 				</exclusion>
 			</exclusions>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit-springtestcontext.version}</version>
 			<scope>compile</scope>
+			<optional>true</optional>
 		</dependency>
 		
 		<dependency>
@@ -68,35 +71,43 @@
 			<artifactId>c3p0</artifactId>
 			<version>${c3p0.version}</version>
 			<scope>compile</scope>
+			<optional>true</optional>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc14</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.db2</groupId>
 			<artifactId>db2-expressc-jcc</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.jtds</groupId>
 			<artifactId>jtds</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 	
