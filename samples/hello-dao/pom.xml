@@ -11,6 +11,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<daofusion.version>SNAPSHOT</daofusion.version>
+		<hibernate-entitymanager.version>3.4.0.GA</hibernate-entitymanager.version>
 		<junit.version>4.4</junit.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
 		<h2.version>1.1.114</h2.version>
@@ -160,6 +161,19 @@
 			<artifactId>daofusion-test</artifactId>
 			<version>${daofusion.version}</version>
 			<scope>test</scope>
+		</dependency>
+		
+		<!-- Hibernate -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate-entitymanager.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!-- GWT stuff -->
