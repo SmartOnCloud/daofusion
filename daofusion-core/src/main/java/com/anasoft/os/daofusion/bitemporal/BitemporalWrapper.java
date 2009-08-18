@@ -84,6 +84,10 @@ public abstract class BitemporalWrapper<V> extends MutablePersistentEntity imple
     public Interval getValidityInterval() {
         return validityInterval;
     }
+    
+    protected void setValidityInterval(Interval validityInterval) {
+        this.validityInterval = validityInterval;
+    }
 
     public Interval getRecordInterval() {
         return recordInterval;
