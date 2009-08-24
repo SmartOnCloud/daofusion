@@ -162,8 +162,6 @@
 			<version>${daofusion.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
-		<!-- Hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>

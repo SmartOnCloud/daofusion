@@ -69,9 +69,14 @@
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
 		<junit.version>4.6</junit.version>
 		<mockito.version>1.7</mockito.version>
 		<slf4j.version>1.5.8</slf4j.version>
+		
+		<hibernate-entitymanager.version>3.4.0.GA</hibernate-entitymanager.version>
+		<cglib.version>2.1_3</cglib.version>
+		<joda.version>1.6</joda.version>		
 		
 		<h2.version>1.1.114</h2.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
@@ -80,13 +85,8 @@
 		<db2-expressc-jcc.version>3.5</db2-expressc-jcc.version>
 		<ojdbc14.version>10.2.0.3.0</ojdbc14.version>
 		<jtds.version>1.2.2</jtds.version>
-
-		<hibernate-entitymanager.version>3.4.0.GA</hibernate-entitymanager.version>
-		<cglib.version>2.1_3</cglib.version>
-		<joda.version>1.6</joda.version>
-
 		
-		<!-- used by daofusion-site -->
+		<!-- Used by daofusion-site -->
 		<db-h2>${h2.version}</db-h2>
 		<db-hsql>${hsqldb.version}</db-hsql>
 		<db-mysql>5.1.30</db-mysql>
@@ -112,7 +112,7 @@
 		<site>
 			<id>com.anasoft.os.site</id>
 			<name>ANASOFT OpenSource site</name>
-			<url>scp://shadow.ana.sk/home/http/vhosts/opensource.anasoft.sk/htdocs/</url>
+			<url>scp://shadow.ana.sk/home/http/vhosts/opensource.anasoft.com/htdocs/</url>
 		</site>
 	</distributionManagement>
 	
