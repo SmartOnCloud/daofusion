@@ -14,7 +14,7 @@
 		<class>com.anasoft.os.daofusion.sample.hellodao.server.dao.entity.Address</class>
 		
 		<properties>
-			<property name="hibernate.dialect" value="com.anasoft.os.daofusion.sample.hellodao.server.db.H2Dialect" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
 			<property name="hibernate.connection.driver_class" value="org.h2.Driver" />
 			<property name="hibernate.connection.url" value="jdbc:h2:mem:test" />
 			<property name="hibernate.connection.username" value="sa" />

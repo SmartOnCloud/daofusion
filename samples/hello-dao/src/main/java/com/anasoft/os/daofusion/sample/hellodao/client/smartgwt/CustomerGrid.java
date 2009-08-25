@@ -46,7 +46,7 @@ public class CustomerGrid extends ListGrid {
         
         addRowContextClickHandler(new RowContextClickHandler() {
             public void onRowContextClick(RowContextClickEvent event) {
-                SC.say("Context menu secret handler discovered", "Hello from <a href="
+                SC.say("Secret context menu discovered!", "Hello from <a href="
                         + URL.encode(HelloDAO.DAO_FUSION_HOME)
                         + " target=\"_blank\">DAO Fusion</a> team :-)");
                 

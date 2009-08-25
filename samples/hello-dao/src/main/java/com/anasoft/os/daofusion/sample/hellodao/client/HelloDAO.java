@@ -18,7 +18,7 @@ public class HelloDAO implements EntryPoint {
     
     private static final String ICON_PATH = "../js-gwt/hellodao/icons/";
     
-    public static final String DAO_FUSION_HOME = "http://opensource.anasoft.sk/daofusion-site/";
+    public static final String DAO_FUSION_HOME = "http://opensource.anasoft.com/daofusion-site/";
     
     public void onModuleLoad() {
         Canvas screen = new Canvas();

@@ -11,12 +11,13 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<daofusion.version>SNAPSHOT</daofusion.version>
+		<hibernate-core.version>3.3.2.GA</hibernate-core.version>
 		<hibernate-entitymanager.version>3.4.0.GA</hibernate-entitymanager.version>
 		<junit.version>4.4</junit.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
-		<h2.version>1.1.114</h2.version>
+		<h2.version>1.1.115</h2.version>
 		<slf4j.version>1.5.8</slf4j.version>
-		<gwt.version>1.6.4</gwt.version>
+		<gwt.version>1.7.0</gwt.version>
 		<smartgwt.version>1.1</smartgwt.version>
 	</properties>
 	
@@ -163,12 +164,21 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate-entitymanager.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-core</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
