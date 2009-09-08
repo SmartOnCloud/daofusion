@@ -9,15 +9,21 @@ import java.util.Collection;
 
 /**
  * {@link BitemporalProperty} implementation that uses {@link BitemporalWrapper}
- * s.
+ * as the {@link Bitemporal} object type.
+ * 
+ * @see BitemporalProperty
  * 
  * @author Erwin Vervaet
  * @author Christophe Vanfleteren
  */
 public class WrappedBitemporalProperty<V, T extends BitemporalWrapper<V>> extends BitemporalProperty<V, T> {
 
-    public WrappedBitemporalProperty(Collection<? extends Bitemporal> data,
-            ValueAccessor<V,T> valueAccessor) {
+    /**
+     * Create a new bitemporal property on top of given data collection and using
+     * the given value accessor.
+     */
+    public WrappedBitemporalProperty(Collection<? extends Bitemporal> data, ValueAccessor<V,T> valueAccessor) {
         super(data, valueAccessor);
     }
+
 }

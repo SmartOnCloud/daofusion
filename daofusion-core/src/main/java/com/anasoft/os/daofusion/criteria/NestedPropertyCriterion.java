@@ -10,10 +10,10 @@ package com.anasoft.os.daofusion.criteria;
  * of two factors:
  * 
  * <ul>
- * <li><tt>associationPath</tt> which points to the given
- * property of the target persistent entity
- * <li><tt>targetPropertyName</tt> denoting target property
- * of the given persistent entity
+ *  <li><tt>associationPath</tt> which points to the given
+ *      property of the target persistent entity
+ *  <li><tt>targetPropertyName</tt> denoting target property
+ *      of the given persistent entity
  * </ul>
  * 
  * This class is immutable by design. Subclasses should remain

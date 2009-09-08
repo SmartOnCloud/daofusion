@@ -14,11 +14,17 @@ import org.joda.time.Interval;
 
 /**
  * Represents a bitemporally tracked property of a class (for instance the name of a person).
+ * 
  * <p>
- * The {@link BitemporalProperty} class provides a high-level API expressed in terms of actual value classes
- * (e.g. String), layered on top of low-level contructs such as a {@link BitemporalTrace} and {@link Bitemporal} objects.
- * To be able to provide an API at the level of actual value classes, the {@link BitemporalProperty} uses
- * a {@link ValueAccessor} to extract actual values from {@link Bitemporal} objects.
+ * 
+ * The {@link BitemporalProperty} class provides a high-level API expressed in terms of actual
+ * value classes (e.g. String), layered on top of low-level constructs such as the {@link BitemporalTrace}
+ * and {@link Bitemporal} objects. To be able to provide an API at the level of actual value classes,
+ * the {@link BitemporalProperty} uses a {@link ValueAccessor} to extract actual values from
+ * {@link Bitemporal} objects.
+ * 
+ * @see BitemporalTrace
+ * @see ValueAccessor
  * 
  * @author Erwin Vervaet
  * @author Christophe Vanfleteren
@@ -30,14 +36,16 @@ public class BitemporalProperty<V, T extends Bitemporal> implements Serializable
 	private ValueAccessor<V, T> accessor;
 
 	/**
-	 * Create a new bitemporal property setting up a trace using given data, and using given value accessor.
+	 * Create a new bitemporal property on top of given data collection and using
+	 * the given value accessor.
 	 */
 	public BitemporalProperty(Collection<? extends Bitemporal> data, ValueAccessor<V, T> accessor) {
 		this(new BitemporalTrace((Collection<Bitemporal>) data), accessor);
 	}
 	
 	/**
-	 * Create a new bitemporal property wrapping given trace and using given value accessor.
+	 * Create a new bitemporal property wrapping the given trace and using the given
+	 * value accessor.
 	 */
 	public BitemporalProperty(BitemporalTrace trace, ValueAccessor<V, T> accessor) {
 		if (trace == null) {
@@ -79,21 +87,21 @@ public class BitemporalProperty<V, T extends Bitemporal> implements Serializable
 	}
 
 	/**
-	 * Returns the bitemporal valid {@link TimeUtils#now() now} as currently known. 
+	 * Returns the {@link Bitemporal} object valid {@link TimeUtils#now() now} as currently known. 
 	 */
 	public T get() {
 		return get(TimeUtils.now());
 	}
 
 	/**
-	 * Returns the bitemporal valid on specified date as currently known.
+	 * Returns the {@link Bitemporal} object valid on specified date as currently known.
 	 */
 	public T get(DateTime validOn) {
 		return get(validOn, TimeUtils.now());
 	}
 
 	/**
-	 * Returns the bitemporal valid on specified date as known on given date.
+	 * Returns the {@link Bitemporal} object valid on specified date as known on given date.
 	 */
 	public T get(DateTime validOn, DateTime knownOn) {
 		Collection<T> coll = (Collection<T>) trace.get(validOn, knownOn);
@@ -137,12 +145,16 @@ public class BitemporalProperty<V, T extends Bitemporal> implements Serializable
 		return (List<T>) trace.getEvolution(validOn);
 	}
 
+	/**
+	 * Returns the {@link Bitemporal} object collection contained within the trace.
+	 */
 	public Collection<T> getData() {
 	    return (Collection<T>) trace.getData();
 	}
 	
 	/**
-	 * Set the value of this bitemporal property. The new value will be valid {@link TimeUtils#fromNow() from now on}.
+	 * Set the value of this bitemporal property. The new value will be valid
+	 * {@link TimeUtils#fromNow() from now on}.
 	 */
 	public void set(V value) {
 		set(value, TimeUtils.fromNow());
@@ -196,4 +208,5 @@ public class BitemporalProperty<V, T extends Bitemporal> implements Serializable
 	public String toString() {
 		return String.valueOf(now());
 	}
+	
 }

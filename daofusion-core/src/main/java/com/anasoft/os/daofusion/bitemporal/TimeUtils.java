@@ -19,8 +19,8 @@ public class TimeUtils {
 	// no need to instantiate this class
 	private TimeUtils() {
 	}
-	
-	
+
+
 	// time framing functionality
 
 	private static final ThreadLocal<DateTime> reference = new ThreadLocal<DateTime>();
@@ -33,7 +33,8 @@ public class TimeUtils {
 	}
 
 	/**
-	 * Returns the reference time, or <i>wallclock now</i> if no reference time has been set.
+	 * Returns the reference time, or <i>wallclock now</i> if no reference
+	 * time has been set.
 	 */
 	public static DateTime reference() {
 		return isReferenceSet() ? reference.get() : current();
@@ -65,14 +66,17 @@ public class TimeUtils {
 	private static final DateTime endOfTime = new DateTime(END_OF_TIME);
 
 	/**
-	 * Create a {@link DateTime} object representing given day of given month in given year.
+	 * Create a {@link DateTime} object representing given day of given month
+	 * in given year.
 	 */
 	public static DateTime day(int day, int month, int year) {
 		return new DateTime(year, month, day, 0, 0, 0, 0);
 	}
 
 	/**
-	 * Returns the current reference time. If a reference time is set, it is that reference time that will be returned.
+	 * Returns the current reference time. If a reference time is set, it is that
+	 * reference time that will be returned.
+	 * 
 	 * @see #reference()
 	 */
 	public static DateTime now() {
@@ -94,9 +98,8 @@ public class TimeUtils {
 	}
 
 	/**
-	 * Returns a interval running for the specified period. The returned interval is half-open: it includes the
-	 * start time, but not the end time.
-	 * @see Interval
+	 * Returns a interval running for the specified period. The returned interval
+	 * is half-open: it includes the start time, but not the end time.
 	 */
 	public static Interval interval(DateTime start, DateTime end) {
 		return new Interval(start.getMillis(), end.getMillis());
@@ -104,6 +107,7 @@ public class TimeUtils {
 
 	/**
 	 * Returns an interval running from given start time till the end of time.
+	 * 
 	 * @see #endOfTime()
 	 */
 	public static Interval from(DateTime start) {
@@ -116,4 +120,5 @@ public class TimeUtils {
 	public static Interval fromNow() {
 		return from(now());
 	}
+
 }

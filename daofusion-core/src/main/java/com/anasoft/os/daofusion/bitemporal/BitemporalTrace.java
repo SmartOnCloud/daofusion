@@ -11,29 +11,36 @@ import java.io.StringWriter;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 /**
  * A trace of {@link Bitemporal} objects, bitemporally tracking some value (for
- * instance a person's name). A bitemporal trace works on top of (wraps) a
- * collection of {@link Bitemporal} objects, representing the raw data to query
+ * instance the name of a person). A bitemporal trace works on top of (wraps)
+ * a collection of {@link Bitemporal} objects, representing the raw data to query
  * and manipulate.
+ * 
  * <p>
- * Together with {@link Bitemporal}, {@link BitemporalTrace} provides a low
- * level API for bitemporal data tracking and manipulation expressed in terms of
- * {@link Bitemporal} objects.
+ * 
+ * Together with {@link Bitemporal}, {@link BitemporalTrace} provides a low level API
+ * for bitemporal data tracking and manipulation expressed in terms of {@link Bitemporal}
+ * objects.
+ * 
  * <p>
- * A bitemporal trace will be serializable if all the bitemporals it contains
+ * 
+ * A bitemporal trace will be serializable if all {@link Bitemporal} objects it contains
  * are serializable.
+ * 
  * <p>
+ * 
  * A bitemporal trace is not thread-safe.
+ * 
+ * @see Bitemporal
  * 
  * @author Erwin Vervaet
  * @author Christophe Vanfleteren
- * @author Igor Mihalik
+ * @author igor.mihalik
  */
 public class BitemporalTrace implements Serializable {
 
@@ -57,7 +64,7 @@ public class BitemporalTrace implements Serializable {
     }
 
     /**
-     * Returns the {@link Bitemporal} objects valid on given date as known on
+     * Returns {@link Bitemporal} objects valid on given date as known on
      * specified date.
      */
     public Collection<Bitemporal> get(DateTime validOn, DateTime knownOn) {
@@ -72,8 +79,8 @@ public class BitemporalTrace implements Serializable {
     }
 
     /**
-     * Returns the history of the tracked value, as known on specified time. The
-     * history informs you about how the valid value changed over time.
+     * Returns the history of the tracked value, as known on specified time.
+     * The history informs you about how the valid value changed over time.
      */
     public Collection<Bitemporal> getHistory(DateTime knownOn) {
         Collection<Bitemporal> history = new LinkedList<Bitemporal>();
@@ -101,12 +108,12 @@ public class BitemporalTrace implements Serializable {
     }
 
     /**
-     * Add given {@link Bitemporal} to the trace, manipulating the trace as
-     * necessary. This is essentially the basic bitemporal data manipulation
+     * Adds the given {@link Bitemporal} object to the trace, manipulating the trace
+     * as necessary. This is essentially the basic bitemporal data manipulation
      * operation.
      */
     public void add(Bitemporal newValue) {
-        Collection<Bitemporal> toEnd = getItemsThatNeedsToBeEnded(newValue);
+        Collection<Bitemporal> toEnd = getItemsThatNeedToBeEnded(newValue);
 
         Collection<Bitemporal> toAdd = new LinkedList<Bitemporal>();
         DateTime validityStartOfNewValue = newValue.getValidityInterval().getStart();
@@ -132,16 +139,15 @@ public class BitemporalTrace implements Serializable {
 
         for (Bitemporal needsToEnd : toEnd) {
             needsToEnd.end();
-//            if (needsToEnd.getRecordInterval().toPeriod().getMillis() == 0)
-//                data.remove(needsToEnd);
         }
         for (Bitemporal toBeAdded : toAdd) {
             data.add(toBeAdded);
         }
+
         data.add(newValue.copyWith(newValue.getValidityInterval()));
     }
 
-    Collection<Bitemporal> getItemsThatNeedsToBeEnded(Bitemporal newValue) {
+    Collection<Bitemporal> getItemsThatNeedToBeEnded(Bitemporal newValue) {
         Collection<Bitemporal> toEnd = new HashSet<Bitemporal>();
         for (Bitemporal possibleOverlap : getHistory(TimeUtils.now())) {
             if (newValue.getValidityInterval().overlaps(possibleOverlap.getValidityInterval())) {

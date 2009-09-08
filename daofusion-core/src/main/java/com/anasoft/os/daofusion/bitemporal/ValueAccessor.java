@@ -10,9 +10,12 @@ import java.io.Serializable;
 import org.joda.time.Interval;
 
 /**
- * Simple strategy to access a value in a {@link Bitemporal} object.
+ * Simple strategy to access the value in a {@link Bitemporal} object.
  * 
- * @see BitemporalProperty
+ * @param <V> Value to be wrapped by the {@link Bitemporal} object.
+ * @param <T> {@link Bitemporal} object implementation that wraps the given value type.
+ * 
+ * @see Bitemporal
  * 
  * @author Erwin Vervaet
  * @author Christophe Vanfleteren
@@ -20,12 +23,14 @@ import org.joda.time.Interval;
 public interface ValueAccessor<V, T extends Bitemporal> extends Serializable {
 
 	/**
-	 * Extract the value from given bitemporal.
+	 * Extract the value from the given {@link Bitemporal} object.
 	 */
-	V extractValue(T t);
+	V extractValue(T bitemporalObject);
 
 	/**
-	 * Create a bitemporal wrapping given value, valid for specified validity interval.
+	 * Create a {@link Bitemporal} object wrapping given value,
+	 * valid for the specified interval.
 	 */
 	T wrapValue(V value, Interval validityInterval);
+
 }

@@ -30,10 +30,10 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 /**
- * Persist {@link org.joda.time.Interval} via hibernate. Internally, this class
+ * Persist {@link org.joda.time.Interval} via Hibernate. Internally, this class
  * collaborates with {@link org.joda.time.contrib.hibernate.PersistentDateTime}
  * to convert the start and end components of an Interval to and from the 
- * database correspondents.  This class allows clients to execute hibernate or
+ * database correspondents. This class allows clients to execute hibernate or
  * JPA queries using the attribute names "start" and "end."  For example,
  * <br />
  * <br />

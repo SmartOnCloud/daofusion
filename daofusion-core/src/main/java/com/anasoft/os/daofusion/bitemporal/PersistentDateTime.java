@@ -1,4 +1,3 @@
-package com.anasoft.os.daofusion.bitemporal;
 /*
  *  Copyright 2001-2007 Stephen Colebourne
  *
@@ -15,6 +14,8 @@ package com.anasoft.os.daofusion.bitemporal;
  *  limitations under the License.
  */
 
+package com.anasoft.os.daofusion.bitemporal;
+
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +28,7 @@ import org.hibernate.usertype.EnhancedUserType;
 import org.joda.time.DateTime;
 
 /**
- * Persist {@link org.joda.time.DateTime} via hibernate
+ * Persist {@link org.joda.time.DateTime} via Hibernate.
  *
  * @author Mario Ivankovits (mario@ops.co.at)
  */

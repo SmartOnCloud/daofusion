@@ -12,8 +12,12 @@ import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Unit test for {@link BitemporalTrace}.
+ */
 public class BitemporalTraceTest {
-    private static final long INF = TimeUtils.ACTUAL_END_OF_TIME;
+
+    private static final long INFINITY = TimeUtils.ACTUAL_END_OF_TIME;
 
     private ArrayList<Bitemporal> data;
     private BitemporalTrace tested;
@@ -30,13 +34,13 @@ public class BitemporalTraceTest {
     public void setUp() {
         data = new ArrayList<Bitemporal>();
         tested = new BitemporalTrace(data);
-        a_1 = bitemporalMock(0, INF, 0, 10);
-        a_2 = bitemporalMock(0, 15, 10, INF);
-        b_1 = bitemporalMock(15, INF, 10, 20);
-        b_2 = bitemporalMock(15, 30, 20, INF);
-        c_1 = bitemporalMock(30, INF, 20, 30);
-        c_2 = bitemporalMock(30, 45, 30, INF);
-        d = bitemporalMock(45, INF, 30, INF);
+        a_1 = bitemporalMock(0, INFINITY, 0, 10);
+        a_2 = bitemporalMock(0, 15, 10, INFINITY);
+        b_1 = bitemporalMock(15, INFINITY, 10, 20);
+        b_2 = bitemporalMock(15, 30, 20, INFINITY);
+        c_1 = bitemporalMock(30, INFINITY, 20, 30);
+        c_2 = bitemporalMock(30, 45, 30, INFINITY);
+        d = bitemporalMock(45, INFINITY, 30, INFINITY);
         data.addAll(Arrays.asList(new Bitemporal[] { a_1, a_2, b_1, b_2, c_1, c_2, d }));
     }
 
@@ -46,7 +50,7 @@ public class BitemporalTraceTest {
         assertThat(tested.getHistory(new DateTime(10)).size(), is(2));
         assertThat(tested.getHistory(new DateTime(20)).size(), is(3));
         assertThat(tested.getHistory(new DateTime(30)).size(), is(4));
-        assertThat(tested.getHistory(new DateTime(INF - 1)).size(), is(4));
+        assertThat(tested.getHistory(new DateTime(INFINITY - 1)).size(), is(4));
     }
 
     @Test
@@ -55,7 +59,7 @@ public class BitemporalTraceTest {
         assertThat(tested.getEvolution(new DateTime(15)).size(), is(3));
         assertThat(tested.getEvolution(new DateTime(30)).size(), is(4));
         assertThat(tested.getEvolution(new DateTime(45)).size(), is(4));
-        assertThat(tested.getEvolution(new DateTime(INF - 1)).size(), is(4));
+        assertThat(tested.getEvolution(new DateTime(INFINITY - 1)).size(), is(4));
     }
 
     @Test
@@ -75,21 +79,21 @@ public class BitemporalTraceTest {
     }
 
     @Test
-    public void testgetItemsThatNeedsToBeEnded() throws Exception {
+    public void testGetItemsThatNeedToBeEnded() throws Exception {
         TimeUtils.setReference(new DateTime(100));
-        Collection<Bitemporal> itemsThatNeedsToBeEnded = tested.getItemsThatNeedsToBeEnded(bitemporalMock(
-                60, INF, 40, INF));
-        assertThat(itemsThatNeedsToBeEnded.size(), is(1));
-        assertThat(itemsThatNeedsToBeEnded.contains(d), is(true));
 
-        Collection<Bitemporal> itemsThatNeedsToBeEnded2 = tested.getItemsThatNeedsToBeEnded(bitemporalMock(
-                10, INF, 10, INF));
+        Collection<Bitemporal> itemsThatNeedToBeEnded = tested.getItemsThatNeedToBeEnded(bitemporalMock(
+                60, INFINITY, 40, INFINITY));
+        assertThat(itemsThatNeedToBeEnded.size(), is(1));
+        assertThat(itemsThatNeedToBeEnded.contains(d), is(true));
 
-        assertThat(itemsThatNeedsToBeEnded2.size(), is(4));
-        assertThat(itemsThatNeedsToBeEnded2.contains(d), is(true));
-        assertThat(itemsThatNeedsToBeEnded2.contains(c_2), is(true));
-        assertThat(itemsThatNeedsToBeEnded2.contains(b_2), is(true));
-        assertThat(itemsThatNeedsToBeEnded2.contains(a_2), is(true));
+        Collection<Bitemporal> itemsThatNeedToBeEnded2 = tested.getItemsThatNeedToBeEnded(bitemporalMock(
+                10, INFINITY, 10, INFINITY));
+        assertThat(itemsThatNeedToBeEnded2.size(), is(4));
+        assertThat(itemsThatNeedToBeEnded2.contains(d), is(true));
+        assertThat(itemsThatNeedToBeEnded2.contains(c_2), is(true));
+        assertThat(itemsThatNeedToBeEnded2.contains(b_2), is(true));
+        assertThat(itemsThatNeedToBeEnded2.contains(a_2), is(true));
     }
 
     private Bitemporal bitemporalMock(long validFrom, long validTo, long recordFrom, long recordTo) {
@@ -133,13 +137,18 @@ public class BitemporalTraceTest {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
+            if (this == obj) {
                 return true;
-            if (obj == null)
+            }
+            if (obj == null) {
                 return false;
-            if (getClass() != obj.getClass())
+            }
+            if (getClass() != obj.getClass()) {
                 return false;
+            }
+
             BitemporalMock other = (BitemporalMock) obj;
+
             if (record == null) {
                 if (other.record != null)
                     return false;
@@ -150,6 +159,7 @@ public class BitemporalTraceTest {
                     return false;
             } else if (!validity.equals(other.validity))
                 return false;
+
             return true;
         }
 
@@ -163,4 +173,5 @@ public class BitemporalTraceTest {
         }
 
     }
+
 }
