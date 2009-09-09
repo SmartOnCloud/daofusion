@@ -18,7 +18,7 @@
 		<h2.version>1.1.115</h2.version>
 		<slf4j.version>1.5.8</slf4j.version>
 		<gwt.version>1.7.0</gwt.version>
-		<smartgwt.version>1.1</smartgwt.version>
+		<smartgwt.version>1.2</smartgwt.version>
 	</properties>
 	
 	<build>
@@ -105,13 +105,11 @@
 		<repository>
 			<id>com.anasoft.os.repository.snapshots</id>
 			<name>ANASOFT OpenSource snapshots</name>
-			<url>
-				http://anasoft-os-repo.googlecode.com/svn/repository/snapshots
-			</url>
+			<url>http://anasoft-os-repo.googlecode.com/svn/repository/snapshots</url>
 		</repository>
 		<repository>
-			<id>smartgwt.rorschach.repo</id>
-			<url>http://smartgwtsnap.rorschach.de</url>
+			<id>com.smartclient.repo</id>
+			<url>http://www.smartclient.com/maven2</url>
 		</repository>
 	</repositories>
 	

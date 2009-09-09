@@ -1,8 +1,6 @@
 package com.anasoft.os.daofusion.sample.hellodao.client.smartgwt;
 
-import com.anasoft.os.daofusion.sample.hellodao.client.HelloDAO;
 import com.anasoft.os.daofusion.sample.hellodao.client.dto.CustomerDto;
-import com.google.gwt.http.client.URL;
 import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.types.SelectionStyle;
 import com.smartgwt.client.util.SC;
@@ -46,9 +44,7 @@ public class CustomerGrid extends ListGrid {
         
         addRowContextClickHandler(new RowContextClickHandler() {
             public void onRowContextClick(RowContextClickEvent event) {
-                SC.say("Secret context menu discovered!", "Hello from <a href="
-                        + URL.encode(HelloDAO.DAO_FUSION_HOME)
-                        + " target=\"_blank\">DAO Fusion</a> team :-)");
+                SC.say("Secret context menu discovered", "Hello from DAO Fusion team :-)");
                 
                 // prevent default browser context menu
                 event.cancel();
