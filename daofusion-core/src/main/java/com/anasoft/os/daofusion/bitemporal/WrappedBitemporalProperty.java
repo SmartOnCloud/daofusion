@@ -11,6 +11,9 @@ import java.util.Collection;
  * {@link BitemporalProperty} implementation that uses {@link BitemporalWrapper}
  * as the {@link Bitemporal} object type.
  * 
+ * @param <V> Value wrapped by the {@link BitemporalWrapper}.
+ * @param <T> {@link BitemporalWrapper} implementation that wraps the given value type.
+ * 
  * @see BitemporalProperty
  * 
  * @author Erwin Vervaet

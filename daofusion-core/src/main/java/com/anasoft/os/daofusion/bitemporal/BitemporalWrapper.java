@@ -5,8 +5,6 @@
 
 package com.anasoft.os.daofusion.bitemporal;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
@@ -37,6 +35,8 @@ import com.anasoft.os.daofusion.entity.MutablePersistentEntity;
  * 
  * Objects of this class are not thread-safe.
  * 
+ * @param <V> Value tracked by {@link BitemporalTrace}.
+ * 
  * @see Bitemporal
  * @see BitemporalTrace
  * 
@@ -46,8 +46,6 @@ import com.anasoft.os.daofusion.entity.MutablePersistentEntity;
  */
 @MappedSuperclass
 public abstract class BitemporalWrapper<V> extends MutablePersistentEntity implements Bitemporal {
-
-    public static final String _VALUE = "value";
 
     public static final String _VALID_FROM = "validityInterval.start";
     public static final String _VALID_TO = "validityInterval.end";
@@ -64,7 +62,7 @@ public abstract class BitemporalWrapper<V> extends MutablePersistentEntity imple
     private Interval recordInterval;
 
     protected BitemporalWrapper() {
-        // required by Hibernate
+        // default constructor required by Hibernate
     }
 
     /**
@@ -119,18 +117,6 @@ public abstract class BitemporalWrapper<V> extends MutablePersistentEntity imple
      */
     public void end() {
         this.recordInterval = TimeUtils.interval(getRecordInterval().getStart(), TimeUtils.now());
-    }
-
-    /**
-     * Returns <tt>true</tt> if the given list of wrapped values contains the given value.
-     */
-    public static <T extends BitemporalWrapper<V>, V> boolean contains(List<T> list, V value) {
-        for (T t : list) {
-            if (t.getValue().equals(value)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

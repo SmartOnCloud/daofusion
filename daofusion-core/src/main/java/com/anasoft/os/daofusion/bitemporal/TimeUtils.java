@@ -11,25 +11,43 @@ import org.joda.time.Interval;
 /**
  * Static utilities dealing with <i>time</i>.
  * 
+ * <p>
+ * 
+ * This class controls the record time using a {@link ReferenceTimeProvider}.
+ * You can override the default {@link ThreadLocalReferenceProvider}
+ * implementation by calling the {@link #setReferenceProvider(ReferenceTimeProvider)
+ * setReferenceProvider} method upon application startup.
+ * 
+ * @see ReferenceTimeProvider
+ * 
  * @author Erwin Vervaet
  * @author Christophe Vanfleteren
+ * @author michal.jemala
+ * @author vojtech.szocs
  */
-public class TimeUtils {
+public final class TimeUtils {
 
-	// no need to instantiate this class
 	private TimeUtils() {
+	    // no need to instantiate this class
 	}
 
 
 	// time framing functionality
 
-	private static final ThreadLocal<DateTime> reference = new ThreadLocal<DateTime>();
+	private static ReferenceTimeProvider referenceProvider = new ThreadLocalReferenceProvider();
+
+	/**
+	 * Overrides the default {@link ReferenceTimeProvider} implementation.
+	 */
+	public static synchronized void setReferenceProvider(ReferenceTimeProvider provider) {
+	    TimeUtils.referenceProvider = provider;
+	}
 
 	/**
 	 * Determines whether or not a reference time has been set.
 	 */
 	public static boolean isReferenceSet() {
-		return reference.get() != null;
+		return referenceProvider.getReference() != null;
 	}
 
 	/**
@@ -37,22 +55,21 @@ public class TimeUtils {
 	 * time has been set.
 	 */
 	public static DateTime reference() {
-		return isReferenceSet() ? reference.get() : current();
+		return isReferenceSet() ? referenceProvider.getReference() : current();
 	}
 
 	/**
-	 * Set the reference time to the specified time.
-	 * @param dateTime the reference time to set
+	 * Set the reference time to the specified value.
 	 */
 	public static void setReference(DateTime dateTime) {
-		reference.set(dateTime);
+		referenceProvider.setReference(dateTime);
 	}
-	
+
 	/**
-	 * Clear the reference time.
+	 * Clears the reference time.
 	 */
 	public static void clearReference() {
-		reference.remove();
+		referenceProvider.clearReference();
 	}
 
 
@@ -61,7 +78,7 @@ public class TimeUtils {
     /**
      * Timestamp value that represents N/A date.
      */
-    public static final long ACTUAL_END_OF_TIME = 38742530400000L;       //14.9.3197
+    public static final long ACTUAL_END_OF_TIME = 38742530400000L;  // 14.9.3197
 	public static final long END_OF_TIME = ACTUAL_END_OF_TIME - 1;
 	private static final DateTime endOfTime = new DateTime(END_OF_TIME);
 
@@ -84,7 +101,7 @@ public class TimeUtils {
 	}
 
 	/**
-	 * Returns the current local time (<i>wallclock now</i>) (reference time is ignored).
+	 * Returns the current local time (<i>wallclock now</i>), ignoring the reference time.
 	 */
 	public static DateTime current() {
 		return new DateTime();

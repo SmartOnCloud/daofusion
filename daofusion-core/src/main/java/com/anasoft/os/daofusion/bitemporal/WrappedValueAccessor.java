@@ -6,9 +6,9 @@ import java.lang.reflect.Modifier;
 import org.joda.time.Interval;
 
 /**
- * {@link ValueAccessor} adapter.
+ * {@link ValueAccessor} adapter for use with {@link BitemporalWrapper}.
  * 
- * @param <V> Value to be wrapped by the {@link Bitemporal} object.
+ * @param <V> Value wrapped by the {@link Bitemporal} object.
  * @param <T> {@link BitemporalWrapper} implementation that wraps the given value type.
  * 
  * @see ValueAccessor
@@ -16,7 +16,7 @@ import org.joda.time.Interval;
  * 
  * @author igor.mihalik
  */
-public abstract class ValueAccessorAdapter<V, T extends BitemporalWrapper<V>> implements ValueAccessor<V, T> {
+public abstract class WrappedValueAccessor<V, T extends BitemporalWrapper<V>> implements ValueAccessor<V, T> {
 
     /**
      * @see com.anasoft.os.daofusion.bitemporal.ValueAccessor#extractValue(com.anasoft.os.daofusion.bitemporal.Bitemporal)
@@ -28,7 +28,7 @@ public abstract class ValueAccessorAdapter<V, T extends BitemporalWrapper<V>> im
     }
 
     /**
-     * Creates an instance of {@link ValueAccessorAdapter} for the given
+     * Creates an instance of {@link WrappedValueAccessor} for the given
      * {@link BitemporalWrapper} type.
      * 
      * <p>
@@ -45,9 +45,9 @@ public abstract class ValueAccessorAdapter<V, T extends BitemporalWrapper<V>> im
      *  <li>return the {@link BitemporalWrapper} instance as the result
      * </ol>
      */
-    public static <V, T extends BitemporalWrapper<V>> ValueAccessorAdapter<V, T> create(
+    public static <V, T extends BitemporalWrapper<V>> WrappedValueAccessor<V, T> create(
             final Class<T> clazz) {
-        return new ValueAccessorAdapter<V, T>() {
+        return new WrappedValueAccessor<V, T>() {
 
             public T wrapValue(V value, Interval validityInterval) {
                 try {

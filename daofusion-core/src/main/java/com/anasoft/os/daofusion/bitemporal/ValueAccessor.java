@@ -12,7 +12,7 @@ import org.joda.time.Interval;
 /**
  * Simple strategy to access the value in a {@link Bitemporal} object.
  * 
- * @param <V> Value to be wrapped by the {@link Bitemporal} object.
+ * @param <V> Value wrapped by the {@link Bitemporal} object.
  * @param <T> {@link Bitemporal} object implementation that wraps the given value type.
  * 
  * @see Bitemporal

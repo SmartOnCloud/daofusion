@@ -23,6 +23,9 @@ import org.joda.time.Interval;
  * the {@link BitemporalProperty} uses a {@link ValueAccessor} to extract actual values from
  * {@link Bitemporal} objects.
  * 
+ * @param <V> Value wrapped by the {@link Bitemporal} object.
+ * @param <T> {@link Bitemporal} object implementation that wraps the given value type.
+ * 
  * @see BitemporalTrace
  * @see ValueAccessor
  * 

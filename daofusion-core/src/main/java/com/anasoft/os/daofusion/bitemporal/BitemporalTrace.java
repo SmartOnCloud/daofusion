@@ -23,7 +23,7 @@ import org.joda.time.Interval;
  * 
  * <p>
  * 
- * Together with {@link Bitemporal}, {@link BitemporalTrace} provides a low level API
+ * Together with {@link Bitemporal}, {@link BitemporalTrace} provides a low-level API
  * for bitemporal data tracking and manipulation expressed in terms of {@link Bitemporal}
  * objects.
  * 

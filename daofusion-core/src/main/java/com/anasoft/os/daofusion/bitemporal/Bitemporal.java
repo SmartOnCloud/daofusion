@@ -34,12 +34,12 @@ import org.joda.time.Interval;
 public interface Bitemporal {
 
 	/**
-	 * Returns the interval in which this object is valid.
+	 * Returns the interval in which this bitemporal object is valid.
 	 */
 	public Interval getValidityInterval();
 
 	/**
-	 * Returns the interval in which this object is known.
+	 * Returns the interval in which this bitemporal object is known.
 	 */
 	public Interval getRecordInterval();
 
