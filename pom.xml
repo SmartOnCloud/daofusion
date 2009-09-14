@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.anasoft.os</groupId>
 	<artifactId>daofusion-parent</artifactId>
-	<version>SNAPSHOT</version>
+	<version>1.2-m3</version>
 	<packaging>pom</packaging>
 	<name>DAO Fusion</name>
 	
