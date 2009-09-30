@@ -62,6 +62,12 @@ public final class FilterValueConverters {
         
     }
     
+    public static final FilterValueConverter<Object> NOOP = new FilterValueConverter<Object>() {
+        public Object convert(String stringValue) {
+            return stringValue;
+        }
+    };
+    
     public static final FilterValueConverter<String> STRING = new FilterValueConverter<String>() {
         public String convert(String stringValue) {
             return stringValue;
