@@ -1,5 +1,6 @@
 package com.anasoft.os.daofusion.cto.server;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -80,13 +81,12 @@ public class NestedPropertyCriteriaBasedConverter extends SimpleMapContainer<Str
 	 * property mapping group or <tt>null</tt> in
 	 * case there is no such mapping group.
 	 */
-	private Map<String, NestedPropertyMapping> getPropertyMappings(String mappingGroupName) {
-		if (!containsKey(mappingGroupName)) {
-			LOG.warn("Requested property mapping group '{}' not found - did you forget to add mappings for this one?", mappingGroupName);
-			return null;
-		} else {
-			return getObjectMap().get(mappingGroupName).getObjectMap();
-		}
+	private Map<String, List<NestedPropertyMapping>> getPropertyMappings(String mappingGroupName) {
+	    if (containsKey(mappingGroupName)) {
+	        return getObjectMap().get(mappingGroupName).getPropertyMappings();
+	    } else {
+	        return null;
+	    }
 	}
 	
 	/**
@@ -113,17 +113,24 @@ public class NestedPropertyCriteriaBasedConverter extends SimpleMapContainer<Str
 		NestedPropertyCriteria nestedCriteria = createCriteria();
 		
 		Set<String> propertyIdSet = transferObject.getPropertyIdSet();
-		Map<String, NestedPropertyMapping> propertyMappings = getPropertyMappings(mappingGroupName);
+		Map<String, List<NestedPropertyMapping>> propertyMappings = getPropertyMappings(mappingGroupName);
 		
-		for (String propertyId : propertyIdSet) {
-		    FilterAndSortCriteria clientSideCriteria = transferObject.get(propertyId);
-		    NestedPropertyMapping mapping = propertyMappings.get(propertyId);
-            
-            if (mapping != null) {
-                mapping.apply(clientSideCriteria, nestedCriteria);
-            } else {
-                LOG.warn("Mapping for propertyId '{}' within the mapping group '{}' not found - skipping property conversion", propertyId, mappingGroupName);
-            }
+		if (propertyMappings != null) {
+    		for (String propertyId : propertyIdSet) {
+    		    FilterAndSortCriteria clientSideCriteria = transferObject.get(propertyId);
+    		    List<NestedPropertyMapping> mappingList = propertyMappings.get(propertyId);
+                
+    		    if (mappingList != null) {
+        		    for (NestedPropertyMapping mapping : mappingList) {
+        		        LOG.info("Applying property mapping for propertyId '{}' within the mapping group '{}'", propertyId, mappingGroupName);
+        		        mapping.apply(clientSideCriteria, nestedCriteria);
+        		    }
+    		    } else {
+    		        LOG.warn("No mappings found for propertyId '{}' within the mapping group '{}' - skipping property conversion", propertyId, mappingGroupName);
+    		    }
+    		}
+		} else {
+		    LOG.warn("Requested property mapping group '{}' not found - did you forget to add mappings for this one?", mappingGroupName);
 		}
 		
 		nestedCriteria.setFirstResult(transferObject.getFirstResult());
