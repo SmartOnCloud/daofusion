@@ -18,10 +18,10 @@ import com.anasoft.os.daofusion.sample.hellodao.server.dao.impl.DaoManager;
 public class DatabaseInitializer {
     
     private static final String[] FIRST_NAMES = { "William", "Jack", "Thomas", "Joshua", "James",
-            "Peter", "Oliver", "David", "Cooper", "Noah", "John", "Anthony" };
+            "Peter", "Oliver", "David", "Max", "Sam", "John", "Anthony" };
     
-    private static final String[] LAST_NAMES = { "Horváth", "Kováč", "Varga", "Tóth", "Nagy",
-            "Baláž", "Szabó", "Molnár", "Balog", "Lukáč" };
+    private static final String[] LAST_NAMES = { "Smith", "Johnson", "Williams", "Jones", "Brown",
+            "Davis", "Wilson", "Taylor", "Anderson", "Robinson" };
     
     private static final String[] COUNTRIES = { 
             "AF", "AX", "AL", "DZ", "AS", "AD", "AO", "AI",
