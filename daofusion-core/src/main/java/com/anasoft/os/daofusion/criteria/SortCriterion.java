@@ -136,8 +136,6 @@ public class SortCriterion extends NestedPropertyCriterion<NestedPropertyCriteri
     /**
      * Builder for {@link SortCriterion} instances.
      * 
-     * @see NestedPropertyCriterionBuilder
-     * 
      * @author vojtech.szocs
      */
     public static class SortCriterionBuilder extends NestedPropertyCriterionBuilder<SortCriterion, NestedPropertyCriterionVisitor> {

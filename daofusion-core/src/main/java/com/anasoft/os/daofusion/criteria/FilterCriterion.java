@@ -251,8 +251,6 @@ public class FilterCriterion extends NestedPropertyCriterion<NestedPropertyCrite
     /**
      * Builder for {@link FilterCriterion} instances.
      * 
-     * @see NestedPropertyCriterionBuilder
-     * 
      * @author vojtech.szocs
      */
     public static class FilterCriterionBuilder extends NestedPropertyCriterionBuilder<FilterCriterion, NestedPropertyCriterionVisitor> {
