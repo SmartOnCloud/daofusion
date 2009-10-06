@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+	<id>html-wrapper</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>target/html-wrapper</directory>
+			<outputDirectory>/</outputDirectory>
+			<excludes>
+				<exclude>**/*.zip</exclude>
+			</excludes>
+		</fileSet>
+	</fileSets>
+</assembly>

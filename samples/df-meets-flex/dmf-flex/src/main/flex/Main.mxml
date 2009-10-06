@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:swiz="http://swiz.swizframework.org"
+    xmlns:view="com.anasoft.os.sample.dmf.client.view.*"
+	layout="vertical"
+	width="800"
+	height="500">
+	
+	<mx:Script>
+		<![CDATA[
+		    import com.anasoft.os.sample.dmf.client.Beans;
+		    import com.anasoft.os.sample.dmf.client.error.ErrorHandler;
+		    import mx.logging.LogEventLevel;
+		]]>
+	</mx:Script>
+	
+	<swiz:SwizConfig strict="true"
+	    eventPackages="com.anasoft.os.sample.dmf.client, com.anasoft.os.sample.dmf.client.command"
+	    viewPackages="com.anasoft.os.sample.dmf.client.view"
+        logEventLevel="{LogEventLevel.INFO}"
+        serviceCallFaultHandler="{ErrorHandler.onServiceCallFault}"
+	    beanLoaders="{[Beans]}" />
+	
+	<mx:TraceTarget includeLevel="true" includeCategory="true" includeTime="true" />
+	
+	<view:MainView width="100%" height="100%" />
+	
+	<view:ActiveViewLabel fontSize="16" />
+	
+</mx:Application>

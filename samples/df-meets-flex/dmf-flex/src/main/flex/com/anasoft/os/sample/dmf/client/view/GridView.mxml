@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+    width="100%" height="100%"
+    implements="com.anasoft.os.sample.dmf.client.model.ModelChangeListener"
+    addedToStage="onAddedToStage()"
+    xmlns:view="com.anasoft.os.sample.dmf.client.view.*">
+    
+    <mx:Script>
+        <![CDATA[
+            
+            import mx.collections.ArrayCollection;
+            
+            import org.swizframework.Swiz;
+            
+            import com.anasoft.os.sample.dmf.client.cto.FlexCriteriaTransferObject;
+            import com.anasoft.os.sample.dmf.client.controller.GridController;
+            import com.anasoft.os.sample.dmf.client.model.GridModel;
+            
+            private var ready:Boolean = false;
+            
+            [Bindable]
+            private var _model:GridModel;
+            
+            private var _controller:GridController;
+            
+            [Bindable]
+            private var _columns:Array;
+            
+            private var _pageSize:int;
+            private var _navSize:int;
+            
+            [Bindable]
+            private var _pageSizeOptions:Array;
+            
+            [Bindable]
+            private var currentPage:int;
+            
+            [Bindable]
+            private var pageCount:int;
+            
+            private var cto:FlexCriteriaTransferObject = new FlexCriteriaTransferObject(0);
+            
+            [Bindable]
+            private var navItems:ArrayCollection = new ArrayCollection();
+            
+            public function set model(model:GridModel): void {
+                _model = model;
+            }
+            
+            public function set controller(controller:GridController): void {
+                _controller = controller;
+            }
+            
+            public function set columns(columns:Array): void {
+                _columns = columns;
+            }
+            
+            public function set pageSize(pageSize:int): void {
+                if (pageSize < 1)
+                    throw new Error("Invalid pageSize: " + pageSize);
+                
+                _pageSize = pageSize;
+                cto.maxResults = _pageSize;
+                
+                if (ready) {
+				    fetchData();
+				    createNavBar();
+                }
+            }
+            
+            public function set navSize(navSize:int): void {
+                if (navSize < 1)
+                    throw new Error("Invalid navSize: " + navSize);
+                
+                _navSize = navSize;
+                
+                if (ready) {
+                    createNavBar();
+                }
+            }
+            
+            public function set pageSizeOptions(pageSizeOptions:Array): void {
+                _pageSizeOptions = pageSizeOptions;
+            }
+            
+            private function onAddedToStage(): void {
+                ready = true;
+                fetchData();
+                
+                _model.addChangeListener(this);
+            }
+            
+            public function onTotalCountChange(model:GridModel): void {
+                createNavBar();
+            }
+            
+            private function createNavBar(targetPage:int = 0): void {
+				currentPage = targetPage;
+                navItems.removeAll();
+                
+                var totalCount:int = _model.totalCount;
+                
+                pageCount = (totalCount % _pageSize == 0)
+                    ? Math.ceil(totalCount / _pageSize)
+                    : Math.floor(totalCount / _pageSize);
+               
+                if (pageCount == 0)
+                    return;
+				
+				navItems.addItem({label: "<< First", page: 0, enabled: (currentPage < _navSize) ? false : true, rebuildNavBar: true});
+				navItems.addItem({label: "< Previous", page: targetPage - _navSize, enabled: (currentPage < _navSize) ? false : true, rebuildNavBar: true});
+				
+                var currentNavPage:int;
+                
+                for (var navButton:int = 0; navButton < _navSize; navButton++) {
+                    currentNavPage = navButton + targetPage;
+                    navItems.addItem({label: (currentNavPage + 1).toString(), page: currentNavPage, enabled: true, rebuildNavBar: false});
+                    
+                    if ((currentNavPage >= pageCount - 1))
+                        break;
+                }
+                
+                var lastPageChilds:int = ((pageCount % _navSize) == 0)
+                	? (pageCount % _navSize) + _navSize
+                	: pageCount % _navSize;
+                
+                navItems.addItem({label: "Next >", page: currentNavPage + 1, enabled: (currentPage + _navSize > pageCount - 1) ? false : true, rebuildNavBar: true});
+                navItems.addItem({label: "Last >>", page: pageCount - lastPageChilds, enabled: (currentPage + _navSize > pageCount - 1) ? false : true, rebuildNavBar: true});
+            }
+            
+            public function navigateToPage(page:int, rebuildNavBar:Boolean): void {
+                currentPage = page;
+                
+                cto.firstResult = page * _pageSize;
+                fetchData();
+                
+                if (rebuildNavBar)
+                    createNavBar(page);
+            }
+            
+            private function fetchData(): void {
+            	_controller.fetchData(cto);
+            }
+            
+            private function pageSizeChanged(event:Event): void {
+                var pageSize:Object = pageSizeOptionsCombo.selectedItem;
+                
+                if (!(pageSize is int))
+                    throw new Error("Selected pageSize is not an integer");
+                
+                this.pageSize = pageSize as int;
+            }
+            
+            private function onNavItemClick(event:MouseEvent): void {
+                var page:int = event.currentTarget.page as int;
+                var rebuildNavBar:Boolean = event.currentTarget.rebuildNavBar as Boolean;
+                navigateToPage(page, rebuildNavBar);
+            }
+            
+        ]]>
+    </mx:Script>
+    
+    <mx:DataGrid columns="{_columns}" dataProvider="{_model.items}"
+        width="100%" height="100%" />
+    
+    <mx:HBox width="100%" horizontalAlign="center" horizontalGap="0">
+        <mx:Repeater id="navItemRepeater" dataProvider="{navItems}">
+            <view:NavLinkButton label="{navItemRepeater.currentItem.label}"
+                enabled="{navItemRepeater.currentItem.enabled}"
+                page="{navItemRepeater.currentItem.page}"
+                rebuildNavBar="{navItemRepeater.currentItem.rebuildNavBar}"
+                click="{onNavItemClick(event)}" />
+        </mx:Repeater>
+    </mx:HBox>
+    
+    <mx:HBox width="100%">
+        <mx:Label text="Page {currentPage + 1} of {pageCount}" />
+        <mx:Spacer width="100%" />
+        <mx:Label text="Total item count: {_model.totalCount}" />
+    </mx:HBox>
+    
+    <mx:HBox width="100%">
+    	<mx:Button label="Fetch data" click="{fetchData()}" />
+    	<mx:Spacer width="100%" />
+    	<mx:ComboBox id="pageSizeOptionsCombo" dataProvider="{_pageSizeOptions}"
+    	    change="pageSizeChanged(event)" />
+    </mx:HBox>
+    
+</mx:VBox>
