@@ -158,16 +158,24 @@ public class BitemporalProperty<V, T extends Bitemporal> implements Serializable
 	/**
 	 * Set the value of this bitemporal property. The new value will be valid
 	 * {@link TimeUtils#fromNow() from now on}.
+	 * 
+	 * @param value
+	 * @return {@link Bitemporal} instance for given value
 	 */
-	public void set(V value) {
-		set(value, TimeUtils.fromNow());
+	public T set(V value) {
+		return set(value, TimeUtils.fromNow());
 	}
 
 	/**
 	 * Set the value of this bitemporal property for specified validity interval.
+	 * 
+     * @param value
+     * @return {@link Bitemporal} instance for given value
 	 */
-	public void set(V value, Interval validityInterval) {
-		trace.add(accessor.wrapValue(value, validityInterval));
+	public T set(V value, Interval validityInterval) {
+		T wrapValue = accessor.wrapValue(value, validityInterval);
+        trace.add(wrapValue);
+        return wrapValue;
 	}
 
 	/**
