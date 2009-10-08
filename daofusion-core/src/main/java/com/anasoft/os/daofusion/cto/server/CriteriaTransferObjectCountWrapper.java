@@ -117,4 +117,11 @@ public class CriteriaTransferObjectCountWrapper {
         return transferObjectForCount;
     }
     
+    /**
+     * @see #wrap()
+     */
+    public static CriteriaTransferObject wrap(CriteriaTransferObject cto) {
+        return new CriteriaTransferObjectCountWrapper(cto).wrap();
+    }
+    
 }
