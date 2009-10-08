@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import com.anasoft.os.daofusion.criteria.AssociationPathElement;
+
 /**
  * Base class for persistent entities managed within
  * the JPA persistence context.
@@ -35,8 +37,8 @@ import javax.persistence.MappedSuperclass;
 public abstract class PersistentEntity<ID extends Serializable> implements Persistable<ID> {
 
     private static final long serialVersionUID = -3831662382201152789L;
-    
     public static final String _ID = "id";
+    public static final AssociationPathElement ID = new AssociationPathElement(_ID);
     
     @Id
 	@GeneratedValue
