@@ -56,6 +56,7 @@ public abstract class WrappedValueAccessor<V, T extends BitemporalWrapper<V>> im
                     T newInstance = ctor.newInstance();
                     newInstance.setValue(value);
                     newInstance.setValidityInterval(validityInterval);
+                    newInstance.setRecordInterval(TimeUtils.fromNow());
                     return newInstance;
                 } catch (Exception e) {
                     throw new RuntimeException(e);

@@ -104,6 +104,13 @@ public abstract class BitemporalWrapper<V> extends MutablePersistentEntity imple
     protected void setValidityInterval(Interval validityInterval) {
         this.validityInterval = validityInterval;
     }
+    
+    /**
+    * Set the validity interval for the wrapped value.
+    */
+   protected void setRecordInterval(Interval recordInterval) {
+       this.recordInterval = recordInterval;
+   }
 
     /**
      * @see com.anasoft.os.daofusion.bitemporal.Bitemporal#getRecordInterval()
