@@ -29,4 +29,16 @@ public enum NestedPropertyJoinType {
         return hibernateJoinType;
     }
     
+    public static NestedPropertyJoinType valueOf(int hibernateJoinType) {
+        NestedPropertyJoinType[] values = NestedPropertyJoinType.values();
+        
+        for (NestedPropertyJoinType joinType : values) {
+            if (joinType.getHibernateJoinType() == hibernateJoinType) {
+                return joinType;
+            }
+        }
+        
+        throw new IllegalArgumentException("No enum value for hibernateJoinType " + hibernateJoinType);
+    }
+    
 }

@@ -90,14 +90,14 @@ public class AssociationPathRegister {
      */
     private AssociationPath getSubCriteriaAssociationPath(Subcriteria subCriteria){
         List<AssociationPathElement> elementList = new ArrayList<AssociationPathElement>();
-        elementList.add(new AssociationPathElement(subCriteria.getPath()));
+        elementList.add(new AssociationPathElement(subCriteria.getPath(), NestedPropertyJoinType.valueOf(subCriteria.getJoinType())));
         
         Subcriteria currentSubCriteria = subCriteria;
         
         while (currentSubCriteria.getParent() != null
                 && Subcriteria.class.isAssignableFrom(currentSubCriteria.getParent().getClass())) {
             currentSubCriteria = Subcriteria.class.cast(currentSubCriteria.getParent());
-            elementList.add(0, new AssociationPathElement(currentSubCriteria.getPath()));
+            elementList.add(0, new AssociationPathElement(currentSubCriteria.getPath(), NestedPropertyJoinType.valueOf(currentSubCriteria.getJoinType())));
         }
         
         return new AssociationPath(elementList.toArray(new AssociationPathElement[0]));
