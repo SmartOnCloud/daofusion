@@ -51,7 +51,7 @@ public abstract class BaseHibernateDataAccessor {
 	 * 
 	 * @return {@link Session} obtained from the entity manager.
 	 */
-	protected final Session getSession() {
+	protected Session getSession() {
 	    return getHibernateEntityManager().getSession();
 	}
 	
@@ -64,7 +64,7 @@ public abstract class BaseHibernateDataAccessor {
      * @return New {@link Criteria} instance obtained from
      * the session.
      */
-    protected final Criteria getHibernateCriteria(Class<? extends Persistable<? extends Serializable>> entityClass) {
+    protected Criteria getHibernateCriteria(Class<? extends Persistable<? extends Serializable>> entityClass) {
         return getSession().createCriteria(entityClass);
     }
     
@@ -86,17 +86,17 @@ public abstract class BaseHibernateDataAccessor {
      * @return Number of rows returned by the given
      * <tt>criteria</tt>.
      */
-    protected final int rowCount(Criteria criteria) {
+    protected int rowCount(Criteria criteria) {
         criteria.setProjection(Projections.rowCount());
         
         List<?> projectionResults = criteria.list();
         int rowCount = 0;
         
         Object firstResult = projectionResults.get(0);
-        if (projectionResults.size() != 1 || !Integer.class.isAssignableFrom(firstResult.getClass())) {
-            LOG.warn("rowCount projection for the given criteria did not result a single integer value, returning zero - did you add unnecessary paging constraints to the criteria?");
+        if (projectionResults.size() != 1 || !Number.class.isAssignableFrom(firstResult.getClass())) {
+            LOG.warn("rowCount projection for the given criteria did not result a single numeric value, returning zero - did you add unnecessary paging constraints to the criteria?");
         } else {
-            rowCount = Integer.class.cast(firstResult).intValue();
+            rowCount = Number.class.cast(firstResult).intValue();
         }
         
         return rowCount;
